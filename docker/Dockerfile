@@ -7,12 +7,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y curl lsb-release gnupg
-
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y  --no-install-recommends \
+    apt-get install -y --no-install-recommends \
         curl \
         lsb-release \
         gnupg && \
@@ -20,6 +16,11 @@ RUN apt-get update && apt-get upgrade -y && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null && \
     apt-get update && \
     apt-get install -y gz-harmonic
+
+ARG USER=ubuntu
+# TO-DO fix permission
+RUN groupadd -g 1001 ${USER} && \
+	useradd -m -u 1001 -g ${USER} ${USER}
 
 ########################################
 ##          CREATE DEV PX4            ##
@@ -55,7 +56,9 @@ RUN apt-get -y --quiet --no-install-recommends install \
 	zip
 
 # base PX4 build python dependencies
+USER ${USER}
 RUN --mount=type=bind,source=docker/requirements.txt,target=/tmp/requirements.txt python3 -m pip install -r /tmp/requirements.txt
+USER root
 
 RUN apt-get -y --quiet --no-install-recommends install \
     bc \
@@ -72,3 +75,21 @@ RUN apt-get -y --quiet --no-install-recommends install \
     libxml2-utils \
     pkg-config \
     protobuf-compiler
+
+USER ${USER}
+WORKDIR /home/${USER}
+
+RUN git clone --recurse-submodules -b release/1.16 https://github.com/PX4/PX4-Autopilot.git
+
+RUN cd PX4-Autopilot && make px4_sitl
+
+USER root
+RUN apt-get install -y --no-install-recommends \
+	wget \
+	fuse3 \
+	libxcb-xinerama0 \
+	libxkbcommon-x11-0 \
+	libxcb-cursor-dev
+USER ${USER}
+RUN cd ~ && wget https://github.com/mavlink/qgroundcontrol/releases/download/v5.0.3/QGroundControl-x86_64.AppImage && \
+	chmod +x QGroundControl-x86_64.AppImage
