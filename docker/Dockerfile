@@ -53,7 +53,9 @@ USER ${USER}
 WORKDIR /home/${USER}/px4_ros_ws/src
 
 RUN git clone --depth 1 -b v2.4.2 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git && \
-	git clone --depth 1 https://github.com/PX4/px4_msgs.git
+	git clone --depth 1 https://github.com/PX4/px4_msgs.git && \
+	cd .. && source /opt/ros/humble/setup.bash && \
+	colcon build
 
 WORKDIR /home/${USER}
 
