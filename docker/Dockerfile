@@ -19,46 +19,8 @@ RUN apt-get update && apt-get upgrade -y && \
 
 ARG USER=ubuntu
 # TO-DO fix permission
-RUN groupadd -g 1001 ${USER} && \
-	useradd -m -u 1001 -g ${USER} ${USER}
-
-########################################
-##          CREATE DEV PX4            ##
-########################################
-FROM base AS dev-px4
-
-# base PX4 build dependencies
-RUN apt-get -y --quiet --no-install-recommends install \
-	astyle \
-	build-essential \
-	ccache \
-	cmake \
-	cppcheck \
-	file \
-	g++ \
-	gcc \
-	gdb \
-	git \
-	lcov \
-	libssl-dev \
-	libxml2-dev \
-	libxml2-utils \
-	make \
-	ninja-build \
-	python3 \
-	python3-dev \
-	python3-pip \
-	python3-setuptools \
-	python3-wheel \
-	rsync \
-	shellcheck \
-	unzip \
-	zip
-
-# base PX4 build python dependencies
-USER ${USER}
-RUN --mount=type=bind,source=docker/requirements.txt,target=/tmp/requirements.txt python3 -m pip install -r /tmp/requirements.txt
-USER root
+RUN groupadd -g 1000 ${USER} && \
+	useradd -m -u 1000 -g ${USER} ${USER}
 
 RUN apt-get -y --quiet --no-install-recommends install \
     bc \
@@ -76,20 +38,21 @@ RUN apt-get -y --quiet --no-install-recommends install \
     pkg-config \
     protobuf-compiler
 
-USER ${USER}
-WORKDIR /home/${USER}
-
-RUN git clone --recurse-submodules -b release/1.16 https://github.com/PX4/PX4-Autopilot.git
-
-RUN cd PX4-Autopilot && make px4_sitl
-
-USER root
 RUN apt-get install -y --no-install-recommends \
 	wget \
+# for QGC
 	fuse3 \
 	libxcb-xinerama0 \
 	libxkbcommon-x11-0 \
-	libxcb-cursor-dev
+	libxcb-cursor-dev \
+# for px4_sitl Appimage
+	libfuse2
+
 USER ${USER}
-RUN cd ~ && wget https://github.com/mavlink/qgroundcontrol/releases/download/v5.0.3/QGroundControl-x86_64.AppImage && \
+
+WORKDIR /home/${USER}
+
+RUN git clone https://github.com/PX4/PX4-gazebo-models.git
+
+RUN wget https://github.com/mavlink/qgroundcontrol/releases/download/v5.0.4/QGroundControl-x86_64.AppImage && \
 	chmod +x QGroundControl-x86_64.AppImage
