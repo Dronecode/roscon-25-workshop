@@ -15,7 +15,9 @@ RUN apt-get update && apt-get upgrade -y && \
     curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null && \
     apt-get update && \
-    apt-get install -y gz-harmonic
+    apt-get install -y \
+        gz-harmonic \
+        ros-humble-ros-gzharmonic
 
 ARG USER=ubuntu
 # TO-DO fix permission
@@ -50,8 +52,8 @@ RUN apt-get install -y --no-install-recommends \
 
 USER ${USER}
 
+# TO-DO reduce size, use multi-stage build
 WORKDIR /home/${USER}/px4_ros_ws/src
-
 RUN git clone --depth 1 -b v2.4.2 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git && \
 	git clone --depth 1 https://github.com/PX4/px4_msgs.git && \
 	cd .. && source /opt/ros/humble/setup.bash && \
