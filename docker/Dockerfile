@@ -50,14 +50,29 @@ RUN apt-get install -y --no-install-recommends \
 # for px4_sitl Appimage
 	libfuse2
 
+
+########################################
+##      BUILD ROS 2 DEPENDENCIES      ##
+########################################
+FROM base AS dep-ros2
+
 USER ${USER}
 
 # TO-DO reduce size, use multi-stage build
 WORKDIR /home/${USER}/px4_ros_ws/src
 RUN git clone --depth 1 -b v2.4.2 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git && \
 	git clone --depth 1 https://github.com/PX4/px4_msgs.git && \
+    git clone --depth 1 https://github.com/Auterion/px4-ros2-interface-lib.git && \
 	cd .. && source /opt/ros/humble/setup.bash && \
-	colcon build
+	colcon build 
+
+
+########################################
+##             BUILD BASE             ##
+########################################
+FROM base AS dev
+
+COPY --from=dep-ros2 /home/${USER}/px4_ros_ws/install /home/${USER}/px4_ros_ws/install
 
 WORKDIR /home/${USER}
 
