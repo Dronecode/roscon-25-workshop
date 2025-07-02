@@ -32,7 +32,7 @@ RUN --mount=type=bind,source=./docker/scripts/build_ros_deps.sh,target=/root/scr
 FROM base AS dev
 
 # install built packages
-COPY --from=dep-ros2 /root/px4_ros_ws/install /root/px4_ros_ws/install
+COPY --from=dep-ros2 --chown=${USER}:${USER} /root/px4_ros_ws/install /home/${USER}/px4_ros_ws/install
 
 # Switch to user
 USER ${USER}
@@ -42,3 +42,9 @@ WORKDIR /home/${USER}
 # install PX4-gazebo-models and QGC
 RUN git clone --depth 1 https://github.com/PX4/PX4-gazebo-models.git
 ADD --link --chown=${USER}:${USER} --chmod=755 https://github.com/mavlink/qgroundcontrol/releases/download/v5.0.4/QGroundControl-x86_64.AppImage QGroundControl-x86_64.AppImage
+
+# build workshop workspace
+WORKDIR /home/${USER}/roscon-25-workshop_ws/
+COPY --chown=${USER}:${USER} ./px4_roscon_25 src/
+RUN source /home/${USER}/px4_ros_ws/install/setup.bash && \
+    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=ON
