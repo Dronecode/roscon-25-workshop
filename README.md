@@ -19,5 +19,17 @@ This repository contains all the materials for the ROSCon 2025 PX4 + ROS 2 Works
 ### Introduction & Drone Architecture
 ### Environment Setup
 ### Control Pipelines
+#### Offboard Demo
+Build the workspace
+colcon build
+source install/setup.bash
+
+Launch the PX4 SITL environment with Gazebo and DDS Agent
+make px4_sitl gz_x500
+MicroXRCEAgent udp4 -p 8888
+
+Run the Offboard demo node
+ros2 run offboard_demo offboard_demo
+
 ### Perception & Application
 ### External Resources

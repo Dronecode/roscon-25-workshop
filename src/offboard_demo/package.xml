@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>offboard_demo</name>
+  <version>0.0.0</version>
+  <description>ROSCon workshop Offboard demo</description>
+  <maintainer email="pordipatrik@gmail.com">patrik_ark</maintainer>
+  <license>TODO: License declaration</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <buildtool_depend>eigen3_cmake_module</buildtool_depend>
+  <buildtool_export_depend>eigen3_cmake_module</buildtool_export_depend>
+
+
+  <depend>rclcpp</depend>
+ 
+
+    <!-- Dependencies -->
+  <depend>px4_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <build_depend>eigen</build_depend>
+
+  
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
