@@ -27,6 +27,15 @@ ARG PX4_ROS2_INTERFACE_LIB_VERSION=main
 RUN --mount=type=bind,source=./docker/scripts/build_ros_deps.sh,target=/root/scripts/build_ros_deps.sh /root/scripts/build_ros_deps.sh ${MICRO_XRCE_DDS_AGENT_VERSION} ${PX4_MSGS_VERSION} ${PX4_ROS2_INTERFACE_LIB_VERSION}
 
 ########################################
+##              BUILD PX4             ##
+########################################
+
+FROM base AS build-px4
+
+ARG PX4_VERSION=v1.16.0-rc2
+RUN --mount=type=bind,source=./docker/scripts/build_px4.sh,target=/home/{USER}/scripts/build_px4.sh /home/{USER}/scripts/build_px4.sh ${PX4_VERSION}
+
+########################################
 ##             BUILD BASE             ##
 ########################################
 FROM base AS dev
@@ -48,3 +57,5 @@ WORKDIR /home/${USER}/roscon-25-workshop_ws/
 COPY --chown=${USER}:${USER} ./px4_roscon_25 src/
 RUN source /home/${USER}/px4_ros_ws/install/setup.bash && \
     colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=ON
+
+COPY --from=build-px4 --chown=${USER}:${USER} /home/${USER}/px4_sitl /home/${USER}/px4_sitl
