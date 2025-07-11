@@ -21,15 +21,48 @@ This repository contains all the materials for the ROSCon 2025 PX4 + ROS 2 Works
 ### Control Pipelines
 #### Offboard Demo
 Build the workspace
+```
 colcon build
 source install/setup.bash
+```
 
-Launch the PX4 SITL environment with Gazebo and DDS Agent
+Launch the PX4 SITL environment with Gazebo and DDS Agent and QGC
+```
 make px4_sitl gz_x500
 MicroXRCEAgent udp4 -p 8888
+```
 
 Run the Offboard demo node
+```
 ros2 run offboard_demo offboard_demo
+```
+#### Custom Mode Demo
+```
+git submodule update --init --recursive
+```
+TODO: For some reason px4_msgs and px4_ros2_cpp has to be built before the other packages so first:
+```
+colcon build --packages-select px4_msgs px4_ros2_cpp
+```
+then 
+```
+colcon build
+```
+```
+source install/setup.bash
+```
+Launch the PX4 SITL environment with Gazebo and DDS Agent and QGC
+```
+make px4_sitl gz_x500
+MicroXRCEAgent udp4 -p 8888
+```
+Run the Custom demo node
+```
+ros2 run custom_mode_demo custom_mode_demo 
+```
+Arm the drone in QGC and select the CustomWaypoint mode
+
+
 
 ### Perception & Application
 ### External Resources
