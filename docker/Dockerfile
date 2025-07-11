@@ -41,7 +41,7 @@ WORKDIR /home/${USER}
 
 # install PX4-gazebo-models and QGC
 RUN git clone --depth 1 https://github.com/PX4/PX4-gazebo-models.git
-ADD --link --chown=${USER}:${USER} --chmod=755 https://github.com/mavlink/qgroundcontrol/releases/download/v5.0.4/QGroundControl-x86_64.AppImage QGroundControl-x86_64.AppImage
+ADD --link --chown=${USER}:${USER} --chmod=755 https://github.com/mavlink/qgroundcontrol/releases/download/v5.0.6/QGroundControl-x86_64.AppImage QGroundControl-x86_64.AppImage
 
 # build workshop workspace
 WORKDIR /home/${USER}/roscon-25-workshop_ws/
