@@ -58,4 +58,8 @@ COPY --chown=${USER}:${USER} ./px4_roscon_25 src/
 RUN source /home/${USER}/px4_ros_ws/install/setup.bash && \
     colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=ON
 
+WORKDIR /home/${USER}/
 COPY --from=build-px4 --chown=${USER}:${USER} /home/${USER}/px4_sitl /home/${USER}/px4_sitl
+COPY ./docker/entrypoint.sh /ros_entrypoint.sh
+
+ENTRYPOINT [ "/ros_entrypoint.sh" ]
