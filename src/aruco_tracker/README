@@ -1,0 +1,43 @@
+# ROS2 & PX4 ArUco Detection using OpenCV
+Explore the integration of ROS2, PX4, and OpenCV for advanced ArUco marker detection. In this tutorial, we demonstrate how to leverage ROS2's powerful communication framework and PX4's flight control capabilities to implement precise marker detection using OpenCV. Learn how to set up your environment, process camera feeds, and detect ArUco markers in real-time, enabling enhanced navigation and interaction for autonomous drones and robotic systems. Whether you're a beginner or an experienced developer, this tutorial will guide you through the essential steps to achieve robust marker detection and seamless integration with your ROS2 and PX4 projects.
+#### ArUco Markers
+Aruco markers are square fiducial markers used in computer vision for tasks like pose estimation, camera calibration, and augmented reality (AR). Each marker has a unique binary pattern inside a black border, allowing it to be easily detected and identified. They help in determining the position and orientation of cameras or objects in a scene, making them valuable in robotics, navigation, and AR applications.
+https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html
+
+![](arucotag.png)
+
+To install OpenCV:
+```
+pkg-config --modversion opencv4
+```
+The version that was used in this demo:
+```
+pkg-config --modversion opencv4
+4.10.0
+```
+
+To install the GZ bridge:
+```
+sudo apt update
+sudo apt install ros-humble-ros-gzharmonic-bridge
+```
+
+
+#### Run the simulation environment
+Launch PX4 sim
+```
+make px4_sitl gz_x500_mono_cam_down_aruco
+```
+
+When the simulation is running you can see the GZ topics:
+```
+gz topic -l
+```
+
+Launch file with the bridges:
+ros2 launch aruco_tracker aruco_tracker.launch.py 
+
+View the video (/image_proc is the annoted image)
+```
+ros2 run rqt_image_view rqt_image_view
+```

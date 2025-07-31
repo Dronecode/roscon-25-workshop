@@ -65,4 +65,39 @@ Arm the drone in QGC and select the CustomWaypoint mode
 
 
 ### Perception & Application
+#### Precision Land
+#### Run the simulation environment
+Launch PX4 sim
+```
+make px4_sitl gz_x500_mono_cam_down_aruco
+```
+Launch micro dds
+```
+MicroXRCEAgent udp4 -p 8888
+```
+Launch the ros2 nodes (aruco_tracker)
+```
+Launch file with the bridges:
+```
+source install/setup.bash
+ros2 launch aruco_tracker aruco_tracker.launch.py 
+```
+
+View the video (/image_proc is the annoted image)
+```
+ros2 run rqt_image_view rqt_image_view
+```
+
+Launch the ros2 nodes (precision_land)
+```
+source install/setup.bash 
+ros2 run precision_land precision_land
+```
+OR
+Launch file with the params:
+```
+ros2 launch precision_land precision_land.launch.py
+```
+Once the nodes are running the Precision Land mode is going to show up in QGC
+
 ### External Resources
