@@ -22,8 +22,8 @@ RUN groupadd -g 1000 ${USER} && \
 FROM base AS dep-ros2
 
 ARG MICRO_XRCE_DDS_AGENT_VERSION=v2.4.2
-ARG PX4_MSGS_VERSION=main
-ARG PX4_ROS2_INTERFACE_LIB_VERSION=main
+ARG PX4_MSGS_VERSION=release/1.16
+ARG PX4_ROS2_INTERFACE_LIB_VERSION=release/1.16
 RUN --mount=type=bind,source=./docker/scripts/build_ros_deps.sh,target=/root/scripts/build_ros_deps.sh /root/scripts/build_ros_deps.sh ${MICRO_XRCE_DDS_AGENT_VERSION} ${PX4_MSGS_VERSION} ${PX4_ROS2_INTERFACE_LIB_VERSION}
 
 ########################################
@@ -32,7 +32,7 @@ RUN --mount=type=bind,source=./docker/scripts/build_ros_deps.sh,target=/root/scr
 
 FROM base AS build-px4
 
-ARG PX4_VERSION=v1.16.0-rc2
+ARG PX4_VERSION=v1.16.0
 RUN --mount=type=bind,source=./docker/scripts/build_px4.sh,target=/home/{USER}/scripts/build_px4.sh /home/{USER}/scripts/build_px4.sh ${PX4_VERSION}
 
 ########################################
