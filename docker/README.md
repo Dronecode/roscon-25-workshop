@@ -18,7 +18,7 @@ The container can be build by running
 
 ```sh
 cd roscon-25-workshop
-docker build -t px4/roscon-25-workshop -f docker/Dockerfile  .
+./docker/docker_build_amd64.sh
 ```
 
 ## Running the container
