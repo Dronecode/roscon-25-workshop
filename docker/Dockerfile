@@ -60,8 +60,8 @@ USER ${USER}
 
 WORKDIR /home/${USER}
 
-# install PX4-gazebo-models
-RUN git clone --depth 1 https://github.com/PX4/PX4-gazebo-models.git
+# retrieve PX4-gazebo-models
+COPY --from=build-px4 --chown=${USER}:${USER} /home/${USER}/PX4-Autopilot/Tools/simulation/gz /home/${USER}/PX4-gazebo-models
 
 # build workshop workspace
 WORKDIR /home/${USER}/roscon-25-workshop_ws/
