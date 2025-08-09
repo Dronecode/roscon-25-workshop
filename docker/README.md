@@ -81,7 +81,7 @@ PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 /home/ubuntu/px
 Finally, if your're not running headless, you can open QGC and have it connect to PX4 by running
 
 ```sh
-/home/ubuntu/QGroundControl-x86_64.AppImage
+/home/ubuntu/QGroundControl/qgroundcontrol
 ```
 
 from inside the container.

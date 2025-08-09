@@ -33,7 +33,16 @@ RUN --mount=type=bind,source=./docker/scripts/build_ros_deps.sh,target=/root/scr
 FROM base AS build-px4
 
 ARG PX4_VERSION=v1.16.0
-RUN --mount=type=bind,source=./docker/scripts/build_px4.sh,target=/home/{USER}/scripts/build_px4.sh /home/{USER}/scripts/build_px4.sh ${PX4_VERSION}
+RUN --mount=type=bind,source=./docker/scripts/build_px4.sh,target=/home/${USER}/scripts/build_px4.sh /home/${USER}/scripts/build_px4.sh ${PX4_VERSION}
+
+########################################
+##            INSTALL QGC             ##
+########################################
+
+FROM base AS qgc
+
+ARG QGC_VERSION=v5.0.6
+RUN --mount=type=bind,source=./docker/scripts/install_qgc.sh,target=/home/${USER}/scripts/install_qgc.sh /home/${USER}/scripts/install_qgc.sh ${QGC_VERSION}
 
 ########################################
 ##             BUILD BASE             ##
@@ -43,14 +52,16 @@ FROM base AS dev
 # install built packages
 COPY --from=dep-ros2 --chown=${USER}:${USER} /root/px4_ros_ws/install /home/${USER}/px4_ros_ws/install
 
+# retrieve QGC
+COPY --from=qgc --chown=${USER}:${USER} /home/${USER}/QGroundControl /home/${USER}/QGroundControl
+
 # Switch to user
 USER ${USER}
 
 WORKDIR /home/${USER}
 
-# install PX4-gazebo-models and QGC
+# install PX4-gazebo-models
 RUN git clone --depth 1 https://github.com/PX4/PX4-gazebo-models.git
-ADD --link --chown=${USER}:${USER} --chmod=755 https://github.com/mavlink/qgroundcontrol/releases/download/v5.0.6/QGroundControl-x86_64.AppImage QGroundControl-x86_64.AppImage
 
 # build workshop workspace
 WORKDIR /home/${USER}/roscon-25-workshop_ws/

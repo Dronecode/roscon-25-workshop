@@ -28,11 +28,9 @@ apt-get install -y --no-install-recommends \
     pkg-config \
     protobuf-compiler \
     wget \
-    fuse3 \
 	libxcb-xinerama0 \
 	libxkbcommon-x11-0 \
 	libxcb-cursor-dev \
-    libfuse2
 
 rm -rf /var/lib/apt/lists/*
 apt-get clean
