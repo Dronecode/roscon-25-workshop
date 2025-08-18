@@ -1,0 +1,3 @@
+teleop:
+  ros__parameters:
+    teleop_duration: 30.0  # Duration in seconds for teleoperation mode
