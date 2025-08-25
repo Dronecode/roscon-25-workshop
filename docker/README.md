@@ -135,6 +135,14 @@ The script will:
 - Ensure that GUI can be used from inside the container.
 - Mount the `roscon-25-workshop/px4_roscon_25` folder in `~/roscon-25-workshop_ws/src/`.
 
+### Running with GUI within WSL2
+
+When running withing WSL2, please use instead
+
+```sh
+./docker/docker_run_wsl.sh
+```
+
 ### Running headless
 
 You can run the container in headless mode with
