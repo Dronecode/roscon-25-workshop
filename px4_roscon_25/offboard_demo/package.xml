@@ -5,6 +5,7 @@
   <version>0.0.0</version>
   <description>ROSCon workshop Offboard demo</description>
   <maintainer email="pordipatrik@gmail.com">patrik_ark</maintainer>
+  <maintainer email="beniamno.pozzan@gmail.com">Beniamino Pozzan</maintainer>
   <license>CC-BY-SA-4.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -18,7 +19,6 @@
   <depend>geometry_msgs</depend>
   <build_depend>eigen</build_depend>
 
-  
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
