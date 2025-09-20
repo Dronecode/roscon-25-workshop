@@ -50,7 +50,9 @@ RUN --mount=type=bind,source=./docker/scripts/build_ros_deps.sh,target=/root/scr
 FROM pre-dev AS build-px4
 
 ARG PX4_VERSION=v1.16.0
-RUN --mount=type=bind,source=./docker/scripts/build_px4.sh,target=/home/${USER}/scripts/build_px4.sh /home/${USER}/scripts/build_px4.sh ${PX4_VERSION}
+RUN --mount=type=bind,source=./docker/scripts/build_px4.sh,target=/home/${USER}/scripts/build_px4.sh \
+    --mount=type=bind,source=./docker/scripts/params_override.patch,target=/home/${USER}/scripts/params_override.patch \
+    /home/${USER}/scripts/build_px4.sh ${PX4_VERSION}
 
 ########################################
 ##            INSTALL QGC             ##

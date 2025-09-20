@@ -6,6 +6,7 @@ PX4_VERSION=$1
 git clone  --recurse-submodules -b ${PX4_VERSION} https://github.com/PX4/PX4-Autopilot.git /home/${USER}/PX4-Autopilot
 
 cd /home/${USER}/PX4-Autopilot
+git apply /home/${USER}/scripts/params_override.patch
 ./Tools/setup/ubuntu.sh --no-nuttx --no-sim-tools
 make px4_sitl_default
 cd ..
