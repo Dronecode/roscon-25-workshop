@@ -6,7 +6,8 @@
   <description>Custom mode example using PX4 ROS 2 interface.</description>
 
   <maintainer email="pordipatrik@gmail.com">patrik_ark</maintainer>
-  <license>TODO: License declaration</license>
+  <maintainer email="beniamino.pozzan@gmail.com">Beniamino Pozzan</maintainer>
+  <license>CC-BY-SA-4.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
