@@ -32,8 +32,3 @@ Launch file with the bridges. From docker:
 ```sh
 ros2 launch aruco_tracker aruco_tracker.launch.py
 ```
-
-View the video (/image_proc is the annoted image)
-```
-ros2 run rqt_image_view rqt_image_view
-```
