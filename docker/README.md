@@ -212,13 +212,13 @@ Once GZ server is running you can start a PX4 instance and spawn the model in Ga
 Please run the following command on the host: a new terminal inside the container will be opened and the right PX4 startup command issued
 
 ```sh
-docker exec -it px4-roscon-25 /bin/bash -c "PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs"
+docker exec -it px4-roscon-25 /bin/bash -c "PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs"
 ```
 
 The expected output is
 
 ```sh
-$ docker exec -it px4-roscon-25 /bin/bash -c "PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs"
+$ docker exec -it px4-roscon-25 /bin/bash -c "PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs"
 INFO  [px4] assuming working directory is rootfs, no symlinks needed.
 
 ______  __   __    ___ 
@@ -248,15 +248,14 @@ INFO  [param] selected parameter backup file parameters_backup.bson
   CAL_MAG1_PRIO: curr: -1 -> new: 50
   SENS_BOARD_X_OFF: curr: 0.0000 -> new: 0.0000
   SENS_DPRES_OFF: curr: 0.0000 -> new: 0.0010
+  UXRCE_DDS_SYNCT: curr: 1 -> new: 0
 INFO  [dataman] data manager file './dataman' size is 1208528 bytes
 INFO  [init] Gazebo simulator
 INFO  [init] Standalone PX4 launch, waiting for Gazebo
-INFO  [init] Waiting for Gazebo world...
-INFO  [init] Waiting for Gazebo world...
 INFO  [init] Gazebo world is ready
 INFO  [init] Spawning model
 INFO  [gz_bridge] world: default, model: x500_0
-INFO  [lockstep_scheduler] setting initial absolute time to 2324000 us
+INFO  [lockstep_scheduler] setting initial absolute time to 18868000 us
 INFO  [commander] LED: open /dev/led0 failed (22)
 WARN  [health_and_arming_checks] Preflight Fail: ekf2 missing data
 WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
@@ -268,13 +267,11 @@ INFO  [mavlink] mode: Onboard, data rate: 4000 B/s on udp port 14280 remote port
 INFO  [mavlink] mode: Gimbal, data rate: 400000 B/s on udp port 13030 remote port 13280
 INFO  [logger] logger started (mode=all)
 INFO  [logger] Start file log (type: full)
-INFO  [logger] [logger] ./log/2025-08-09/11_56_59.ulg
-INFO  [logger] Opened full log file: ./log/2025-08-09/11_56_59.ulg
+INFO  [logger] [logger] ./log/2025-09-21/19_54_19.ulg
+INFO  [logger] Opened full log file: ./log/2025-09-21/19_54_19.ulg
 INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
 INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
-INFO  [px4] Startup script returned successfully
-pxh> WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
-WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
+INFO  [px4] Startup script returned successfullys
 ```
 
 Unless you are running headless, you will see the `x500` model spawned in the GZ world.
