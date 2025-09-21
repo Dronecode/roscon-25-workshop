@@ -17,9 +17,26 @@ RUN groupadd -g 1000 ${USER} && \
 	useradd -m -u 1000 -g ${USER} ${USER}
 
 ########################################
+##           BUILD OPENCV             ##
+########################################
+
+FROM base AS build-opencv
+
+ARG OPENCV_VERSION=4.10.0
+RUN --mount=type=bind,source=./docker/scripts/build_opencv.sh,target=/home/${USER}/scripts/build_opencv.sh /home/${USER}/scripts/build_opencv.sh ${OPENCV_VERSION}
+
+########################################
+##           BUILD PRE-DEV            ##
+########################################
+
+FROM base AS pre-dev
+
+COPY --from=build-opencv /OpenCV/install /usr/local
+
+########################################
 ##      BUILD ROS 2 DEPENDENCIES      ##
 ########################################
-FROM base AS dep-ros2
+FROM pre-dev AS dep-ros2
 
 ARG MICRO_XRCE_DDS_AGENT_VERSION=v2.4.2
 ARG PX4_MSGS_VERSION=release/1.16
@@ -30,7 +47,7 @@ RUN --mount=type=bind,source=./docker/scripts/build_ros_deps.sh,target=/root/scr
 ##              BUILD PX4             ##
 ########################################
 
-FROM base AS build-px4
+FROM pre-dev AS build-px4
 
 ARG PX4_VERSION=v1.16.0
 RUN --mount=type=bind,source=./docker/scripts/build_px4.sh,target=/home/${USER}/scripts/build_px4.sh /home/${USER}/scripts/build_px4.sh ${PX4_VERSION}
@@ -45,9 +62,9 @@ ARG QGC_VERSION=v5.0.6
 RUN --mount=type=bind,source=./docker/scripts/install_qgc.sh,target=/home/${USER}/scripts/install_qgc.sh /home/${USER}/scripts/install_qgc.sh ${QGC_VERSION}
 
 ########################################
-##             BUILD BASE             ##
+##             BUILD DEV             ##
 ########################################
-FROM base AS dev
+FROM pre-dev AS dev
 
 # install built packages
 COPY --from=dep-ros2 --chown=${USER}:${USER} /root/px4_ros_ws/install /home/${USER}/px4_ros_ws/install

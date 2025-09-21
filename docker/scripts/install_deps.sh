@@ -12,9 +12,9 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-
 apt-get update && \
 apt-get install -y --no-install-recommends \
     gz-harmonic \
-    ros-humble-ros-gzharmonic \
     bc \
     dmidecode \
+    libboost-all-dev \
     gstreamer1.0-plugins-bad \
     gstreamer1.0-plugins-base \
     gstreamer1.0-plugins-good \
@@ -23,7 +23,6 @@ apt-get install -y --no-install-recommends \
     libeigen3-dev \
     libgstreamer-plugins-base1.0-dev \
     libimage-exiftool-perl \
-    libopencv-dev \
     libxml2-utils \
     pkg-config \
     protobuf-compiler \
@@ -31,6 +30,8 @@ apt-get install -y --no-install-recommends \
 	libxcb-xinerama0 \
 	libxkbcommon-x11-0 \
 	libxcb-cursor-dev \
-
-rm -rf /var/lib/apt/lists/*
-apt-get clean
+    ros-humble-actuator-msgs \
+    ros-humble-gps-msgs \
+    ros-humble-vision-msgs \
+    libgflags-dev \
+    python3-rospkg 
