@@ -1,7 +1,7 @@
 ########################################
 ##         CREATE BASE IMAGE          ##
 ########################################
-FROM ros:humble-perception AS base
+FROM ros:humble-ros-base AS base
 
 SHELL ["/bin/bash", "-o", "pipefail", "-o", "errexit", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
