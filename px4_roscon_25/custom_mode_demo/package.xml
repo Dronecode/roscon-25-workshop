@@ -13,8 +13,9 @@
 
   <!-- Runtime and build dependencies -->
   <depend>rclcpp</depend>
-  <depend>px4_ros2</depend>
+  <depend>px4_ros2_cpp</depend>
   <depend>eigen3_cmake_module</depend>
+  <depend>geometry_msgs</depend>
 
   <!-- Optional test tools -->
   <test_depend>ament_lint_auto</test_depend>
