@@ -1,41 +1,37 @@
 # ROS2 & PX4 ArUco Detection using OpenCV
+
 Explore the integration of ROS2, PX4, and OpenCV for advanced ArUco marker detection. In this tutorial, we demonstrate how to leverage ROS2's powerful communication framework and PX4's flight control capabilities to implement precise marker detection using OpenCV. Learn how to set up your environment, process camera feeds, and detect ArUco markers in real-time, enabling enhanced navigation and interaction for autonomous drones and robotic systems. Whether you're a beginner or an experienced developer, this tutorial will guide you through the essential steps to achieve robust marker detection and seamless integration with your ROS2 and PX4 projects.
-#### ArUco Markers
+
+## ArUco Markers
+
 Aruco markers are square fiducial markers used in computer vision for tasks like pose estimation, camera calibration, and augmented reality (AR). Each marker has a unique binary pattern inside a black border, allowing it to be easily detected and identified. They help in determining the position and orientation of cameras or objects in a scene, making them valuable in robotics, navigation, and AR applications.
 https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html
 
-![](arucotag.png)
+## Run the simulation environment
 
-To install OpenCV:
-```
-pkg-config --modversion opencv4
-```
-The version that was used in this demo:
-```
-pkg-config --modversion opencv4
-4.10.0
+Launch gz aruco world. First start the container, then run
+
+```sh
+python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/ --world aruco
 ```
 
-To install the GZ bridge:
-```
-sudo apt update
-sudo apt install ros-humble-ros-gzharmonic-bridge
-```
+Spawn model and attach PX4 SITL
 
-
-#### Run the simulation environment
-Launch PX4 sim
-```
-make px4_sitl gz_x500_mono_cam_down_aruco
+```sh
+docker exec -it px4-roscon-25 /bin/bash -c "PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500_mono_cam_down /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs"
 ```
 
 When the simulation is running you can see the GZ topics:
-```
+
+```sh
 gz topic -l
 ```
 
-Launch file with the bridges:
-ros2 launch aruco_tracker aruco_tracker.launch.py 
+Launch file with the bridges. From docker:
+
+```sh
+ros2 launch aruco_tracker aruco_tracker.launch.py
+```
 
 View the video (/image_proc is the annoted image)
 ```
