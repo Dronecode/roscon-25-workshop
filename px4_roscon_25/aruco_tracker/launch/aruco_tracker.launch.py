@@ -1,47 +1,48 @@
+import os
+
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from launch.actions import ExecuteProcess
-from launch.substitutions import PathJoinSubstitution
-from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
+
+    pkg_share = get_package_share_directory("aruco_tracker")
+
+    bridge_config_file = os.path.join(pkg_share,"cfg","bridge.yaml")
+    aruco_tracker_config_file = os.path.join(pkg_share, 'cfg', 'params.yaml')
+
+    run_uxrcedds_agent_arg = DeclareLaunchArgument(
+        "run_uxrcedds_agent",
+        default_value="false",
+        description="Whether to run the MicroXRCEdds Agent",
+    )
+
     return LaunchDescription([
-        # Bridge for camera image with explicit ROS topic remapping
-        ExecuteProcess(
-            cmd=[
-                'ros2', 'run', 'ros_gz_bridge', 'parameter_bridge',
-                '/world/aruco/model/x500_mono_cam_down_0/link/camera_link/sensor/imager/image'
-                '@sensor_msgs/msg/Image[gz.msgs.Image',
-                '--ros-args', '-r', '/world/aruco/model/x500_mono_cam_down_0/link/camera_link/sensor/imager/image:=/camera'
-            ],
-            name='image_bridge_process',
-            output='screen',
-        ),
-
-        # Bridge for camera info with explicit ROS topic remapping
-        ExecuteProcess(
-            cmd=[
-                'ros2', 'run', 'ros_gz_bridge', 'parameter_bridge',
-                '/world/aruco/model/x500_mono_cam_down_0/link/camera_link/sensor/imager/camera_info'
-                '@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
-                '--ros-args', '-r', '/world/aruco/model/x500_mono_cam_down_0/link/camera_link/sensor/imager/camera_info:=/camera_info'
-            ],
-            name='camera_info_bridge_process',
-            output='screen',
-        ),
-
-        # Aruco tracker node (no remapping needed now since bridges publish to correct topics)
+        run_uxrcedds_agent_arg,
         Node(
-            package='aruco_tracker',
-            executable='aruco_tracker',
-            name='aruco_tracker',
-            output='screen',
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            name="gz_bridge",
             parameters=[
-                PathJoinSubstitution([
-                    FindPackageShare('aruco_tracker'),
-                    'cfg',
-                    'params.yaml'
-                ])
-            ],
+                {"config_file": bridge_config_file}
+            ]
         ),
+        Node(
+            package="aruco_tracker",
+            executable="aruco_tracker",
+            name="aruco_tracker",
+            output="screen",
+            parameters=[
+                {"use_sim_time": True},
+                aruco_tracker_config_file
+            ]
+        ),
+        ExecuteProcess(
+            cmd=["MicroXRCEAgent", "udp4", "-p", "8888", "-v", "3"],
+            output="screen",
+            condition=IfCondition(LaunchConfiguration("run_uxrcedds_agent"))
+        )
     ])
