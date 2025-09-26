@@ -255,7 +255,7 @@ INFO  [init] Standalone PX4 launch, waiting for Gazebo
 INFO  [init] Gazebo world is ready
 INFO  [init] Spawning model
 INFO  [gz_bridge] world: default, model: x500_0
-INFO  [lockstep_scheduler] setting initial absolute time to 18868000 us
+INFO  [lockstep_scheduler] setting initial absolute time to 2324000 us
 INFO  [commander] LED: open /dev/led0 failed (22)
 WARN  [health_and_arming_checks] Preflight Fail: ekf2 missing data
 WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
@@ -267,11 +267,13 @@ INFO  [mavlink] mode: Onboard, data rate: 4000 B/s on udp port 14280 remote port
 INFO  [mavlink] mode: Gimbal, data rate: 400000 B/s on udp port 13030 remote port 13280
 INFO  [logger] logger started (mode=all)
 INFO  [logger] Start file log (type: full)
-INFO  [logger] [logger] ./log/2025-09-21/19_54_19.ulg
-INFO  [logger] Opened full log file: ./log/2025-09-21/19_54_19.ulg
+INFO  [logger] [logger] ./log/2025-08-09/11_56_59.ulg
+INFO  [logger] Opened full log file: ./log/2025-08-09/11_56_59.ulg
 INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
 INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
-INFO  [px4] Startup script returned successfullys
+INFO  [px4] Startup script returned successfully
+pxh> WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
+WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
 ```
 
 Unless you are running headless, you will see the `x500` model spawned in the GZ world.
