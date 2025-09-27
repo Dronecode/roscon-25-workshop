@@ -7,6 +7,7 @@ docker run -it \
     -e DISPLAY=$DISPLAY \
     -e NVIDIA_VISIBLE_DEVICES=all \
     -e NVIDIA_DRIVER_CAPABILITIES=all \
+    -p 8765:8765 \
     -v ${SCRIPTPATH}/../px4_roscon_25:/home/ubuntu/roscon-25-workshop_ws/src/ \
     --name=px4-roscon-25 \
     --runtime nvidia \

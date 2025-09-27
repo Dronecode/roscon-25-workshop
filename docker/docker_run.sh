@@ -8,6 +8,7 @@ docker run -it \
     -e NVIDIA_DRIVER_CAPABILITIES=all \
     --device /dev/dri:/dev/dri \
     -e DISPLAY=$DISPLAY \
+    -p 8765:8765 \
     -v ${SCRIPTPATH}/../px4_roscon_25:/home/ubuntu/roscon-25-workshop_ws/src/ \
     --name=px4-roscon-25 \
     dronecode/roscon-25-workshop bash
