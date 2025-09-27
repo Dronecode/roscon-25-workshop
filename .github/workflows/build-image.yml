@@ -33,4 +33,4 @@ jobs:
                     push: false
                     tags: dronecode/roscon-25-workshop:latest
                     cache-from: type=gha,scope=ros2-docker
-                    cache-to: type=gha,scope=ros2-docker,mode=max
+                    cache-to: type=gha,scope=ros2-docker,mode=min
