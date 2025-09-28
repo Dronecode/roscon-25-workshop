@@ -1,0 +1,24 @@
+{
+    "name": "px4_roscon_25",
+    "image": "dronecode/roscon-25-workshop:latest",
+    "forwardPorts": [8765],
+    "containerEnv": {
+        "NVIDIA_VISIBLE_DEVICES": "all",
+        "NVIDIA_DRIVER_CAPABILITIES": "all"
+    },
+    "remoteEnv": {
+        "DISPLAY": "${localEnv:DISPLAY}"
+    },
+    "runArgs": [
+        "--runtime", "nvidia"
+    ],
+    "mounts": [
+        {
+            "source": "/tmp/.X11-unix",
+            "target": "/tmp/.X11-unix",
+            "type": "bind"
+        }
+    ],
+    "workspaceMount": "source=${localWorkspaceFolder}/px4_roscon_25,target=/home/ubuntu/roscon-25-workshop_ws/src/,type=bind",
+    "workspaceFolder": "/home/ubuntu/roscon-25-workshop_ws"
+}
