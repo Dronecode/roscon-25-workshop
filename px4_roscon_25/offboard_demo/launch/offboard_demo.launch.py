@@ -35,7 +35,8 @@ def generate_launch_description():
             name="offboard_demo",
             output="screen",
             parameters=[
-                {"use_sim_time": True}
+                {"use_sim_time": True},
+                {"takeoff_altitude": 3.0}
             ]
         ),
         ExecuteProcess(

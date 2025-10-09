@@ -47,7 +47,8 @@ private:
         Waypoint,
         Yaw,
         Land,
-        Done
+        Done,
+        ChangeAltitude
     };
 
     rclcpp::Publisher<px4_msgs::msg::VehicleCommand>::SharedPtr _vehicle_command_pub;

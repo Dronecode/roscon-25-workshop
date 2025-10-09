@@ -43,6 +43,8 @@ OffboardDemo::OffboardDemo()
     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f)); // Final waypoint at home position
     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f)); // Final waypoint at home position
 
+    // loadParameters();
+
     RCLCPP_INFO(this->get_logger(), "OffboardDemo node initialized.");
 }
 
@@ -64,10 +66,8 @@ void OffboardDemo::vehicleLandDetectedCallback(const px4_msgs::msg::VehicleLandD
 void OffboardDemo::loadParameters()
 {
     this->declare_parameter<float>("takeoff_altitude", 1.5);
-    this->declare_parameter<float>("hover_duration", 60.0);
 
     this->get_parameter("takeoff_altitude", _takeoff_altitude);
-    this->get_parameter("hover_duration", _hover_duration);
 }
 
 void OffboardDemo::runStateMachine()
@@ -83,7 +83,7 @@ void OffboardDemo::runStateMachine()
             if (isStateTimeout(2.0)) {
                 _home_setpoint[0] = _local_position.x;
                 _home_setpoint[1] = _local_position.y;
-                _home_setpoint[2] = _local_position.z - 1.5f; // Hover 1.5 meters above the ground
+                _home_setpoint[2] = _local_position.z - 1.5; // Hover at takeoff altitude(local_position.z - _takeoff_altitude)
                 _home_setpoint[3] = _local_position.heading;
                 switchToOffboard();
                 _state = State::Arm;
@@ -140,6 +140,11 @@ void OffboardDemo::runStateMachine()
         break;
     }
 
+    case State::ChangeAltitude:
+    {
+
+    }
+
     case State::Waypoint:
     {
         // Check if we have reached the current waypoint
@@ -151,6 +156,8 @@ void OffboardDemo::runStateMachine()
             sp.position[0] = waypoint.x();
             sp.position[1] = waypoint.y();
             sp.position[2] = waypoint.z();
+            // sp.velocity[0] = 0.01f;
+            // sp.velocity[1] = 0.01f;
             sp.yaw = NAN; // No specific yaw for waypoints
             _trajectory_setpoint_pub->publish(sp);
 
@@ -218,6 +225,7 @@ void OffboardDemo::runStateMachine()
             sp.position[0] = _home_setpoint[0];
             sp.position[1] = _home_setpoint[1];
             sp.position[2] = _home_setpoint[2];
+            // sp.yawspeed =0.5;
             sp.yaw = target_yaw; // Update the yaw target
             _trajectory_setpoint_pub->publish(sp);
         }
