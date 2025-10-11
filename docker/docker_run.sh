@@ -9,6 +9,6 @@ docker run -it \
     --device /dev/dri:/dev/dri \
     -e DISPLAY=$DISPLAY \
     -p 8765:8765 \
-    -v ${SCRIPTPATH}/../px4_roscon_25:/home/ubuntu/roscon-25-workshop_ws/src/ \
+    -v ${SCRIPTPATH}/..:/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop \
     --name=px4-roscon-25 \
     dronecode/roscon-25-workshop bash

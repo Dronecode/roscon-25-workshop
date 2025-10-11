@@ -133,7 +133,7 @@ The script will:
 - Start and run a container from `dronecode/roscon-25-workshop` image.
 - Name it `px4-roscon-25`.
 - Ensure that GUI can be used from inside the container.
-- Mount the `roscon-25-workshop/px4_roscon_25` folder in `~/roscon-25-workshop_ws/src/`.
+- Mount the repo in `~/roscon-25-workshop_ws/src/roscon-25-workshop`.
 
 ### Running with GUI within WSL2
 
@@ -155,7 +155,7 @@ The script will:
 
 - Start and run a container from `dronecode/roscon-25-workshop` image.
 - Name it `px4-roscon-25`.
-- Mount the `roscon-25-workshop/px4_roscon_25` folder in `~/roscon-25-workshop_ws/src/`.
+- Mount the repo in `~/roscon-25-workshop_ws/src/roscon-25-workshop`.
 - Expose the udp port `18570` outside the container so that a QGC instance running on the host can connect to PX4 running in the container.
 
 ## Starting PX4 simulation
@@ -308,15 +308,4 @@ On the PX4 terminal you will see the message
 ```sh
 INFO  [mavlink] partner IP: 172.17.0.1
 INFO  [commander] Ready for takeoff!
-```
-
-## Developing
-
-When the image is build, the content of `roscon-25-workshop/px4_roscon_25` is automatically copied into `/home/${USER}/roscon-25-workshop_ws/src`. The `roscon-25-workshop/px4_roscon_25` is the source folder for any ROS 2 package you which to build and right now it only contains a dummy package.
-
-If you change your packages and you want to re-build them connect to the running container and run
-
-```sh
-cd ~/roscon-25-workshop_ws
-colcon build --symlink-install
 ```
