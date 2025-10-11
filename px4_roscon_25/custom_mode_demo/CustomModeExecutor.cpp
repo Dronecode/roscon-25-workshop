@@ -1,12 +1,16 @@
 #include "CustomModeExecutor.hpp"
 
 using CustomModeWithExecutor = px4_ros2::NodeWithModeExecutor<CustomModeExecutor, CustomWaypoints, CustomYaw>;
+// using CustomModeWithExecutor = px4_ros2::NodeWithModeExecutor<CustomModeExecutor, CustomWaypoints, CustomYaw, CustomAltitude>;
 
 static const std::string kNodeName = "CustomModeDemo";
 static const bool kEnableDebugOutput = true;
 
 CustomModeExecutor::CustomModeExecutor(rclcpp::Node &node, px4_ros2::ModeBase &owned_mode, px4_ros2::ModeBase &second_mode)
     : ModeExecutorBase(node, Settings{}, owned_mode), _node(node), _second_mode(second_mode) {}
+
+// CustomModeExecutor::CustomModeExecutor(rclcpp::Node &node, px4_ros2::ModeBase &owned_mode, px4_ros2::ModeBase &second_mode, px4_ros2::ModeBase &third_mode)
+//     : ModeExecutorBase(node, Settings{}, owned_mode), _node(node), _second_mode(second_mode), _third_mode(third_mode) {}
 
 void CustomModeExecutor::onActivate() {
     RCLCPP_INFO(_node.get_logger(), "CustomModeExecutor activated");
@@ -52,6 +56,12 @@ void CustomModeExecutor::switchToState(State state, px4_ros2::Result previous_re
                 switchToState(State::Land, result);
             });
             break;
+        // case State::ChangeAltitude:
+        //     scheduleMode(_third_mode.id(), [this](px4_ros2::Result result) {
+        //         // This callback triggers when the mode completes
+        //         switchToState(State::Land, result);
+        //     });
+        //     break;
         case State::Land:
             land([this](px4_ros2::Result result) {
                 switchToState(State::WaitUntilDisarmed, result);
