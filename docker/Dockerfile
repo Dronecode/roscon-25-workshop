@@ -59,8 +59,9 @@ RUN --mount=type=bind,source=./docker/scripts/build_px4.sh,target=/home/${USER}/
 
 FROM base AS qgc
 
-ARG QGC_VERSION=v5.0.7
-RUN --mount=type=bind,source=./docker/scripts/install_qgc.sh,target=/home/${USER}/scripts/install_qgc.sh /home/${USER}/scripts/install_qgc.sh ${QGC_VERSION}
+ARG TARGETARCH
+ARG QGC_VERSION=v5.0.8
+RUN --mount=type=bind,source=./docker/scripts/install_qgc.sh,target=/home/${USER}/scripts/install_qgc.sh /home/${USER}/scripts/install_qgc.sh ${QGC_VERSION} ${TARGETARCH}
 
 ########################################
 ##             BUILD DEV             ##

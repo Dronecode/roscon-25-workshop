@@ -2,6 +2,7 @@
 set -eo pipefail
 
 QGC_VERSION=$1
+TARGETARCH=$2
 
 if [ "${TARGETARCH}" = "amd64" ]; then
     cd /home/${USER}
