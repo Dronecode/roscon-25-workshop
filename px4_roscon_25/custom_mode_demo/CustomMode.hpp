@@ -67,22 +67,22 @@ private:
     float _yaw_accumulator; // Increment for yaw rotation
 };
 
-// class CustomAltitude : public px4_ros2::ModeBase {
-// public:
-//     explicit CustomAltitude(rclcpp::Node &node);
+class CustomAltitude : public px4_ros2::ModeBase {
+public:
+    explicit CustomAltitude(rclcpp::Node &node);
 
-//     // See ModeBase
-//     void onActivate() override;
-//     void onDeactivate() override;
-//     void updateSetpoint([[maybe_unused]] float dt_s) override;
+    // See ModeBase
+    void onActivate() override;
+    void onDeactivate() override;
+    void updateSetpoint([[maybe_unused]] float dt_s) override;
 
-// private:
-//     void loadParameters();
-//     // ROS 2
-//     rclcpp::Node &_node;
+private:
+    void loadParameters();
+    // ROS 2
+    rclcpp::Node &_node;
 
 
-//     // px4_ros2_cpp
-//     std::shared_ptr<px4_ros2::TrajectorySetpointType> _trajectory_setpoint;
-//     std::shared_ptr<px4_ros2::OdometryLocalPosition> _local_position;
-// };
+    // px4_ros2_cpp
+    std::shared_ptr<px4_ros2::TrajectorySetpointType> _trajectory_setpoint;
+    std::shared_ptr<px4_ros2::OdometryLocalPosition> _local_position;
+};

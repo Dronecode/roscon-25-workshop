@@ -4,7 +4,7 @@
 
 static const std::string kModeNameCustomWaypoints = "CustomWaypoints";
 static const std::string kModeNameCustomYaw = "CustomYaw";
-// static const std::string kModeNameCustomAltitude = "CustomAltitude";
+static const std::string kModeNameCustomAltitude = "CustomAltitude";
 
 CustomWaypoints::CustomWaypoints(rclcpp::Node &node)
     : px4_ros2::ModeBase(node, kModeNameCustomWaypoints),
@@ -101,38 +101,38 @@ void CustomYaw::updateSetpoint([[maybe_unused]] float dt_s) {
     }
 }
 
-// CustomAltitude::CustomAltitude(rclcpp::Node &node)
-//     : px4_ros2::ModeBase(node, kModeNameCustomAltitude),
-//       _node(node)
-// {
-//     // loadParameters();
+CustomAltitude::CustomAltitude(rclcpp::Node &node)
+    : px4_ros2::ModeBase(node, kModeNameCustomAltitude),
+      _node(node)
+{
+    // loadParameters();
 
-//     _trajectory_setpoint = std::make_shared<px4_ros2::TrajectorySetpointType>(*this);
-//     _local_position = std::make_shared<px4_ros2::OdometryLocalPosition>(*this);
+    _trajectory_setpoint = std::make_shared<px4_ros2::TrajectorySetpointType>(*this);
+    _local_position = std::make_shared<px4_ros2::OdometryLocalPosition>(*this);
 
-//     RCLCPP_INFO(node.get_logger(), "CustomAltitude mode initialized.");
-// }
+    RCLCPP_INFO(node.get_logger(), "CustomAltitude mode initialized.");
+}
 
-// void CustomAltitude::onActivate() {
-//     RCLCPP_INFO(_node.get_logger(), "CustomAltitude mode activated");
-//     // Set initial trajectory setpoint
-// }
+void CustomAltitude::onActivate() {
+    RCLCPP_INFO(_node.get_logger(), "CustomAltitude mode activated");
+    // Set initial trajectory setpoint
+}
 
-// void CustomAltitude::onDeactivate() {
-//     RCLCPP_INFO(_node.get_logger(), "CustomAltitude mode deactivated");
-//     // Reset trajectory setpoint
-// }
+void CustomAltitude::onDeactivate() {
+    RCLCPP_INFO(_node.get_logger(), "CustomAltitude mode deactivated");
+    // Reset trajectory setpoint
+}
 
-// void CustomAltitude::updateSetpoint([[maybe_unused]] float dt_s) {
-//     // Maintain current position but change altitude to -3.0 meters
-//     Eigen::Vector3f target_position = _local_position->positionNed();
-//     target_position.z() = -3.0f; // Set target altitude to -3.0 meters
-//     _trajectory_setpoint->updatePosition(target_position);
-//     // Check if we reached the target altitude
-//     if (std::abs(_local_position->positionNed().z() - target_position.z()) < 0.1f) {
-//         RCLCPP_INFO(_node.get_logger(), "CustomAltitude mode reached target altitude.");
-//         completed(px4_ros2::Result::Success);
-//         return; // Exit the update loop
-//     }
-// }
+void CustomAltitude::updateSetpoint([[maybe_unused]] float dt_s) {
+    // Maintain current position but change altitude to -3.0 meters
+    Eigen::Vector3f target_position = _local_position->positionNed();
+    target_position.z() = -3.0f; // Set target altitude to -3.0 meters
+    _trajectory_setpoint->updatePosition(target_position);
+    // Check if we reached the target altitude
+    if (std::abs(_local_position->positionNed().z() - target_position.z()) < 0.1f) {
+        RCLCPP_INFO(_node.get_logger(), "CustomAltitude mode reached target altitude.");
+        completed(px4_ros2::Result::Success);
+        return; // Exit the update loop
+    }
+}
 
