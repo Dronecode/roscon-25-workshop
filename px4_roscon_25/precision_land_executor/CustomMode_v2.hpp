@@ -60,7 +60,7 @@ public:
 	void targetPoseCallback(const geometry_msgs::msg::PoseStamped::SharedPtr msg);
 	void vehicleLandDetectedCallback(const px4_msgs::msg::VehicleLandDetected::SharedPtr msg);
 
-	// See ModeBasep
+	// See ModeBase
 	void onActivate() override;
 	void onDeactivate() override;
 	void updateSetpoint(float dt_s) override;
