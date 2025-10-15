@@ -56,8 +56,7 @@ The system:
 3. Run `precision_land_executor.launch.py` from inside the docker container
 
    ```sh
-   ros2 launch precision_land_executor precision_land_executor.launch.py run_uxrcedds_agent:=true
+   ros2 launch precision_land_executor precision_land_executor.launch.py
    ```
 
-The `precision_land_executor.launch.py` can also start the _MicroXrceAgent_. Set the launch argument `run_uxrcedds_agent` to `true` to run it.
 4. Select **CustomWaypoints** and arm the drone
