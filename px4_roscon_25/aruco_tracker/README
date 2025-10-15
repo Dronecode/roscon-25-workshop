@@ -18,7 +18,7 @@ python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubu
 Spawn model and attach PX4 SITL
 
 ```sh
-docker exec -it px4-roscon-25 /bin/bash -c "PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500_mono_cam_down /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs"
+PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4014 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
 ```
 
 When the simulation is running you can see the GZ topics:
@@ -32,31 +32,37 @@ Launch file with the bridges. From docker:
 ```sh
 ros2 launch aruco_tracker aruco_tracker.launch.py run_uxrcedds_agent:=true
 ```
+
 You can see the annotated image from your host using:
+
 ```sh
 ros2 run rqt_image_view rqt_image_view
 ```
 
 You can see the published ArUco pose using:
+
 ```sh
 ros2 topic echo --once /target_pose
 ```
+
 ## Exercise
+
 In this exercise, we estimate the real-world size of a detected ArUco marker using only the camera image, its intrinsic parameters, and the vehicle's measured altitude. Show this estimated marker size on the annotated image.
 
 ### Marker Size Estimation Formula
 
 The estimated marker size can be calculated using the following formula:
 
-```
-L_est = (p / f) * d
+```math
+L_{est} = d \frac{p}{f}
 ```
 
 Where:
-- **L_est**: Estimated real-world size of the marker (in meters)
-- **p**: Pixel width of the detected marker in the image (in pixels)
-- **f**: Focal length of the camera (in pixels)
-- **d**: Distance from camera to the marker/ground (in meters)
+
+- $L_{est}$: Estimated real-world size of the marker (in meters)
+- $p$: Pixel width of the detected marker in the image (in pixels)
+- $f$: Focal length of the camera (in pixels)
+- $d$: Distance from camera to the marker/ground (in meters)
 
 ### Implementation Details
 
