@@ -30,5 +30,34 @@ gz topic -l
 Launch file with the bridges. From docker:
 
 ```sh
-ros2 launch aruco_tracker aruco_tracker.launch.py
+ros2 launch aruco_tracker aruco_tracker.launch.py run_uxrcedds_agent:=true
 ```
+You can see the annotated image from your host using:
+```sh
+ros2 run rqt_image_view rqt_image_view
+```
+
+You can see the published ArUco pose using:
+```sh
+ros2 topic echo --once /target_pose
+```
+## Exercise
+In this exercise, we estimate the real-world size of a detected ArUco marker using only the camera image, its intrinsic parameters, and the vehicle's measured altitude. Show this estimated marker size on the annotated image.
+
+### Marker Size Estimation Formula
+
+The estimated marker size can be calculated using the following formula:
+
+```
+L_est = (p / f) * d
+```
+
+Where:
+- **L_est**: Estimated real-world size of the marker (in meters)
+- **p**: Pixel width of the detected marker in the image (in pixels)
+- **f**: Focal length of the camera (in pixels)
+- **d**: Distance from camera to the marker/ground (in meters)
+
+### Implementation Details
+
+To access the vehicle's altitude (distance to ground), the node subscribes to PX4's `VehicleLocalPosition` message and uses the `dist_bottom` field, which provides the distance measurement from the vehicle to the ground below.
