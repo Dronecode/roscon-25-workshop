@@ -19,16 +19,15 @@ def generate_launch_description():
         description="Whether to run the MicroXRCEdds Agent",
     )
 
+    run_gz_clock_bridge_arg = DeclareLaunchArgument(
+        "run_gz_clock_bridge",
+        default_value="false",
+        description="Whether to run the Gazebo clock bridge",
+    )
+
     return LaunchDescription([
         run_uxrcedds_agent_arg,
-        Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            name="gz_clock_bridge",
-            parameters=[
-                {"config_file": clock_bridge_config_file}
-            ]
-        ),
+        run_gz_clock_bridge_arg,
         Node(
             package="custom_mode_demo",
             executable="custom_mode_demo",
@@ -37,6 +36,15 @@ def generate_launch_description():
             parameters=[
                 {"use_sim_time": True}
             ]
+        ),
+        Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            name="gz_clock_bridge",
+            parameters=[
+                {"config_file": clock_bridge_config_file}
+            ],
+            condition=IfCondition(LaunchConfiguration("run_gz_clock_bridge"))
         ),
         ExecuteProcess(
             cmd=["MicroXRCEAgent", "udp4", "-p", "8888", "-v", "3"],

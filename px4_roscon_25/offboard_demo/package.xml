@@ -2,8 +2,8 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>offboard_demo</name>
-  <version>0.0.0</version>
-  <description>ROSCon workshop Offboard demo</description>
+  <version>0.0.1</version>
+  <description>ROSCon2025 workshop Offboard demo</description>
   <maintainer email="pordipatrik@gmail.com">patrik_ark</maintainer>
   <maintainer email="beniamino.pozzan@gmail.com">Beniamino Pozzan</maintainer>
   <license>CC-BY-SA-4.0</license>
@@ -18,6 +18,10 @@
   <depend>px4_msgs</depend>
   <depend>geometry_msgs</depend>
   <build_depend>eigen</build_depend>
+
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

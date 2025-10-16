@@ -16,14 +16,20 @@ The Offboard Demo implements a state-based flight controller that executes the f
 
 ## Usage
 
-1. Start the simulation, PX4 and QGC as described in the [docker guide](../../docker/README.md).
-2. Run `offboard_demo.launch.py` from inside the docker container
+1. Start the simulation, PX4 and QGC as described in the [setup guide](../../docs/setup.md).
+2. Start the additional ROS 2 node throught the [common launchfile](../px4_roscon_25/README.md).
 
    ```sh
-   docker exec -it px4-roscon-25 bash -ic "ros2 launch offboard_demo offboard_demo.launch.py run_uxrcedds_agent:=true"
+   ros2 launch px4_roscon_25 common.launch.py
    ```
 
-The `offboard_demo.launch.py` can also start the _MicroXrceAgent_. Set the launch argument `run_uxrcedds_agent` to `true` to run it.
+3. Run `offboard_demo.launch.py` from inside the docker container
+
+   ```sh
+   ros2 launch offboard_demo offboard_demo.launch.py
+   ```
+
+The `offboard_demo.launch.py` can also start the _MicroXrceAgent_ and the _gz clock bridge_. Set the launch arguments `run_uxrcedds_agent` or `run_gz_clock_bridge` to `true` to run them if you don't use  `common.launch.py`.
 
 ## Exercises
 
