@@ -1,0 +1,149 @@
+{
+  "configById": {
+    "3D!3c6twjg": {
+      "cameraState": {
+        "perspective": true,
+        "distance": 30.14679539057372,
+        "phi": 63.30022918258427,
+        "thetaOffset": 98.6287242169619,
+        "targetOffset": [
+          5.33518821948256,
+          -0.8400079793340196,
+          -1.8264751749039554e-17
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "followMode": "follow-pose",
+      "followTf": "map",
+      "scene": {},
+      "transforms": {
+        "frame:motor_3": {
+          "visible": false
+        },
+        "frame:motor_2": {
+          "visible": false
+        },
+        "frame:motor_1": {
+          "visible": false
+        },
+        "frame:motor_0": {
+          "visible": false
+        },
+        "frame:base_link_frd": {
+          "visible": false
+        },
+        "frame:odom_ned": {
+          "visible": false
+        },
+        "frame:odom": {
+          "visible": false
+        }
+      },
+      "topics": {
+        "/robot_description": {
+          "visible": true
+        }
+      },
+      "layers": {
+        "grid": {
+          "visible": true,
+          "drawBehind": false,
+          "frameLocked": true,
+          "label": "Grid",
+          "instanceId": "9cf0240d-2343-4c01-80d3-ffccdad28340",
+          "layerId": "foxglove.Grid",
+          "size": 10,
+          "divisions": 10,
+          "lineWidth": 1,
+          "color": "#248eff",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    },
+    "Plot!2kas0az": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/fmu/out/vehicle_odometry.position[0]",
+          "enabled": true,
+          "color": "#4e98e2",
+          "xValuePath": "/fmu/out/vehicle_odometry.position[1]"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": false,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "custom",
+      "sidebarDimension": 240,
+      "axisScalesMode": "lockedScales"
+    },
+    "Plot!1jjgtat": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/fmu/out/vehicle_odometry.position[2]",
+          "enabled": true,
+          "color": "#4e98e2",
+          "xValuePath": "/fmu/out/vehicle_odometry.position[0]"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "first": "3D!3c6twjg",
+    "second": {
+      "first": "Plot!2kas0az",
+      "second": "Plot!1jjgtat",
+      "direction": "column"
+    },
+    "direction": "row"
+  }
+}
