@@ -25,6 +25,11 @@
   <depend>cv_bridge</depend>
   <depend>OpenCV</depend>
 
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>launch</exec_depend>
+
 
   <!-- Optional test tools -->
   <test_depend>ament_lint_auto</test_depend>

@@ -1,7 +1,3 @@
-- topic_name: "/clock"
-  ros_type_name: "rosgraph_msgs/msg/Clock"
-  gz_type_name: "gz.msgs.Clock"
-  direction: "GZ_TO_ROS"
 - ros_topic_name: "/camera"
   gz_topic_name: "/world/aruco/model/x500_mono_cam_down_0/link/camera_link/sensor/imager/image"
   ros_type_name: "sensor_msgs/msg/Image"

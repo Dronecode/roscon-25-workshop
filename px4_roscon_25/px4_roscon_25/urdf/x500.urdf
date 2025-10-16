@@ -116,13 +116,4 @@
         <child link="motor_3"/>
         <origin xyz="-0.174 -0.174 0.06" rpy="0 0 0"/>
     </joint>
-
-    <!--
-    <link name="x500_lidar_2d_mono_cam_down_0/camera_link/imager" />
-    <joint name="base_to_camera" type="fixed">
-        <parent link="base_link"/>
-        <child link="x500_lidar_2d_mono_cam_down_0/camera_link/imager"/>
-        <origin xyz="0 0 0" rpy="0 3.14 1.5707"/>
-    </joint>
-    -->
 </robot>
