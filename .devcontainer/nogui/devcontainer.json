@@ -1,0 +1,14 @@
+{
+    "name": "px4_roscon_25_linux",
+    "image": "dronecode/roscon-25-workshop:latest",
+    "forwardPorts": [8765, 18750],
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop,type=bind",
+    "workspaceFolder": "/home/ubuntu/roscon-25-workshop_ws"
+}

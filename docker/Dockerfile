@@ -85,12 +85,11 @@ COPY --from=build-px4 --chown=${USER}:${USER} /home/${USER}/PX4-Autopilot/Tools/
 
 # build workshop workspace
 WORKDIR /home/${USER}/roscon-25-workshop_ws/
-COPY --chown=${USER}:${USER} ./px4_roscon_25 src/
+COPY --chown=${USER}:${USER} . src/roscon-25-workshop
 RUN source /home/${USER}/px4_ros_ws/install/setup.bash && \
     colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=ON
 
 WORKDIR /home/${USER}/
 COPY --from=build-px4 --chown=${USER}:${USER} /home/${USER}/px4_sitl /home/${USER}/px4_sitl
-COPY ./docker/entrypoint.sh /ros_entrypoint.sh
-
-ENTRYPOINT [ "/ros_entrypoint.sh" ]
+RUN echo "source /home/$USER/roscon-25-workshop_ws/install/setup.bash" >> /home/$USER/.bashrc && \
+    echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> /home/$USER/.bashrc
