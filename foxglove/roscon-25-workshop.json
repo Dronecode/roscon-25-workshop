@@ -3,13 +3,13 @@
     "3D!3c6twjg": {
       "cameraState": {
         "perspective": true,
-        "distance": 30.14679539057372,
-        "phi": 63.30022918258427,
-        "thetaOffset": 98.6287242169619,
+        "distance": 22.160664819935697,
+        "phi": 69.30933388669374,
+        "thetaOffset": 90.70763165247432,
         "targetOffset": [
-          5.33518821948256,
-          -0.8400079793340196,
-          -1.8264751749039554e-17
+          5.034732507029134,
+          -0.702612739944018,
+          -3.212015025166895e-17
         ],
         "target": [
           0,
@@ -50,11 +50,27 @@
         },
         "frame:odom": {
           "visible": false
+        },
+        "frame:x500_lidar_2d_mono_cam_down_0/camera_link/imager": {
+          "visible": false
+        },
+        "frame:x500_mono_cam_down_0/camera_link/imager": {
+          "visible": false
         }
       },
       "topics": {
         "/robot_description": {
           "visible": true
+        },
+        "/camera": {
+          "visible": true,
+          "cameraInfoTopic": "/camera_info",
+          "distance": 2,
+          "planarProjectionFactor": 0
+        },
+        "/target_pose": {
+          "visible": true,
+          "type": "axis"
         }
       },
       "layers": {
