@@ -39,7 +39,7 @@ ros2 launch px4_roscon_25 common.launch.py
 and then the ArUco tracker launchfile.
 
 ```sh
-ros2 launch aruco_tracker aruco_tracker.launch.py
+ros2 launch aruco_tracker aruco_tracker.launch.py world_name:=aruco model_name:=x500_mono_cam_down_0
 ```
 
 You can see the images from Foxglove while the estimated ArUco pose is available on the topic `/target_pose`.

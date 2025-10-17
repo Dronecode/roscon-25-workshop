@@ -1,26 +1,47 @@
 import os
 
+import yaml
+import tempfile
+
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.descriptions import ComposableNode
 
-def generate_launch_description():
+def launch_setup(context, *args, **kwargs):
+    return_array = []
 
     pkg_share = FindPackageShare("aruco_tracker").find("aruco_tracker")
 
     bridge_config_file = os.path.join(pkg_share,"cfg","bridge.yaml")
     aruco_tracker_config_file = os.path.join(pkg_share, 'cfg', 'params.yaml')
 
-    return LaunchDescription([
+    with open(bridge_config_file, 'r') as file:
+        bridge_config = yaml.safe_load(file)
+
+    for item in bridge_config:
+        item['gz_topic_name'] = item['gz_topic_name'].format(
+            world_name=LaunchConfiguration("world_name").perform(context),
+            model_name=LaunchConfiguration("model_name").perform(context),
+        )
+
+    tmp_file = tempfile.NamedTemporaryFile(suffix=".yaml", delete=False)
+    with open(tmp_file.name, 'w') as file:
+        yaml.dump(bridge_config, file)
+
+    return_array.append(
         Node(
             package="ros_gz_bridge",
             executable="parameter_bridge",
             name="gz_bridge",
             parameters=[
-                {"config_file": bridge_config_file}
+                {"config_file": tmp_file.name}
             ]
-        ),
+        )
+    )
+    return_array.append(
         Node(
             package="aruco_tracker",
             executable="aruco_tracker",
@@ -30,7 +51,9 @@ def generate_launch_description():
                 {"use_sim_time": True},
                 aruco_tracker_config_file
             ]
-        ),
+        )
+    )
+    return_array.append(
         LoadComposableNodes(
             target_container='static_tf_container',
             composable_node_descriptions=[
@@ -70,15 +93,23 @@ def generate_launch_description():
                 ),
             ]
         ),
+    )
+    return return_array
+
+def generate_launch_description():
+
+    return LaunchDescription([
+        DeclareLaunchArgument(
+            "world_name",
+            default_value="aruco",
+            description="name of the Gazebo world",
+        ),
+        DeclareLaunchArgument(
+            "model_name",
+            default_value="x500_mono_cam_down_0",
+            description="name of the model",
+        ),
+        OpaqueFunction(
+            function=launch_setup,
+        ),
     ])
-
-    
-
-    # <!--
-    # <link name="x500_lidar_2d_mono_cam_down_0/camera_link/imager" />
-    # <joint name="base_to_camera" type="fixed">
-    #     <parent link="base_link"/>
-    #     <child link="x500_lidar_2d_mono_cam_down_0/camera_link/imager"/>
-    #     <origin xyz="0 0 0" rpy="0 3.14 1.5707"/>
-    # </joint>
-    # -->
