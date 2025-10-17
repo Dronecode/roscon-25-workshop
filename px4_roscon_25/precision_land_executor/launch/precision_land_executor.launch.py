@@ -1,34 +1,12 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
-from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration
+from launch.actions import ExecuteProcess
 from launch_ros.actions import Node
-from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
 
-    pkg_share = get_package_share_directory("precision_land_executor")
-    
-    clock_bridge_config_file = os.path.join(pkg_share,"cfg","clock_bridge.yaml")
-
-    run_uxrcedds_agent_arg = DeclareLaunchArgument(
-        "run_uxrcedds_agent",
-        default_value="false",
-        description="Whether to run the MicroXRCEdds Agent",
-    )
-
     return LaunchDescription([
-        run_uxrcedds_agent_arg,
-        Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            name="gz_clock_bridge",
-            parameters=[
-                {"config_file": clock_bridge_config_file}
-            ]
-        ),
         Node(
             package="precision_land_executor",
             executable="precision_land_executor",
@@ -39,8 +17,20 @@ def generate_launch_description():
             ]
         ),
         ExecuteProcess(
-            cmd=["MicroXRCEAgent", "udp4", "-p", "8888", "-v", "3"],
-            output="screen",
-            condition=IfCondition(LaunchConfiguration("run_uxrcedds_agent"))
+            cmd=[
+                "gz", "service",
+                "-s", "/world/walls/create",
+                "--reqtype", "gz.msgs.EntityFactory",
+                "--reptype", "gz.msgs.Boolean",
+                "--timeout", "1000",
+                "--req",
+                (
+                    'sdf_filename: "/home/ubuntu/PX4-gazebo-models/models/arucotag/model.sdf", '
+                    'name: "arucotag", '
+                    'pose: { position: { x: 8, y: -4.0, z: 0.001000 }, '
+                    'orientation: { x: 0.0, y: 0.0, z: 0.0, w: 1.0 } }'
+                )
+            ],
+            output="screen"
         )
     ])

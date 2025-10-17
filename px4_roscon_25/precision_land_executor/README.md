@@ -34,23 +34,32 @@ The system:
 
 ## Prerequisites
 
-1. Start the simulation, PX4 and QGC as described in the [docker guide](../../docker/README.md) with the ArUco marker and the drone with the camera:
+1. Start the simulation, PX4 and QGC as described in the [setup guide](../../docs/setup.md) with the `walls` world and the x500 with the downfacing camera:
 
    ```sh
-   docker exec -it px4-roscon-25 /bin/bash -c "PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4014 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs"
+   python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/ --world walls
    ```
 
-2. Ensure the vehicle is armed (GPS lock, all sensors healthy)
+   ```sh
+   PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4014 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
+   ```
+
+2. Ensure the vehicle is ready (GPS lock, all sensors healthy)
 3. Verify QGroundControl connection for mode monitoring
 4. Set up visual landing target in the simulation environment
 
 ## Usage
 
-1. Start the simulation, PX4 and QGC as described in the [docker guide](../../docker/README.md).
+1. Launch the common launchfile
+
+   ```sh
+   ros2 launch px4_roscon_25 common.launch.py
+   ```
+
 2. Start the ArUco tracker node:
 
    ```sh
-   ros2 launch aruco_tracker aruco_tracker.launch.py run_uxrcedds_agent:=true
+   ros2 launch aruco_tracker aruco_tracker.launch.py world_name:=walls model_name:=x500_mono_cam_down_0
    ```
 
 3. Run `precision_land_executor.launch.py` from inside the docker container
