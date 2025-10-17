@@ -74,9 +74,9 @@ void PrecisionLand::targetPoseCallback(const geometry_msgs::msg::PoseStamped::Sh
 
 PrecisionLand::ArucoTag PrecisionLand::getTagWorld(const ArucoTag& tag)
 {
-	// Convert from optical to NED
-	// Optical: X right, Y down, Z away from lens
-	// NED: X forward, Y right, Z away from viewer
+	// Convert from optical to FRD. This depends on camera mounting!
+	// Optical (camera frame): X right, Y down, Z towards focal axis
+	// FRD (drone frame/baselink): X forward, Y right, Z down
 	Eigen::Matrix3d R;
 	R << 0, -1, 0,
 	1, 0, 0,
