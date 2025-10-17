@@ -1,0 +1,5 @@
+- ros_topic_name: "/point_cloud"
+  gz_topic_name: "/world/walls/model/x500_lidar_2d_0/link/link/sensor/lidar_2d_v2/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: "GZ_TO_ROS"
