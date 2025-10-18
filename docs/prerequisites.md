@@ -91,3 +91,7 @@ On W11 WSL2 you can either install Docker desktop on W11 or docker engine direct
             ```
 
     - **Configure the host to run GQC inside the container**. No extra steps are required.
+
+## Foxglove client installation
+
+Simply [download](https://foxglove.dev/download) and install following the instructions Foxglove from the official website.
