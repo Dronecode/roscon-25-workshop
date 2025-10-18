@@ -43,13 +43,15 @@ void CustomYaw::loadParameters() {
 
 void CustomWaypoints::onActivate() {
     // Initialize waypoints
-    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -2.0f)); // Initial waypoint at home position
-    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -2.0f)); // Second waypoint
-    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -2.0f)); // Third waypoint
-    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -2.0f)); // Fourth waypoint
-    _trajectory_waypoints.push_back(Eigen::Vector3f(_local_position->positionNed().x(),
-                                                    _local_position->positionNed().y(),
-                                                    _local_position->positionNed().z())); // Final waypoint at current position
+
+    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, -5.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(0.0f, 0.0f, -1.5f));
+
     _current_waypoint_index = 0; // Start at the first waypoint
     RCLCPP_INFO(_node.get_logger(), "CustomWaypoints mode activated");
     // Set initial trajectory setpoint
@@ -151,13 +153,15 @@ void CustomYaw::updateSetpoint([[maybe_unused]] float dt_s) {
 
 // void CustomWaypoints::onActivate() {
 //     // Initialize waypoints
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -_altitude)); // Initial waypoint at home position
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -_altitude)); // Second waypoint
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -_altitude)); // Third waypoint
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -_altitude)); // Fourth waypoint
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(_local_position->positionNed().x(),
-//                                                     _local_position->positionNed().y(),
-//                                                     _local_position->positionNed().z())); // Final waypoint at current position
+
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, -5.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(0.0f, 0.0f, -1.5f));
+
 //     _current_waypoint_index = 0; // Start at the first waypoint
 //     RCLCPP_INFO(_node.get_logger(), "CustomWaypoints mode activated");
 //     // Set initial trajectory setpoint
