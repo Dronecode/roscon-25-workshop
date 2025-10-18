@@ -314,6 +314,16 @@ Launch your Foxglove client and open a connection of type _Foxglove WebSocket_ w
 
 **Note:** when restarting the simulations and the foxglove_bridge, you might have to restart Foxglove client too to re-establish the connection.
 
+### Recompiling the ROS 2 workspace
+
+To recompile the ROS 2 workspace
+
+```sh
+cd ~/roscon-25-workshop_ws/
+source source ~/px4_ros_ws/install/setup.bash
+colcon build --symlink-install
+```
+
 ## Troubleshooting
 
 ### T1: Gazebo GUI not showing
