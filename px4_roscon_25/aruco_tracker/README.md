@@ -66,3 +66,6 @@ Where:
 ### Implementation Details
 
 To access the vehicle's altitude (distance to ground), the node subscribes to PX4's `VehicleLocalPosition` message and uses the `dist_bottom` field, which provides the distance measurement from the vehicle to the ground below.
+
+The solution to the exercise is commented out at the end of the `OffboardDemo.cpp`, `OffboardDemo.hpp` and `offboard_demo.launch.py`.
+Feel free to uncomment it and recompile the package to unveil it.

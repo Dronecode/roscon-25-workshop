@@ -39,3 +39,6 @@ The `offboard_demo.launch.py` can also start the _MicroXrceAgent_ and the _gz cl
    Hint: https://docs.px4.io/main/en/flight_stack/controller_diagrams#multicopter-velocity-controller & QGC
 
 3. Add another state, where you change the altitude to 1.5 m before going to the waypoints
+
+The solution to the exercise is commented out at the end of the `OffboardDemo.cpp`, `OffboardDemo.hpp` and `offboard_demo.launch.py`.
+Feel free to uncomment it and recompile the package to unveil it.
