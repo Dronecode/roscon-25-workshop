@@ -41,10 +41,13 @@ OffboardDemo::OffboardDemo()
     sp.yaw = NAN;          // Yaw in radians
     _trajectory_setpoint_pub->publish(sp);
 
-    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f)); // Initial waypoint at home position
-    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -1.5f)); // Hover at home position
-    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f)); // Final waypoint at home position
-    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f)); // Final waypoint at home position
+    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, -5.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(0.0f, 0.0f, -1.5f));
 
     RCLCPP_INFO(this->get_logger(), "OffboardDemo node initialized.");
 }
@@ -395,10 +398,13 @@ int main(int argc, char *argv[])
 //     sp.yaw = NAN;          // Yaw in radians
 //     _trajectory_setpoint_pub->publish(sp);
 
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f)); // Initial waypoint at home position
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -1.5f)); // Hover at home position
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f)); // Final waypoint at home position
-//     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f)); // Final waypoint at home position
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, -5.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+//     _trajectory_waypoints.push_back(Eigen::Vector3f(0.0f, 0.0f, -1.5f));
 
 //     loadParameters();
 
