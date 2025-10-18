@@ -17,7 +17,7 @@ The Offboard Demo implements a state-based flight controller that executes the f
 ## Usage
 
 1. Start the simulation, PX4 and QGC as described in the [setup guide](../../docs/setup.md).
-2. Start the additional ROS 2 node throught the [common launchfile](../px4_roscon_25/README.md).
+2. Start the additional ROS 2 node through the [common launchfile](../px4_roscon_25/README.md).
 
    ```sh
    ros2 launch px4_roscon_25 common.launch.py
@@ -33,7 +33,7 @@ The `offboard_demo.launch.py` can also start the _MicroXrceAgent_ and the _gz cl
 
 ## Exercises
 
-1. Change the takeoff altitude to 3 m via ROS2 parameter
+1. Change the takeoff altitude to 3 m via ROS 2 parameter
 2. Slow down the drone while going through the waypoints and speed up the yaw rotation
 
    Hint: https://docs.px4.io/main/en/flight_stack/controller_diagrams#multicopter-velocity-controller & QGC
