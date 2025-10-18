@@ -1,6 +1,7 @@
 import os
 
 from launch import LaunchDescription
+from launch.actions import ExecuteProcess
 from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.descriptions import ComposableNode
@@ -49,6 +50,40 @@ def generate_launch_description():
                         'child_frame_id': 'x500_lidar_2d_0/link/lidar_2d_v2'
                     }]
                 ),
+                ComposableNode(
+                    package='tf2_ros',
+                    plugin='tf2_ros::StaticTransformBroadcasterNode',
+                    name='map_to_target_aruco_broadcaster',
+                    parameters=[{
+                        'use_sim_time': True,
+                        'translation.x': 8.0,
+                        'translation.y': -4.0,
+                        'translation.z': 0.001,
+                        'rotation.x': 0.0,
+                        'rotation.y': 0.0,
+                        'rotation.z': 0.0,
+                        'rotation.w': 1.0,
+                        'frame_id': 'map',
+                        'child_frame_id': 'aruco_target_gt'
+                    }]
+                ),
             ]
         ),
+        ExecuteProcess(
+            cmd=[
+                "gz", "service",
+                "-s", "/world/walls/create",
+                "--reqtype", "gz.msgs.EntityFactory",
+                "--reptype", "gz.msgs.Boolean",
+                "--timeout", "1000",
+                "--req",
+                (
+                    'sdf_filename: "/home/ubuntu/PX4-gazebo-models/models/arucotag/model.sdf", '
+                    'name: "arucotag", '
+                    'pose: { position: { x: 8, y: -4.0, z: 0.001000 }, '
+                    'orientation: { x: 0.0, y: 0.0, z: 0.0, w: 1.0 } }'
+                )
+            ],
+            output="screen"
+        )
     ])
