@@ -42,3 +42,5 @@ ros2 launch teleop teleop.launch.py
 ```sh
 ros2 run teleop_twist_rpyt_keyboard teleop_twist_rpyt_keyboard
 ```
+
+Just like in the Custom Mode demo, the teleop one requires you to manually activate it and arm the drone!
