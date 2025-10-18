@@ -3,13 +3,13 @@
     "3D!3c6twjg": {
       "cameraState": {
         "perspective": true,
-        "distance": 22.160664819935697,
-        "phi": 69.30933388669374,
-        "thetaOffset": 90.70763165247432,
+        "distance": 5.839780486774139,
+        "phi": 37.84769027445185,
+        "thetaOffset": 71.76783004554098,
         "targetOffset": [
-          5.034732507029134,
-          -0.702612739944018,
-          -3.212015025166895e-17
+          -1.1470649488131002,
+          0.36757256620934675,
+          -3.6636032303607414e-18
         ],
         "target": [
           0,
@@ -27,8 +27,15 @@
         "far": 5000
       },
       "followMode": "follow-pose",
-      "followTf": "map",
-      "scene": {},
+      "followTf": "base_link",
+      "scene": {
+        "enableStats": false,
+        "transforms": {
+          "editable": false,
+          "showLabel": true,
+          "lineWidth": 0
+        }
+      },
       "transforms": {
         "frame:motor_3": {
           "visible": false
@@ -56,6 +63,12 @@
         },
         "frame:x500_mono_cam_down_0/camera_link/imager": {
           "visible": false
+        },
+        "frame:x500_lidar_2d_0/link/lidar_2d_v2": {
+          "visible": false
+        },
+        "frame:camera_frame": {
+          "visible": false
         }
       },
       "topics": {
@@ -63,7 +76,7 @@
           "visible": true
         },
         "/camera": {
-          "visible": true,
+          "visible": false,
           "cameraInfoTopic": "/camera_info",
           "distance": 2,
           "planarProjectionFactor": 0
@@ -71,6 +84,25 @@
         "/target_pose": {
           "visible": true,
           "type": "axis"
+        },
+        "/point_cloud": {
+          "visible": true,
+          "colorField": "intensity",
+          "colorMode": "colormap",
+          "colorMap": "rainbow",
+          "pointSize": 8
+        },
+        "/world/aruco/model/x500_mono_cam_down_0/link/camera_link/sensor/imager/image/compressed": {
+          "visible": true,
+          "cameraInfoTopic": "/camera_info"
+        },
+        "/image_proc": {
+          "visible": false,
+          "cameraInfoTopic": "/camera_info"
+        },
+        "/camera/compressed": {
+          "visible": true,
+          "cameraInfoTopic": "/camera_info"
         }
       },
       "layers": {
@@ -126,7 +158,11 @@
       "isSynced": true,
       "xAxisVal": "custom",
       "sidebarDimension": 240,
-      "axisScalesMode": "lockedScales"
+      "axisScalesMode": "lockedScales",
+      "foxglovePanelTitle": "DRONE XY trajectory (ENU)",
+      "xAxisLabel": "x [m]",
+      "yAxisLabel": "y [m]",
+      "timeRange": "all"
     },
     "Plot!1jjgtat": {
       "paths": [
@@ -140,12 +176,15 @@
       ],
       "showXAxisLabels": true,
       "showYAxisLabels": true,
-      "showLegend": true,
+      "showLegend": false,
       "legendDisplay": "floating",
       "showPlotValuesInLegend": false,
       "isSynced": true,
       "xAxisVal": "timestamp",
-      "sidebarDimension": 240
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "Drone estimated altitude (ENU)",
+      "xAxisLabel": "t [s]",
+      "yAxisLabel": "z [m]"
     }
   },
   "globalVariables": {},
