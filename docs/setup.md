@@ -273,9 +273,13 @@ The simulated PX4 instance automatically start the Micro XRCE-DDS client using U
     MicroXRCEAgent udp4 -p 8888
     ```
 
-    after running this command you can see PX4 establish the connection - the expected output is
+    after running this command you can see PX4 establish the connection - the expected output is a sequence of messages like
 
     ```sh
+    INFO  [uxrce_dds_client] successfully created rt/fmu/out/vehicle_status_v1 data writer, topic id: 279
+    INFO  [uxrce_dds_client] successfully created rt/fmu/out/airspeed_validated data writer, topic id: 14
+    INFO  [uxrce_dds_client] successfully created rt/fmu/out/vtol_vehicle_status data writer, topic id: 288
+    INFO  [uxrce_dds_client] successfully created rt/fmu/out/home_position data writer, topic id: 123
     ```
 
 ### Inspecting PX4 messages
