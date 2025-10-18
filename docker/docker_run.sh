@@ -46,7 +46,6 @@ fi
 # Add common options
 DOCKER_CMD="$DOCKER_CMD -p 8765:8765"
 DOCKER_CMD="$DOCKER_CMD -v ${SCRIPTPATH}/..:/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop"
-DOCKER_CMD="$DOCKER_CMD -v ${SCRIPTPATH}/../px4_roscon_25/px4_roscon_25/gz_models/x500_lidar_2d_mono_cam_down:/home/ubuntu/PX4-gazebo-models/models/x500_lidar_2d_mono_cam_down"
 DOCKER_CMD="$DOCKER_CMD --name=px4-roscon-25"
 DOCKER_CMD="$DOCKER_CMD dronecode/roscon-25-workshop bash"
 
