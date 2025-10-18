@@ -8,63 +8,32 @@ The images contains all the required dependencies for the workshop, in particula
 - [ROS 2 Humble](https://docs.ros.org/en/humble/index.html)
 - [PX4](https://github.com/PX4/PX4-Autopilot) v1.16.0 simulator
 
-To further simplify working in the container, VSCode [devcontainers]() are provided.
+To further simplify working in the container, VSCode [devcontainers](https://code.visualstudio.com/docs/devcontainers/containers) are provided.
 
 ## Prerequisites
 
-The easiest way to start using and testing the ROS 2 packages made for this workshop is through the available AMD64 and ARM64 Docker containers.
-For this reason, the rest of the document will assume that Docker is used and therefore [Docker](https://www.docker.com/) is the only mandatory requirement.
+- **Docker**. The easiest way to start using and testing the ROS 2 packages made for this workshop is through the available AMD64 and ARM64 [Docker](https://www.docker.com/) containers.
+For this reason, the rest of the document will assume that Docker is used.
+- **QGroundControl**. [GQC](https://qgroundcontrol.com/) provides intuitive operator control of PX4 drones, it lets you configure PX4, calibrate the drone sensors and plan mission.
+QGC is already installed in the Docker images.
+However, it requires GUI to enabled for the container.
+If this is not possible (currently for MAC) then QGC will have to be installed on the host system.
+- **Foxglove**. [Foxglove](https://foxglove.dev/download) will make visualizing the drone state and perceived environment a more user friendly way.
 
-Please [install Docker](https://docs.docker.com/engine/install/) following the appropriate instruction for your system architecture.
-Prerequisites installation instructions are also available in [docs/prerequisites.md](./prerequisites.md).
-Then verify the installation by pulling the latest workshop docker image:
+Prerequisites installation instructions are available in [docs/prerequisites.md](./prerequisites.md).
+
+Once Docker is installed you can verify the installation by pulling the latest workshop docker image:
 
 ```sh
 docker pull dronecode/roscon-25-workshop:latest
 ```
-
-All exercises can be run with or without GUI.
-GUI is recommended as it allows:
-
-- to use the Gazebo client and observe the drones move inside the simulator,
-- to start QGroundControl directly from inside the container.
-
-### Using the GUI in Docker
-
-Successfully using GUI applications in Docker can be tricky as the setup heavily depends on your Host system.
-GUI has been successfully tested on Ubuntu 24.04 running with and without Nvidia drivers and on W11 WSL2 running with Nvidia drivers.
-
-- If your host is Ubuntu and you don't have Nvidia drivers + [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) installed, then you can either:
-  - Start the container with
-
-    ```sh
-    ./docker/docker_run.sh
-    ```
-  
-  - Develop with the devcontainer `.devcontainer/linux/devcontainer.json`.
-- If instead you have nvidia drivers and the NVIDIA Container Toolkit installed, then you can either:
-  - Start the container with
-
-    ```sh
-    ./docker/docker_run.sh --nvidia
-    ```
-  
-  - Develop with the devcontainer `.devcontainer/nvidia/devcontainer.json`.
-- Finally, if you the above solutions do not work for you or you're host is running on Apple, then you can either:
-  - Start the container with
-
-    ```sh
-    ./docker/docker_run.sh --no-gui
-    ```
-  
-  - Develop with the devcontainer `.devcontainer/nogui/devcontainer.json`.
 
 ## Container structure
 
 - Most of the required ROS 2 packages are installed through the available binaries:
   - [GZ HARMONIC](https://gazebosim.org/docs/harmonic/getstarted/)
   - [ROS 2 Humble](https://docs.ros.org/en/humble/index.html)
-- Those packages that cannot be installed through binaries and that are dependencies for the main workshop exercise packages are source installed in `/home/${USER}/px4_ros_ws/install`:
+- Those packages that cannot be installed through binaries and that are dependencies for the main workshop exercise packages are source installed in `/home/ubuntu/px4_ros_ws/install`:
 
   - [Micro-XRCE-DDS-Agent](https://github.com/eProsima/Micro-XRCE-DDS-Agent) version 2.4.2
   - [PX4 msgs](https://github.com/PX4/px4_msgs) version 1.16
@@ -74,12 +43,15 @@ GUI has been successfully tested on Ubuntu 24.04 running with and without Nvidia
   Because one of the workshop exercises depends on OpenCV 4.10, `OpenCV`, `ros-humble-vision-opencv` and `ros-humble-image-common` are source installed too.
 
 - [PX4 v1.16.0](https://px4.io/) simulator and its supported GZ Harmonic models and worlds.
-- [GGroundControl](https://qgroundcontrol.com/), The Ground Control Station that interacts with PX4.
+- [GGroundControl](https://qgroundcontrol.com/) v5.0.8
 
 ### PX4 SITL
 
 The docker image contains the binaries for running PX4 on linux, to interface it with Gazebo and all Gazebo models and worlds that support PX4.
 The binaries are compiled in specific layer and to reduce the container size, only the final executables are copied in the final image.
+
+- The binaries for PX4 are located in `/home/ubuntu/px4_sitl`
+- The PX4 compatible GZ worlds and models are instead located in `/home/ubuntu/PX4-gazebo-models/`
 
 Please refer to [docs/customize_px4.md](./customize_px4.md) to know how to use a custom version of PX4.
 
@@ -88,14 +60,11 @@ Please refer to [docs/customize_px4.md](./customize_px4.md) to know how to use a
 QGC v5.0.8 Linux Appimage is added and then extracted during the compilation of the docker AMD64 image.
 If you're running on AMD64 with GUI, then you can open QGC directly from inside the container.
 
-If instead you're running without GUI, then both docker_run script and the devcontainer allow you to connect PX4 to QGC running on the host.
+If instead you're running without GUI, then you will have to connect PX4 to a QGC instance running on the _host_.
 
-## Test it out
+## How to start the simulation
 
-Before jumping in into the exercises, the setup can be validated.
-
-First of all the container needs to be started.
-There are two proposed ways to do this: through VSCode devcontainers or with pure Docker commands.
+There are two ways to start and interact w through VSCode DevContainers or with pure Docker commands.
 
 ### Starting the container with pure Docker commands
 
@@ -108,10 +77,17 @@ You can use
 ./docker/docker_run.sh
 ```
 
-The script will start the container and attach a shell to it.
+The script will:
+
+- Start the container giving it the name _px4-roscon-25_ and attach a shell to it.
+- Forward port `8765` to simplify Foxglove client connection.
+- Mount the repository in `/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop`
+- Forward X11 to run GUI applications (GZ client, QGC) from inside the container.
+
 You can use also use two options:
 
-- `--no-gui` to disable GUI in the container,
+- `--no-gui` to disable GUI in the container.
+This option also forwards port `18570` to allow external (Host) QGC connection.
 - `--nvidia` to run the container with the `nvidia` runtime (it requires the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) installed on the host).
 
 When using this method you can attach new shell to your container by running
@@ -120,11 +96,13 @@ When using this method you can attach new shell to your container by running
 docker exec -it px4-roscon-25 bash
 ```
 
-### Starting the container through VSCode devcontainers
-
-To use the devcontainers, simply open the workshop repo in VSCode, then type `CTRL+SHIFT+P` and select `Dev Containers: Reopen in container`. Finally select the devcontainer of your choice.
-
 From now-on, all commands are assumed to be run from a terminal inside the container unless otherwise specified.
+
+### Starting the container through VSCode DevContainers
+
+To use the DevContainers, simply open the workshop repo in VSCode, then type `CTRL+SHIFT+P` and select `Dev Containers: Reopen in container`.
+Finally, select the devcontainer of your choice.
+VSCode will automatically reopen inside the running container.
 
 ### Starting the PX4-GZ simulation
 
@@ -142,8 +120,8 @@ From there you can start a GZ simulation with a PX4 compatible world:
 python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/ --world default
 ```
 
-If you want to run the gz server in headless mode, add the option `--headless`.
-If you want to change the world, then change the argument of `--world`.
+- If you want to run the gz server in headless mode, add the option `--headless`.
+- If you want to change the world, then change the argument of `--world`.
 
 Note that `--headless` is mandatory when running without GUI.
 
@@ -159,10 +137,10 @@ QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ubuntu'
 [Err] [SystemLoader.cc:92] Failed to load system plugin [libGstCameraSystem.so] : Could not find shared library.
 ```
 
-Please ignore the error messages about the plugins not found.
-The gazebo client windows will open on the empty world.
-No PX4 model will appear.
-This is normal as PX4 instance and model will be spawned later.
+- Please ignore the error messages about the plugins not found.
+- The gazebo client window will open on the empty world.
+- No PX4 model will appear.
+This is normal as PX4 instance and model will be spawned in a different step.
 
 ![empty GZ world](./assets/empty_gz_world.png)
 
@@ -175,7 +153,7 @@ PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubu
 The expected output is
 
 ```sh
-$ PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
+$ PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
 INFO  [px4] assuming working directory is rootfs, no symlinks needed.
 
 ______  __   __    ___ 
@@ -235,10 +213,12 @@ WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground con
 
 Let's analyze this command:
 
-- `PX4_GZ_STANDALONE=1` tells the PX4 startup script that it no gz-server needs to start: one is already running.
+- `PX4_GZ_STANDALONE=1` tells the PX4 startup script that it will need to connect to an already running GZ server.
 - `PX4_SYS_AUTOSTART=4001` tells the PX4 startup script that it has to use the `4001` _airframe_.
-This frame is defined in the [PX4 simulated airframes](https://github.com/PX4/PX4-Autopilot/tree/v1.16.0/ROMFS/px4fmu_common/init.d-posix/airframes) folder and is bound to the `x500` model.
-- `PX4_PARAM_UXRCE_DDS_SYNCT=0` disabled the time synchronization feature between ROS 2 and PX4.
+This airframe is defined in the [PX4 simulated airframes](https://github.com/PX4/PX4-Autopilot/tree/v1.16.0/ROMFS/px4fmu_common/init.d-posix/airframes) folder and is bound to the `x500` model.
+Because not explicit model name was given, PX4 will insert the model in the GZ world.
+An explicit mentioning of the model name would have made PX4 to simply connect to an already spawned model.
+- `PX4_PARAM_UXRCE_DDS_SYNCT=0` disabled the [time synchronization](https://docs.px4.io/v1.16/en/ros2/user_guide#ros-gazebo-and-px4-time-synchronization) feature between ROS 2 and PX4.
 Synchronization is not needed as Gazebo will control the clock for both PX4 and ROS 2.
 
 The complete documentation for running PX4 simulation in Gazebo is part of [PX4 documentation](https://docs.px4.io/main/en/sim_gazebo_gz/).
@@ -254,8 +234,12 @@ If you started you container with the GUI, then you can simply run
 
 If instead you don't have GUI in your container, then you can still run QGC on the host and attach it to the simulated PX4 instance.
 
-To do so, first [install QGC](https://docs.qgroundcontrol.com/Stable_V5.0/en/qgc-user-guide/getting_started/download_and_install.html), then start it and create a custom UDP connection link setting the server ip to `127.0.0.1` and the port to `18570`.
+To do so, first [install QGC](https://docs.qgroundcontrol.com/Stable_V5.0/en/qgc-user-guide/getting_started/download_and_install.html), then start it and create a custom UDP connection link by setting the server ip to `127.0.0.1` and the port to `18570`.
+
+![QGC lin](./assets/qgc_custom_udp_connection.png)
+
 The no-gui container automatically exposed the udp port `18570` to the host.
+The GUI-enable container does not expose the port so this method won't for it.
 
 On the PX4 terminal you will see the message
 
@@ -264,30 +248,39 @@ INFO  [mavlink] partner IP: 172.17.0.1
 INFO  [commander] Ready for takeoff!
 ```
 
-### Linking the simulation to ROS 2
+This is all you need to do to start the GZ + PX4 simulation, you can now takeoff!
 
-ROS 2 needs to interact with both Gazebo and PX4.
-Gazebo interaction is necessary for clock synchronization while PX4 interaction allows to read PX4 data in ROS 2 and to send commands from ROS 2 to PX4.
-This latter interaction is completely independent from Gazebo and lets you connect to PX4 from ROS 2 when PX4 runs on a real flight controller.
+## Next step (otional) - Link the simulation to ROS 2
 
-We will use the `ros_gz_bridge` package to create an unidirectional bridge between the gz `/clock` topic and the ROS 2 one.
-This will allow our nodes to run with the parameter `use_sim_time=true`.
+With the simulation up an running, it is time to bridge ROS 2 with Gazebo and PX4.
 
-```sh
-ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock
-```
+The following sections will demo the essential steps in this process.
+However, when trying the exercises you can leverage the [common launchfile](../px4_roscon_25/px4_roscon_25/README.md) which automatically sets up the required bridges.
 
-Now we can [bridge PX4 and ROS 2](https://docs.px4.io/main/en/ros2/).
-This is done through [eProsima Micro XRCE-DDS](https://micro-xrce-dds.docs.eprosima.com/en/v2.4.3/) which lets PX4 messages to be directly exposed to the ROS 2 network.
+1. **Clock bridging.**  We want to leverage the GZ clock and use it to time all our ROS 2 node.
+This is accomplished by first creating an unidirectional bridge between the gz `/clock` topic and the ROS 2 one and then by commanding all ROS 2 to use the newly created `/clock` ROS 2 topic as time reference.
+We will use the `ros_gz_bridge` package to create the bridge:
+
+    ```sh
+    ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock
+    ```
+
+    While the ROS 2 behavior will be set by the parameter `use_sim_time`.
+2. **ROS 2 - PX4 bridge.** PX4 leverages [eProsima Micro XRCE-DDS](https://micro-xrce-dds.docs.eprosima.com/en/v2.4.3/) which internal [PX4 messages](https://docs.px4.io/v1.16/en/middleware/uorb) to be directly exposed to the ROS 2 network.
 The simulated PX4 instance automatically start the Micro XRCE-DDS client using UDP protocol on port 8888, what we need to do is to just start the agent with the same settings.
 
-```sh
-MicroXRCEAgent udp4 -p 8888
-```
+    ```sh
+    MicroXRCEAgent udp4 -p 8888
+    ```
+
+    after running this command you can see PX4 establish the connection - the expected output is
+
+    ```sh
+    ```
 
 ### Inspecting PX4 messages
 
-Now that the PX4 messages are available to ROS 2, you can list them with
+Now that the [PX4 messages](https://docs.px4.io/v1.16/en/msg_docs/) are available to ROS 2, you can list them with
 
 ```sh
 ros2 topic list
@@ -303,7 +296,7 @@ ros2 topic echo /fmu/out/vehicle_status_v1
 
 ### Foxglove visualization
 
-You can use the `px4_tf` packages, in conjunction with `foxglove_bridge` to visualize in 3D the drone `base_link`.
+You can use the [px4_tf](../px4_roscon_25/px4_tf/README.md) packages, in conjunction with `foxglove_bridge` to visualize in 3D the drone `base_link`.
 
 The `px4_tf_publisher` node subscribes to PX4 `/fmu/out/vehicle_odometry` topic and publishes a derived transform for the `odom` frame to the `base_link` frame.
 
@@ -316,6 +309,10 @@ Finally `foxglove_bridge` let's us visualize the tf in Foxglove.
 ```sh
 ros2 run foxglove_bridge foxglove_bridge --ros-args -p use_sim_time:=true
 ```
+
+Launch your Foxglove client and open a connection of type _Foxglove WebSocket_ with url `ws://localhost:8765`.
+
+**Note:** when restarting the simulations and the foxglove_bridge, you might have to restart Foxglove client too to re-establish the connection.
 
 ## Troubleshooting
 
