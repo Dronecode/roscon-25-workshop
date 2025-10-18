@@ -13,6 +13,12 @@ from launch_ros.descriptions import ComposableNode
 def launch_setup(context, *args, **kwargs):
     return_array = []
 
+    world_name = LaunchConfiguration("world_name").perform(context)
+    model_name = LaunchConfiguration("model_name").perform(context)
+
+    camera_topic = f"/world/{world_name}/model/{model_name}/link/camera_link/sensor/imager/image"
+    camera_info_topic = f"/world/{world_name}/model/{model_name}/link/camera_link/sensor/imager/camera_info"
+
     pkg_share = FindPackageShare("aruco_tracker").find("aruco_tracker")
 
     bridge_config_file = os.path.join(pkg_share,"cfg","bridge.yaml")
@@ -23,8 +29,8 @@ def launch_setup(context, *args, **kwargs):
 
     for item in bridge_config:
         item['gz_topic_name'] = item['gz_topic_name'].format(
-            world_name=LaunchConfiguration("world_name").perform(context),
-            model_name=LaunchConfiguration("model_name").perform(context),
+            world_name=world_name,
+            model_name=model_name,
         )
 
     tmp_file = tempfile.NamedTemporaryFile(suffix=".yaml", delete=False)
@@ -38,7 +44,7 @@ def launch_setup(context, *args, **kwargs):
             name="gz_bridge",
             parameters=[
                 {"config_file": tmp_file.name}
-            ]
+            ],
         )
     )
     return_array.append(
@@ -54,13 +60,28 @@ def launch_setup(context, *args, **kwargs):
         )
     )
     return_array.append(
+        Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            name="camera_image_bridge",
+            output="screen",
+            arguments=[
+                camera_topic,
+            ],
+            remappings=[
+                (camera_topic, "/camera"),
+                (f"{camera_topic}/compressed", "/camera/compressed"),
+            ],
+        )
+    )
+    return_array.append(
         LoadComposableNodes(
             target_container='static_tf_container',
             composable_node_descriptions=[
                 ComposableNode(
                     package='tf2_ros',
                     plugin='tf2_ros::StaticTransformBroadcasterNode',
-                    name='map_to_odom_broadcaster',
+                    name='base_link_to_camera_broadcaster',
                     parameters=[{
                         'use_sim_time': True,
                         'translation.x': 0.0,
@@ -77,7 +98,7 @@ def launch_setup(context, *args, **kwargs):
                 ComposableNode(
                     package='tf2_ros',
                     plugin='tf2_ros::StaticTransformBroadcasterNode',
-                    name='map_to_odom_broadcaster',
+                    name='camera_to_camera_frame_broadcaster',
                     parameters=[{
                         'use_sim_time': True,
                         'translation.x': 0.0,
