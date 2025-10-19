@@ -47,6 +47,7 @@ fi
 DOCKER_CMD="$DOCKER_CMD -p 8765:8765"
 DOCKER_CMD="$DOCKER_CMD -v ${SCRIPTPATH}/..:/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop"
 DOCKER_CMD="$DOCKER_CMD --name=px4-roscon-25"
+DOCKER_CMD="$DOCKER_CMD -w /home/ubuntu/roscon-25-workshop_ws"
 DOCKER_CMD="$DOCKER_CMD dronecode/roscon-25-workshop bash"
 
 # Execute the command
