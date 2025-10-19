@@ -2,15 +2,11 @@
     "name": "px4_roscon_25_linux",
     "image": "dronecode/roscon-25-workshop:latest",
     "forwardPorts": [8765],
-    "containerEnv": {
-        "NVIDIA_VISIBLE_DEVICES": "all",
-        "NVIDIA_DRIVER_CAPABILITIES": "all"
-    },
     "remoteEnv": {
         "DISPLAY": "${localEnv:DISPLAY}"
     },
     "runArgs": [
-        "--runtime", "nvidia"
+        "--device", "/dev/dri:/dev/dri"
     ],
     "mounts": [
         {
