@@ -61,5 +61,5 @@ The `custom_mode_demo.launch.py` can also start the _MicroXrceAgent_ and the _gz
 2. Explore what happens if you want to change the Mode order in the Executor
 3. Add another Mode after yaw, where you change the altitude to 3 m before landing
 
-The solution to the exercise is commented out at the end of the `OffboardDemo.cpp`, `OffboardDemo.hpp` and `offboard_demo.launch.py`.
+The solution to the exercise is commented out at the end of the `CustomMode.cpp`, `CustomMode.hpp`, `CustomModeExecutor.cpp` and `CustomModeExecutor.hpp`
 Feel free to uncomment it and recompile the package to unveil it.
