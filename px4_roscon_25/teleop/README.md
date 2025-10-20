@@ -1,4 +1,4 @@
-# teleop
+# Teleoperation
 
 This packages offers uses PX4 custom modes and executor to teleop a drone.
 
@@ -43,4 +43,11 @@ ros2 launch teleop teleop.launch.py
 ros2 run teleop_twist_rpyt_keyboard teleop_twist_rpyt_keyboard
 ```
 
-Just like in the Custom Mode demo, the teleop one requires you to manually activate it and arm the drone!
+Just like in the Custom Mode demo, the teleop one requires you to manually activate it and arm the drone! 
+Make sure you launch the maze in Foxglove, more details see [Foxglove Instructions](../px4_roscon_25/README.md)
+
+## Exercise
+
+Navigate the drone to the target in Foxglove using teleoperation. Do not use the Gazebo simulation, rely solely on the LiDAR (laser scan) data for guidance.
+Hint: Observe and record a few key waypoints along the path, these will be useful for a subsequent exercise. 
+https://docs.px4.io/main/en/msg_docs/VehicleLocalPosition
