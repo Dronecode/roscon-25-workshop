@@ -46,8 +46,11 @@ Once it is above the target, the drone will descend.
 
 ## Exercise
 
-Integrate all the concepts from today. Create a ROS2 package with a Mode Executor for Precision Landing and perform a precision landing in the maze we explored, using teleoperation. Incorporate the custom waypoints you recorded along the way (Create a CustomWaypoints Mode).
-Hint: You can start by copying the Custom Mode package. Replace CustomYaw with PrecisionLand and add the waypoints you collected earlier.
+Integrate all the concepts from today. Create a ROS 2 package with a Mode Executor for Precision Landing and perform a precision landing in the maze we explored, using teleoperation.
+Incorporate the custom waypoints you recorded along the way (Create a CustomWaypoints Mode).
+Hint: You can start by copying the Custom Mode package.
+Replace CustomYaw with PrecisionLand and add the waypoints you collected earlier.
 
 The solution can be found in a separate package:
+
 - [Precision Landing with Executor](px4_roscon_25/precision_land_executor/README.md)
