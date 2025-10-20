@@ -298,6 +298,29 @@ For example, you can check the PX4 vehicle status with
 ros2 topic echo /fmu/out/vehicle_status_v1
 ```
 
+You can also try the `sensor_combined_listener` node from the [px4_ros_com](https://github.com/PX4/px4_ros_com) package and get a user friendly visualization of PX4 accelerometer and gyroscope data:
+
+```sh
+ros2 run px4_ros_com sensor_combined_listener --ros-args -p use_sim_time:=true
+```
+
+It will output something like:
+
+```sh
+RECEIVED SENSOR COMBINED DATA
+=============================
+ts: 93380000
+gyro_rad[0]: -0.000287732
+gyro_rad[1]: -0.000181083
+gyro_rad[2]: -0.00105683
+gyro_integral_dt: 4000
+accelerometer_timestamp_relative: 0
+accelerometer_m_s2[0]: -0.00764366
+accelerometer_m_s2[1]: 6.15756e-05
+accelerometer_m_s2[2]: -9.79929
+accelerometer_integral_dt: 4000
+```
+
 ### Foxglove visualization
 
 You can use the [px4_tf](../px4_roscon_25/px4_tf/README.md) packages, in conjunction with `foxglove_bridge` to visualize in 3D the drone `base_link`.
