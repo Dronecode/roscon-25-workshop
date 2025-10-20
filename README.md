@@ -26,6 +26,7 @@ For questions regarding the workshop, please join the Dronecode Foundation Disco
 This workshop introduces you to PX4’s ROS 2 integration layer and shows how to create your own flight modes, perception pipelines, and control executors.
 You’ll also get a brief introduction to PX4 and a ready-to-use developer environment designed for seamless integration between PX4 and ROS 2.
 By the end of the workshop, you’ll have a complete ROS 2 package capable of controlling a simulated drone, performing navigation tasks, and executing precision landings.
+
 **Note:** Each example includes several exercises designed to reinforce the concepts, deepen understanding, and encourage exploration of the environment.
 Solutions are provided either **commented out in the code** (you can uncomment and rebuild the package to test) or as **separate, individual packages.**
 
@@ -38,6 +39,7 @@ For more detailed instructions and guidance, please refer to the dedicated **REA
 ### Environment Setup
 
 For detailed environment and Docker setup instructions, see the [docs/README.md](docs/setup.md) guide.
+Please complete this step before you proceed.
 
 ### Control Pipelines
 
@@ -52,8 +54,8 @@ The goal is to compare these two approaches, highlighting their differences and 
 
 For detailed instructions and exercises, refer to the following guides in this repository:
 
-- **Offboard Demo:** [Offboard Demo](offboard_demo/README.md)
-- **Custom Mode Demo:** [Custom Mode Demo](custom_mode_demo/README.md)
+- [Offboard Demo](px4_roscon_25/offboard_demo/README.md)
+- [Custom Mode Demo](px4_roscon_25/custom_mode_demo/README.md)
 
 ### Perception & Applications
 
@@ -62,12 +64,14 @@ In this section, we explore **three practical examples** of perception and contr
 1. **ArUco Marker Detection** – Detect markers using ROS 2 and PX4. No custom flight mode is required.
 2. **Teleoperation** – Ever seen a TurtleBot flying? This demo shows how to manually control a drone using a keyboard and to use a LiDAR scan for environmental awareness.
 3. **Precision Landing** – Combine ArUco detection with a **Custom Mode** to perform precision landing.
+    - **Precision Landing with Executor** – This is a follow up exercise to incorporate Precision Land in the former Custom Modes Demo, where an Executor schedules  Waypoints and Precison Land to find and land on the ArUco Marker in the maze. 
 
 For more detailed instructions and exercises, refer to the following demos:
 
-- **ArUco Marker Detection:** [ArUco Marker Detection](aruco_tracker/README.md)
-- **Teleoperation:** [Teleoperation](teleop/README.md)
-- **Precision Landing:** [Precision Landing](precision_land/README.md)
+- [ArUco Marker Detection](px4_roscon_25/aruco_tracker/README.md)
+- [Teleoperation](px4_roscon_25/teleop/README.md)
+- [Precision Landing](px4_roscon_25/precision_land/README.md)
+- [Precision Landing with Executor](px4_roscon_25/precision_land_executor/README.md)
 
 ### Q&A, Resources & Hardware Show-and-Tell
 
