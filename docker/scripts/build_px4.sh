@@ -52,5 +52,5 @@ make px4_sitl_default
 cd ..
 mkdir -p px4_sitl/bin
 mkdir -p px4_sitl/romfs/etc
-cp PX4-Autopilot/build/px4_sitl_default/bin/px4* px4_sitl/bin/
+cp -a PX4-Autopilot/build/px4_sitl_default/bin px4_sitl/
 tar xf PX4-Autopilot/build/px4_sitl_default/romfs_files.tar -C px4_sitl/romfs/etc
