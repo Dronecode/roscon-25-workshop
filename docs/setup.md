@@ -339,6 +339,8 @@ ros2 run foxglove_bridge foxglove_bridge --ros-args -p use_sim_time:=true
 
 Launch your Foxglove client and open a connection of type _Foxglove WebSocket_ with url `ws://localhost:8765`.
 
+![foxglove example](./assets/foxglove.png)
+
 **Note:** when restarting the simulations and the foxglove_bridge, you might have to restart Foxglove client too to re-establish the connection.
 
 ### Recompiling the ROS 2 workspace

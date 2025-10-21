@@ -3,13 +3,13 @@
     "3D!3c6twjg": {
       "cameraState": {
         "perspective": true,
-        "distance": 5.839780486774139,
-        "phi": 37.84769027445185,
-        "thetaOffset": 71.76783004554098,
+        "distance": 11.376001845525893,
+        "phi": 75.49906642124344,
+        "thetaOffset": 90.92379334829621,
         "targetOffset": [
-          -1.1470649488131002,
-          0.36757256620934675,
-          -3.6636032303607414e-18
+          4.665970937961196,
+          -0.14898348825041471,
+          4.508385905766857e-18
         ],
         "target": [
           0,
@@ -27,7 +27,7 @@
         "far": 5000
       },
       "followMode": "follow-pose",
-      "followTf": "base_link",
+      "followTf": "map",
       "scene": {
         "enableStats": false,
         "transforms": {
@@ -182,7 +182,7 @@
       "isSynced": true,
       "xAxisVal": "timestamp",
       "sidebarDimension": 240,
-      "foxglovePanelTitle": "Drone estimated altitude (ENU)",
+      "foxglovePanelTitle": "Drone estimated altitude (NED)",
       "xAxisLabel": "t [s]",
       "yAxisLabel": "z [m]"
     }
