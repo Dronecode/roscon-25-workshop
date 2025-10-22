@@ -46,6 +46,10 @@ ros2 run teleop_twist_rpyt_keyboard teleop_twist_rpyt_keyboard
 Just like in the Custom Mode demo, the teleop one requires you to manually activate it and arm the drone!
 Make sure you launch the maze in Foxglove, more details see [Foxglove Instructions](../px4_roscon_25/README.md)
 
+Your output should look like this:
+![foxglove example](../../docs/assets/foxglove_teleop.png)
+
+
 ## Exercise
 
 Navigate the drone to the target in Foxglove using teleoperation.

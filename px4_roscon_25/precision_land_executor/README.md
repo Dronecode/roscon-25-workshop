@@ -50,6 +50,10 @@ The system:
 
 ## Usage
 
+The current waypoints require a velocity limit, you can set it in QGC.
+
+![QGC param](../../docs//assets/qgc_param.png)
+
 1. Launch the common launchfile
 
    ```sh

@@ -27,13 +27,11 @@ void CustomWaypoints::loadParameters() {
 
 void CustomWaypoints::onActivate() {
     // Initialize waypoints
-    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -2.0f)); // Initial waypoint at home position
-    _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -2.0f)); // Second waypoint
-    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -2.0f)); // Third waypoint
-    _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -2.0f)); // Fourth waypoint
-    _trajectory_waypoints.push_back(Eigen::Vector3f(_local_position->positionNed().x(),
-                                                    _local_position->positionNed().y(),
-                                                    _local_position->positionNed().z())); // Final waypoint at current position
+    _trajectory_waypoints.push_back(Eigen::Vector3f(1.0f, 2.5f, -3.0f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(14.0f, 2.5f, -3.0f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(14.0f, 8.0f, -3.0f));
+    _trajectory_waypoints.push_back(Eigen::Vector3f(-4.0f, 8.0f, -3.0f));
+	
     _current_waypoint_index = 0; // Start at the first waypoint
     RCLCPP_INFO(_node.get_logger(), "CustomWaypoints mode activated");
     // Set initial trajectory setpoint
