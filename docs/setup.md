@@ -250,7 +250,7 @@ INFO  [commander] Ready for takeoff!
 
 This is all you need to do to start the GZ + PX4 simulation, you can now takeoff!
 
-## Next step (otional) - Link the simulation to ROS 2
+## Next step (optional) - Link the simulation to ROS 2
 
 With the simulation up an running, it is time to bridge ROS 2 with Gazebo and PX4.
 
