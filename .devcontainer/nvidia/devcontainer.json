@@ -1,5 +1,5 @@
 {
-    "name": "px4_roscon_25_wsl",
+    "name": "px4_roscon_25_nvidia",
     "image": "dronecode/roscon-25-workshop:latest",
     "forwardPorts": [8765],
     "containerEnv": {
