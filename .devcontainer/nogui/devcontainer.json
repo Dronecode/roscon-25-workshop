@@ -1,7 +1,7 @@
 {
     "name": "px4_roscon_25_nogui",
     "image": "dronecode/roscon-25-workshop:latest",
-    "forwardPorts": [8765, 18750],
+    "forwardPorts": [8765, 18570],
     "customizations": {
         "vscode": {
             "settings": {
