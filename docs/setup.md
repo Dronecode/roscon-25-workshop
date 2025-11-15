@@ -12,6 +12,9 @@ To further simplify working in the container, VSCode [devcontainers](https://cod
 
 ## Prerequisites
 
+All the instructions and all the provided scripts have been tested on Ubuntu 22.04, Ubuntu 24.04 and WSL2.
+Docker development in macOS is not supported.
+
 - **Docker**. The easiest way to start using and testing the ROS 2 packages made for this workshop is through the available AMD64 and ARM64 [Docker](https://www.docker.com/) containers.
 For this reason, the rest of the document will assume that Docker is used.
 - **QGroundControl**. [GQC](https://qgroundcontrol.com/) provides intuitive operator control of PX4 drones, it lets you configure PX4, calibrate the drone sensors and plan mission.
