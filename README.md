@@ -19,7 +19,7 @@ No PX4 background is needed, just your ROS expertise, a laptop, and a spirit of 
 This repository contains all the materials for the ROSCon 2025, Hands-On Aerial Robotics Using PX4 and ROS 2 Workshop.
 For questions regarding the workshop, please join the Dronecode Foundation Discord and post your question in the workshop-roscon-2025 channel:
 
-[Join the Dronecode Foundation Discord](https://discord.gg/dhPwqRVD)
+[Join the Dronecode Foundation Discord](https://chat.dronecode.org/)
 
 ## Outline
 
