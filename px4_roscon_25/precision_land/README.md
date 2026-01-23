@@ -35,7 +35,7 @@ Once it is above the target, the drone will descend.
 
 ## How to use
 
-1. Repeat all step made in [aruco_tracker](../aruco_tracker/README)
+1. Repeat all step made in [aruco_tracker](../aruco_tracker/README.md)
 2. Run the precision land node
 
     ```sh
@@ -53,4 +53,4 @@ Replace CustomYaw with PrecisionLand and add the waypoints you collected earlier
 
 The solution can be found in a separate package:
 
-- [Precision Landing with Executor](px4_roscon_25/precision_land_executor/README.md)
+- [Precision Landing with Executor](../precision_land_executor/README.md)
