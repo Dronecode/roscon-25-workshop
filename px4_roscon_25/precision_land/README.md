@@ -35,7 +35,7 @@ Once it is above the target, the drone will descend.
 
 ## How to use
 
-1. Repeat all step made in [aruco_tracker](../aruco_tracker/README.md)
+1. Repeat all steps in [aruco_tracker](../aruco_tracker/README.md)
 2. Run the precision land node
 
     ```sh
