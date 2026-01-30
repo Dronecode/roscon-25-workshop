@@ -255,8 +255,8 @@ void PrecisionLand::generateSearchWaypoints()
 	// Generate spiral search waypoints
 	// The search waypoints are generated in the NED frame
 	// Parameters for the search pattern
-	double start_x = 0.0;
-	double start_y = 0.0;
+	double start_x = _vehicle_local_position->positionNed().x();
+	double start_y = _vehicle_local_position->positionNed().y();
 	double current_z = _vehicle_local_position->positionNed().z();
 	auto min_z = -1.0;
 
