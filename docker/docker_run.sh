@@ -39,11 +39,10 @@ if [ "$NO_GUI" = false ]; then
     else
         DOCKER_CMD="$DOCKER_CMD --device /dev/dri:/dev/dri"
     fi
-else
-    DOCKER_CMD="$DOCKER_CMD -p 18570:18570/udp"
 fi
 
 # Add common options
+DOCKER_CMD="$DOCKER_CMD -p 18570:18570/udp"
 DOCKER_CMD="$DOCKER_CMD -p 8765:8765"
 DOCKER_CMD="$DOCKER_CMD -v ${SCRIPTPATH}/..:/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop"
 DOCKER_CMD="$DOCKER_CMD --name=px4-roscon-25"
