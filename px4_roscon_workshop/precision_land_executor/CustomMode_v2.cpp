@@ -162,7 +162,7 @@ void PrecisionLand::onDeactivate()
 	// No-op
 }
 
-void PrecisionLand::updateSetpoint(float dt_s)
+void PrecisionLand::updateSetpoint([[maybe_unused]] float dt_s)
 {
 	bool target_lost = checkTargetTimeout();
 
