@@ -98,7 +98,7 @@ def launch_setup(context, *args, **kwargs):
                 ComposableNode(
                     package='tf2_ros',
                     plugin='tf2_ros::StaticTransformBroadcasterNode',
-                    name='camera_to_camera_frame_broadcaster',
+                    name='camera_to_camera_link_broadcaster',
                     parameters=[{
                         'use_sim_time': True,
                         'translation.x': 0.0,
@@ -109,7 +109,7 @@ def launch_setup(context, *args, **kwargs):
                         'rotation.z': 0.0,
                         'rotation.w': 10.0,
                         'frame_id': 'x500_mono_cam_down_0/camera_link/imager',
-                        'child_frame_id': 'camera_frame'
+                        'child_frame_id': 'camera_link'
                     }]
                 ),
             ]
