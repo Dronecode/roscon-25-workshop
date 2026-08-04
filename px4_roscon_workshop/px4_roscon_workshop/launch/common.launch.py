@@ -8,7 +8,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
-    pkg_share = FindPackageShare('px4_roscon_25').find('px4_roscon_25')
+    pkg_share = FindPackageShare('px4_roscon_workshop').find('px4_roscon_workshop')
 
     clock_bridge_config_file = os.path.join(pkg_share,"cfg","clock_bridge.yaml")
 
