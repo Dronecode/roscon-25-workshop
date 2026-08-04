@@ -31,10 +31,10 @@ The demo executes the following autonomous sequence:
 ## Usage
 
 1. Start the simulation, PX4 and QGC as described in the [setup guide](../../docs/setup.md).
-2. Start the additional ROS 2 node through the [common launchfile](../px4_roscon_25/README.md)
+2. Start the additional ROS 2 node through the [common launchfile](../px4_roscon_workshop/README.md)
 
    ```sh
-   ros2 launch px4_roscon_25 common.launch.py
+   ros2 launch px4_roscon_workshop common.launch.py
    ```
 
 3. Run `custom_mode_demo.launch.py` from inside the docker container

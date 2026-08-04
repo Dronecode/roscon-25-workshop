@@ -27,10 +27,10 @@ When the simulation is running you can see the GZ topics:
 gz topic -l
 ```
 
-You can now launch the [common](../px4_roscon_25/README.md) launchfile
+You can now launch the [common](../px4_roscon_workshop/README.md) launchfile
 
 ```sh
-ros2 launch px4_roscon_25 common.launch.py
+ros2 launch px4_roscon_workshop common.launch.py
 ```
 
 and finally the `teleop` launchfile and the _keyboard_monitor_ node.
@@ -44,7 +44,7 @@ ros2 run teleop_twist_rpyt_keyboard teleop_twist_rpyt_keyboard
 ```
 
 Just like in the Custom Mode demo, the teleop one requires you to manually activate it and arm the drone!
-Make sure you launch the maze in Foxglove, more details see [Foxglove Instructions](../px4_roscon_25/README.md)
+Make sure you launch the maze in Foxglove, more details see [Foxglove Instructions](../px4_roscon_workshop/README.md)
 
 Your output should look like this:
 ![foxglove example](../../docs/assets/foxglove_teleop.png)

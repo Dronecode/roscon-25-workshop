@@ -258,7 +258,7 @@ This is all you need to do to start the GZ + PX4 simulation, you can now takeoff
 With the simulation up an running, it is time to bridge ROS 2 with Gazebo and PX4.
 
 The following sections will demo the essential steps in this process.
-However, when trying the exercises you can leverage the [common launchfile](../px4_roscon_25/px4_roscon_25/README.md) which automatically sets up the required bridges.
+However, when trying the exercises you can leverage the [common launchfile](../px4_roscon_workshop/px4_roscon_workshop/README.md) which automatically sets up the required bridges.
 
 1. **Clock bridging.**  We want to leverage the GZ clock and use it to time all our ROS 2 node.
 This is accomplished by first creating an unidirectional bridge between the gz `/clock` topic and the ROS 2 one and then by commanding all ROS 2 to use the newly created `/clock` ROS 2 topic as time reference.
@@ -326,7 +326,7 @@ accelerometer_integral_dt: 4000
 
 ### Foxglove visualization
 
-You can use the [px4_tf](../px4_roscon_25/px4_tf/README.md) packages, in conjunction with `foxglove_bridge` to visualize in 3D the drone `base_link`.
+You can use the [px4_tf](../px4_roscon_workshop/px4_tf/README.md) packages, in conjunction with `foxglove_bridge` to visualize in 3D the drone `base_link`.
 
 The `px4_tf_publisher` node subscribes to PX4 `/fmu/out/vehicle_odometry` topic and publishes a derived transform for the `odom` frame to the `base_link` frame.
 
