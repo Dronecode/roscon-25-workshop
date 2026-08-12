@@ -180,24 +180,3 @@ Launch your Foxglove client and open a connection of type _Foxglove WebSocket_ w
 ![foxglove example](./assets/foxglove.png)
 
 **Note:** when restarting the simulations and the foxglove_bridge, you might have to restart Foxglove client too to re-establish the connection.
-
-### Recompiling the ROS 2 workspace
-
-To recompile the ROS 2 workspace
-
-```sh
-cd ~/roscon-25-workshop_ws/
-source source ~/px4_ros_ws/install/setup.bash
-colcon build --symlink-install
-```
-
-## Troubleshooting
-
-### T1: Gazebo GUI not showing
-
-A1: Make sure you're running the container with GPU support.
-
-### T2: on WSL2 I'm getting `docker: Error response from daemon: error gathering device information while adding custom device "/dev/dri": no such file or directory`
-
-A2: Only `./docker/docker_run.sh --nvidia` combined with NVIDIA Container Toolkit works out of the box on WSL2.
-If you don't have nvidia drivers or NVIDIA Container Toolkit installed on WSL2 you can run it headless `./docker/docker_run.sh --no-gui` or you can try removing `DOCKER_CMD="$DOCKER_CMD --device /dev/dri:/dev/dri"` from `./docker/docker_run.sh`.
