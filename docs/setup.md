@@ -2,15 +2,13 @@
 
 This page will guide you through the installation of the requirements for running the workshop exercises and it will explain how ROS 2, Gazebo and PX4 will interact.
 
-The images contains all the required dependencies for the workshop, in particular:
+The three main components are:
 
 - [GZ HARMONIC](https://gazebosim.org/docs/harmonic/getstarted/)
 - [ROS 2 Jazzy](https://docs.ros.org/en/jazzy/index.html)
-- [PX4](https://github.com/PX4/PX4-Autopilot) v1.17.0 simulator
+- [PX4](https://github.com/PX4/PX4-Autopilot) v1.18.0 simulator
 
-## Prerequisites
-
-All the instructions and all the provided scripts have been tested on Ubuntu 24.04.
+In addition to them, two extra components are required for visualization and remote control:
 
 - **QGroundControl**. [GQC](https://qgroundcontrol.com/) provides intuitive operator control of PX4 drones, it lets you configure PX4, calibrate the drone sensors and plan mission.
 QGC is already installed in the Docker images.
@@ -18,6 +16,9 @@ However, it requires GUI to enabled for the container.
 If this is not possible (currently for MAC) then QGC will have to be installed on the host system.
 - **Foxglove**. [Foxglove](https://foxglove.dev/download) will make visualizing the drone state and perceived environment a more user friendly way.
 
+## Prerequisites
+
+All the instructions and all the provided scripts have been tested on Ubuntu 24.04.
 
 ### PX4 SITL
 
@@ -72,10 +73,6 @@ Pick `ros-jazzy-desktop`.
     colcon build --symlink-install
     ```
 
-
-
-### TO-DO: update everything below this point
-
 ## How to start the simulation
 
 ### Starting the PX4-GZ simulation
@@ -85,135 +82,23 @@ This means that PX4 can control any GZ model as long as the model uses the requi
 
 For this workshop we will use the x500 quadrotor model.
 
-![X500](./assets/X500.png)
-
-The PX4 Gazebo worlds and models are available in the `/home/ubuntu/PX4-gazebo-models` container directory.
-From there you can start a GZ simulation with a PX4 compatible world:
+Change folder to where PX4 was cloned and run
 
 ```sh
-python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/ --world default
+make px4_sitl gz_x500
 ```
 
-- If you want to run the gz server in headless mode, add the option `--headless`.
-- If you want to change the world, then change the argument of `--world`.
-
-Note that `--headless` is mandatory when running without GUI.
-
-The expected output when GUI is enabled is
-
-```sh
-ubuntu@fe14532c7704:~$ python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/
-Found: 219 files in /home/ubuntu/PX4-gazebo-models/
-Models directory not empty. Overwrite not set. Not downloading models.
-> Launching gazebo simulation...
-QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ubuntu'
-[Err] [SystemLoader.cc:92] Failed to load system plugin [libOpticalFlowSystem.so] : Could not find shared library.
-[Err] [SystemLoader.cc:92] Failed to load system plugin [libGstCameraSystem.so] : Could not find shared library.
-```
-
-- Please ignore the error messages about the plugins not found.
-- The gazebo client window will open on the empty world.
-- No PX4 model will appear.
-This is normal as PX4 instance and model will be spawned in a different step.
-
-![empty GZ world](./assets/empty_gz_world.png)
-
-Once the GZ server is running, you can spawn the `x500` model and attach a PX4 instance to it with
-
-```sh
-PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
-```
-
-The expected output is
-
-```sh
-$ PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
-INFO  [px4] assuming working directory is rootfs, no symlinks needed.
-
-______  __   __    ___ 
-| ___ \ \ \ / /   /   |
-| |_/ /  \ V /   / /| |
-|  __/   /   \  / /_| |
-| |     / /^\ \ \___  |
-\_|     \/   \/     |_/
-
-px4 starting.
-
-INFO  [px4] startup script: /bin/sh etc/init.d-posix/rcS 0
-env SYS_AUTOSTART: 4001
-INFO  [param] selected parameter default file parameters.bson
-INFO  [param] selected parameter backup file parameters_backup.bson
-  SYS_AUTOCONFIG: curr: 0 -> new: 1
-  SYS_AUTOSTART: curr: 0 -> new: 4001
-  CAL_ACC0_ID: curr: 0 -> new: 1310988
-  CAL_GYRO0_ID: curr: 0 -> new: 1310988
-  CAL_ACC1_ID: curr: 0 -> new: 1310996
-  CAL_GYRO1_ID: curr: 0 -> new: 1310996
-  CAL_ACC2_ID: curr: 0 -> new: 1311004
-  CAL_GYRO2_ID: curr: 0 -> new: 1311004
-  CAL_MAG0_ID: curr: 0 -> new: 197388
-  CAL_MAG0_PRIO: curr: -1 -> new: 50
-  CAL_MAG1_ID: curr: 0 -> new: 197644
-  CAL_MAG1_PRIO: curr: -1 -> new: 50
-  SENS_BOARD_X_OFF: curr: 0.0000 -> new: 0.0000
-  SENS_DPRES_OFF: curr: 0.0000 -> new: 0.0010
-  UXRCE_DDS_SYNCT: curr: 1 -> new: 0
-INFO  [dataman] data manager file './dataman' size is 1208528 bytes
-INFO  [init] Gazebo simulator
-INFO  [init] Standalone PX4 launch, waiting for Gazebo
-INFO  [init] Gazebo world is ready
-INFO  [init] Spawning model
-INFO  [gz_bridge] world: default, model: x500_0
-INFO  [lockstep_scheduler] setting initial absolute time to 2324000 us
-INFO  [commander] LED: open /dev/led0 failed (22)
-WARN  [health_and_arming_checks] Preflight Fail: ekf2 missing data
-WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
-INFO  [uxrce_dds_client] init UDP agent IP:127.0.0.1, port:8888
-INFO  [tone_alarm] home set
-INFO  [mavlink] mode: Normal, data rate: 4000000 B/s on udp port 18570 remote port 14550
-INFO  [mavlink] mode: Onboard, data rate: 4000000 B/s on udp port 14580 remote port 14540
-INFO  [mavlink] mode: Onboard, data rate: 4000 B/s on udp port 14280 remote port 14030
-INFO  [mavlink] mode: Gimbal, data rate: 400000 B/s on udp port 13030 remote port 13280
-INFO  [logger] logger started (mode=all)
-INFO  [logger] Start file log (type: full)
-INFO  [logger] [logger] ./log/2025-08-09/11_56_59.ulg
-INFO  [logger] Opened full log file: ./log/2025-08-09/11_56_59.ulg
-INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
-INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
-INFO  [px4] Startup script returned successfully
-pxh> WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
-WARN  [health_and_arming_checks] Preflight Fail: No connection to the ground control station
-```
-
-Let's analyze this command:
-
-- `PX4_GZ_STANDALONE=1` tells the PX4 startup script that it will need to connect to an already running GZ server.
-- `PX4_SYS_AUTOSTART=4001` tells the PX4 startup script that it has to use the `4001` _airframe_.
-This airframe is defined in the [PX4 simulated airframes](https://github.com/PX4/PX4-Autopilot/tree/v1.16.0/ROMFS/px4fmu_common/init.d-posix/airframes) folder and is bound to the `x500` model.
-Because not explicit model name was given, PX4 will insert the model in the GZ world.
-An explicit mentioning of the model name would have made PX4 to simply connect to an already spawned model.
-- `PX4_PARAM_UXRCE_DDS_SYNCT=0` disabled the [time synchronization](https://docs.px4.io/v1.16/en/ros2/user_guide#ros-gazebo-and-px4-time-synchronization) feature between ROS 2 and PX4.
-Synchronization is not needed as Gazebo will control the clock for both PX4 and ROS 2.
-
-The complete documentation for running PX4 simulation in Gazebo is part of [PX4 documentation](https://docs.px4.io/main/en/sim_gazebo_gz/).
+The Gazebo GUI window will open
 
 ![GZ world with x500 spawned](./assets/gz_world_with_x500.png)
 
 Before taking off you just need to connect QGC to your simulated drone.
-If you started you container with the GUI, then you can simply run
+
+Simply start QGC, open a terminal into the folder where you downloaded it and run
 
 ```sh
-/home/ubuntu/QGroundControl/qgroundcontrol
+./QGroundControl-x86_64.AppImage
 ```
-
-If instead you don't have GUI in your container, then you can still run QGC on the host and attach it to the simulated PX4 instance.
-
-To do so, first [install QGC](https://docs.qgroundcontrol.com/Stable_V5.0/en/qgc-user-guide/getting_started/download_and_install.html), then start it and create a custom UDP connection link by setting the server ip to `127.0.0.1` and the port to `18570`.
-
-![QGC lin](./assets/qgc_custom_udp_connection.png)
-
-The no-gui container automatically exposed the udp port `18570` to the host.
-The GUI-enable container does not expose the port so this method won't for it.
 
 On the PX4 terminal you will see the message
 
@@ -223,6 +108,8 @@ INFO  [commander] Ready for takeoff!
 ```
 
 This is all you need to do to start the GZ + PX4 simulation, you can now takeoff!
+
+## TO-DO: update everything below this point
 
 ## Next step (optional) - Link the simulation to ROS 2
 
@@ -269,30 +156,7 @@ The messages in the topics with namespace `/fmu/in` are sent from ROS 2 to PX4 w
 For example, you can check the PX4 vehicle status with
 
 ```sh
-ros2 topic echo /fmu/out/vehicle_status_v1
-```
-
-You can also try the `sensor_combined_listener` node from the [px4_ros_com](https://github.com/PX4/px4_ros_com) package and get a user friendly visualization of PX4 accelerometer and gyroscope data:
-
-```sh
-ros2 run px4_ros_com sensor_combined_listener --ros-args -p use_sim_time:=true
-```
-
-It will output something like:
-
-```sh
-RECEIVED SENSOR COMBINED DATA
-=============================
-ts: 93380000
-gyro_rad[0]: -0.000287732
-gyro_rad[1]: -0.000181083
-gyro_rad[2]: -0.00105683
-gyro_integral_dt: 4000
-accelerometer_timestamp_relative: 0
-accelerometer_m_s2[0]: -0.00764366
-accelerometer_m_s2[1]: 6.15756e-05
-accelerometer_m_s2[2]: -9.79929
-accelerometer_integral_dt: 4000
+ros2 topic echo /fmu/out/vehicle_status_v4
 ```
 
 ### Foxglove visualization
