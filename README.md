@@ -58,8 +58,8 @@ The goal is to compare these two approaches, highlighting their differences and 
 
 For detailed instructions and exercises, refer to the following guides in this repository:
 
-- [Offboard Demo](px4_roscon_25/offboard_demo/README.md)
-- [Custom Mode Demo](px4_roscon_25/custom_mode_demo/README.md)
+- [Offboard Demo](px4_roscon_workshop/offboard_demo/README.md)
+- [Custom Mode Demo](px4_roscon_workshop/custom_mode_demo/README.md)
 
 ### Perception & Applications
 
@@ -72,10 +72,10 @@ In this section, we explore **three practical examples** of perception and contr
 
 For more detailed instructions and exercises, refer to the following demos:
 
-- [ArUco Marker Detection](px4_roscon_25/aruco_tracker/README.md)
-- [Teleoperation](px4_roscon_25/teleop/README.md)
-- [Precision Landing](px4_roscon_25/precision_land/README.md)
-- [Precision Landing with Executor](px4_roscon_25/precision_land_executor/README.md)
+- [ArUco Marker Detection](px4_roscon_workshop/aruco_tracker/README.md)
+- [Teleoperation](px4_roscon_workshop/teleop/README.md)
+- [Precision Landing](px4_roscon_workshop/precision_land/README.md)
+- [Precision Landing with Executor](px4_roscon_workshop/precision_land_executor/README.md)
 
 ### Q&A, Resources & Hardware Show-and-Tell
 

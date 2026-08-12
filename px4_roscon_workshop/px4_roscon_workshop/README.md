@@ -5,7 +5,7 @@ This package contains a launchfile to simplify the simulations startup.
 To use it, run
 
 ```sh
-ros2 launch px4_roscon_25 common.launch.py
+ros2 launch px4_roscon_workshop common.launch.py
 ```
 
 The launchfile will

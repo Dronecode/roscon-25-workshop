@@ -30,10 +30,10 @@ When the simulation is running you can see the GZ topics:
 gz topic -l
 ```
 
-You can now launch the [common](../px4_roscon_25/README.md) launchfile
+You can now launch the [common](../px4_roscon_workshop/README.md) launchfile
 
 ```sh
-ros2 launch px4_roscon_25 common.launch.py
+ros2 launch px4_roscon_workshop common.launch.py
 ```
 
 and then the ArUco tracker launchfile.

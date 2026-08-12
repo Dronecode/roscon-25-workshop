@@ -4,31 +4,31 @@
         <visual name="base_link_visual">
             <origin xyz="0 0 .025" rpy="0 0 3.141592654"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/NXP-HGD-CF.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/NXP-HGD-CF.dae" />
             </geometry>
         </visual>
         <visual name="5010_motor_base_0">
             <origin xyz="0.174 0.174 .032" rpy="0 0 -.45"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/5010Base.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/5010Base.dae" />
             </geometry>
         </visual>
         <visual name="5010_motor_base_1">
             <origin xyz="-0.174 0.174 .032" rpy="0 0 -.45"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/5010Base.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/5010Base.dae" />
             </geometry>
         </visual>
         <visual name="5010_motor_base_2">
             <origin xyz="0.174 -0.174 .032" rpy="0 0 -.45"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/5010Base.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/5010Base.dae" />
             </geometry>
         </visual>
         <visual name="5010_motor_base_3">
             <origin xyz="-0.174 -0.174 .032" rpy="0 0 -.45"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/5010Base.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/5010Base.dae" />
             </geometry>
         </visual>
     </link>
@@ -37,14 +37,14 @@
         <visual name="rotor_0_visual">
             <origin xyz="-0.022 -0.14638461538461536 -0.016" rpy="0 0 0"/>
             <geometry>
-                <mesh scale="0.8461538461538461 0.8461538461538461 0.8461538461538461" filename="package://px4_roscon_25/meshes/1345_prop_ccw.stl" />
+                <mesh scale="0.8461538461538461 0.8461538461538461 0.8461538461538461" filename="package://px4_roscon_workshop/meshes/1345_prop_ccw.stl" />
             </geometry>
         </visual>
     -->
         <visual name="rotor_0_visual_motor_bell">
             <origin xyz="0 0 -.032" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/5010Bell.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/5010Bell.dae" />
             </geometry>
         </visual>
     </link>
@@ -58,14 +58,14 @@
         <visual name="rotor_0_visual">
             <origin xyz="-0.022 -0.14638461538461536 -0.016" rpy="0 0 0"/>
             <geometry>
-                <mesh scale="0.8461538461538461 0.8461538461538461 0.8461538461538461" filename="package://px4_roscon_25/meshes/1345_prop_ccw.stl" />
+                <mesh scale="0.8461538461538461 0.8461538461538461 0.8461538461538461" filename="package://px4_roscon_workshop/meshes/1345_prop_ccw.stl" />
             </geometry>
         </visual>
     -->
         <visual name="rotor_0_visual_motor_bell">
             <origin xyz="0 0 -.032" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/5010Bell.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/5010Bell.dae" />
             </geometry>
         </visual>
     </link>
@@ -79,14 +79,14 @@
         <visual name="rotor_0_visual">
             <origin xyz="-0.022 -0.14638461538461536 -0.016" rpy="0 0 0"/>
             <geometry>
-                <mesh scale="0.8461538461538461 0.8461538461538461 0.8461538461538461" filename="package://px4_roscon_25/meshes/1345_prop_ccw.stl" />
+                <mesh scale="0.8461538461538461 0.8461538461538461 0.8461538461538461" filename="package://px4_roscon_workshop/meshes/1345_prop_ccw.stl" />
             </geometry>
         </visual>
     -->
         <visual name="rotor_0_visual_motor_bell">
             <origin xyz="0 0 -.032" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/5010Bell.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/5010Bell.dae" />
             </geometry>
         </visual>
     </link>
@@ -100,14 +100,14 @@
         <visual name="rotor_0_visual">
             <origin xyz="-0.022 -0.14638461538461536 -0.016" rpy="0 0 0"/>
             <geometry>
-                <mesh scale="0.8461538461538461 0.8461538461538461 0.8461538461538461" filename="package://px4_roscon_25/meshes/1345_prop_ccw.stl" />
+                <mesh scale="0.8461538461538461 0.8461538461538461 0.8461538461538461" filename="package://px4_roscon_workshop/meshes/1345_prop_ccw.stl" />
             </geometry>
         </visual>
     -->
         <visual name="rotor_0_visual_motor_bell">
             <origin xyz="0 0 -.032" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="package://px4_roscon_25/meshes/5010Bell.dae" />
+                <mesh filename="package://px4_roscon_workshop/meshes/5010Bell.dae" />
             </geometry>
         </visual>
     </link>

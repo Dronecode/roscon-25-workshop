@@ -57,7 +57,7 @@ The current waypoints require a velocity limit, you can set it in QGC.
 1. Launch the common launchfile
 
    ```sh
-   ros2 launch px4_roscon_25 common.launch.py
+   ros2 launch px4_roscon_workshop common.launch.py
    ```
 
 2. Start the ArUco tracker node:
