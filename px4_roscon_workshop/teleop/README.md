@@ -24,6 +24,8 @@ and finally the `teleop` launchfile and the _keyboard_monitor_ node.
 ros2 launch teleop teleop.launch.py
 ```
 
+use the argument `px4_autopilot_path` (default value `'~/PX4-Autopilot'`) to set the path for your PX4 installation.
+
 ```sh
 ros2 run teleop_twist_rpyt_keyboard teleop_twist_rpyt_keyboard
 ```
