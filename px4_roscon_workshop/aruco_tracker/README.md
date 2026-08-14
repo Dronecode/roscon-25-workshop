@@ -12,22 +12,7 @@ https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html
 After starting the container, we will start Gazebo loading the [`aruco`](https://github.com/PX4/PX4-gazebo-models/blob/e05f4312d3f28aa621157610584a4870406cb6d3/worlds/aruco.sdf) world:
 
 ```sh
-python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/ --world aruco
-```
-
-Then we spawn the drone and connect PX4 to it.
-
-```sh
-PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4014 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
-```
-
-Here we used `PX4_SYS_AUTOSTART=4014` which set the Gazebo model to [x500_mono_came_down](https://github.com/PX4/PX4-gazebo-models/tree/e05f4312d3f28aa621157610584a4870406cb6d3/models/x500_mono_cam_down).
-Don't forget to start QGC too.
-
-When the simulation is running you can see the GZ topics:
-
-```sh
-gz topic -l
+make px4_sitl_gz_x500_mono_cam_down_aruco
 ```
 
 You can now launch the [common](../px4_roscon_workshop/README.md) launchfile
