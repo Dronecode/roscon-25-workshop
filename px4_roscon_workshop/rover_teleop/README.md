@@ -22,6 +22,8 @@ ros2 launch rover_teleop rover_launch.py
 
 use the launch argument `px4_autopilot_path` to provide the path to the local PX4-Autopilot repo.
 
+On a different terminal, start the gazebo GUI with `gz sim -g`.
+
 Run the keyboard teleop:
 
 ```sh
