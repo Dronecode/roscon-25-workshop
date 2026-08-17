@@ -8,23 +8,19 @@ left/right wheel speed difference.
 ## Build
 
 ```sh
-colcon build --symlink-install --packages-select rover_teleop
+colcon build --symlink-install --packages-up-to rover_teleop
 source install/setup.bash
 ```
 
 ## Run
 
-Spawn the stock PX4 differential rover from your local `PX4-Autopilot`:
+Spawn the scaled-up PX4 differential rover and launch the teleop:
 
 ```sh
-make px4_sitl gz_rover_differential
+ros2 launch rover_teleop rover_launch.py
 ```
 
-Run the teleop node:
-
-```sh
-ros2 run rover_teleop rover_teleop
-```
+use the launch argument `px4_autopilot_path` to provide the path to the local PX4-Autopilot repo.
 
 Run the keyboard teleop:
 
@@ -35,7 +31,7 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 Just like in the Custom Mode demo, the teleop mode requires you to manually activate it and arm the rover!
 
 A custom, scaled-up rover model (`rover_differential_xl`) is included in
-[`models/`](./models) for future use but isn't used by this workflow yet.
+[`models/`](./models).
 
 ## Exercise
 
