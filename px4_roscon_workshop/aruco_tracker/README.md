@@ -12,7 +12,7 @@ https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html
 After starting the container, we will start Gazebo loading the [`aruco`](https://github.com/PX4/PX4-gazebo-models/blob/e05f4312d3f28aa621157610584a4870406cb6d3/worlds/aruco.sdf) world:
 
 ```sh
-make px4_sitl_gz_x500_mono_cam_down_aruco
+make px4_sitl gz_x500_mono_cam_down_aruco
 ```
 
 You can now launch the [common](../px4_roscon_workshop/README.md) launchfile
