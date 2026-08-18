@@ -66,7 +66,7 @@ def _launch_setup(context):
             }.items(),
         ),
         ExecuteProcess(
-            cmd=['MicroXRCEAgent', 'udp4', '--port', '8888'],
+            cmd=['MicroXRCEAgent', 'udp4', '--port', '8888', '-v', '1'],
             name='microxrce_agent',
             output='screen',
         ),
