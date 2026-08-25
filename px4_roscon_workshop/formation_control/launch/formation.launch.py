@@ -7,6 +7,13 @@ from launch.substitutions import EnvironmentVariable, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
+FORMATION_CONTROL_EXECUTABLE = (
+    'px4_formation_control',
+    'px4_formation_control_executor_exercise',
+    'px4_formation_control_executor_solution',
+)
+ACTIVE_EXECUTABLE_IDX = 2
+
 
 def generate_launch_description() -> LaunchDescription:
     px4_roscon_workshop_share = FindPackageShare('px4_roscon_workshop').find(
@@ -85,7 +92,7 @@ def generate_launch_description() -> LaunchDescription:
         ),
         Node(
             package='px4_formation_control',
-            executable='px4_formation_control',
+            executable=FORMATION_CONTROL_EXECUTABLE[ACTIVE_EXECUTABLE_IDX],
             name='formation_controller_0',
             output='screen',
             parameters=[{
@@ -98,7 +105,7 @@ def generate_launch_description() -> LaunchDescription:
         ),
         Node(
             package='px4_formation_control',
-            executable='px4_formation_control',
+            executable=FORMATION_CONTROL_EXECUTABLE[ACTIVE_EXECUTABLE_IDX],
             name='formation_controller_1',
             output='screen',
             parameters=[{
@@ -111,7 +118,7 @@ def generate_launch_description() -> LaunchDescription:
         ),
         Node(
             package='px4_formation_control',
-            executable='px4_formation_control',
+            executable=FORMATION_CONTROL_EXECUTABLE[ACTIVE_EXECUTABLE_IDX],
             name='formation_controller_2',
             output='screen',
             parameters=[{
