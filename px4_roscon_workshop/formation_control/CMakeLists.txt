@@ -27,6 +27,7 @@ include_directories(
 
 add_executable(px4_formation_control
     src/main.cpp
+    src/formation_control.cpp
 )
 
 ament_target_dependencies(px4_formation_control
