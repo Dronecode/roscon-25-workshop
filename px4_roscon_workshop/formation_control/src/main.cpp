@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     }
   }
 
-  FlightModeTest mode(*node, node->get_parameter("px4_ns").as_string());
+  FormationControlMode mode(*node, node->get_parameter("px4_ns").as_string());
   rclcpp::spin(node);
 
   rclcpp::shutdown();

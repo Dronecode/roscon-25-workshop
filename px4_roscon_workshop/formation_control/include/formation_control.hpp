@@ -21,9 +21,9 @@ static const std::string kName = "Formation";
 
 using namespace px4_ros2::literals;  // NOLINT
 
-class FlightModeTest : public px4_ros2::ModeBase {
+class FormationControlMode : public px4_ros2::ModeBase {
  public:
-  explicit FlightModeTest(rclcpp::Node& node, const std::string& topic_namespace_prefix = "")
+  explicit FormationControlMode(rclcpp::Node& node, const std::string& topic_namespace_prefix = "")
       : ModeBase(node, Settings{kName}.preventArming(true), topic_namespace_prefix),
         _tf_prefix(node.get_parameter("tf_prefix").as_string()),
 				_neighbor_distances(node.get_parameter("neighbor_distances").as_double_array()),
@@ -93,7 +93,7 @@ class FlightModeTest : public px4_ros2::ModeBase {
 				_tf_broadcaster->sendTransform(tf_msg);
 			}
     });
-		RCLCPP_INFO(this->node().get_logger(), "FlightModeTest initialized with %zu neighbors, gain=%f",
+		RCLCPP_INFO(this->node().get_logger(), "FormationControlMode initialized with %zu neighbors, gain=%f",
 								_neighbor_base_link_frames.size(), _gain);
 		if (!this->doRegister()) {
       throw px4_ros2::Exception("Registration failed");
