@@ -19,18 +19,18 @@ find_package(GeographicLib REQUIRED)
 find_package(px4_ros2_cpp REQUIRED)
 
 
-include_directories(
-    include
+add_library(px4_formation_control_lib STATIC
+    src/formation_control.cpp
+)
+
+target_include_directories(px4_formation_control_lib PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
     ${Eigen3_INCLUDE_DIRS}
     ${GeographicLib_INCLUDE_DIRS}
 )
 
-add_executable(px4_formation_control
-    src/main.cpp
-    src/formation_control.cpp
-)
-
-ament_target_dependencies(px4_formation_control
+ament_target_dependencies(px4_formation_control_lib
     rclcpp
     Eigen3
     px4_ros2_cpp
@@ -39,15 +39,35 @@ ament_target_dependencies(px4_formation_control
     tf2_ros
 )
 
-target_link_libraries(px4_formation_control
+target_link_libraries(px4_formation_control_lib
     ${GeographicLib_LIBRARIES}
 )
 
-target_compile_features(px4_formation_control PUBLIC c_std_99 cxx_std_20)
+target_compile_features(px4_formation_control_lib
+    PUBLIC c_std_99 cxx_std_20)
 
+add_executable(px4_formation_control
+    src/main.cpp
+)
+
+target_link_libraries(px4_formation_control
+    px4_formation_control_lib
+)
+ament_target_dependencies(px4_formation_control
+    rclcpp
+    px4_ros2_cpp
+)
+target_compile_features(px4_formation_control
+    PUBLIC c_std_99 cxx_std_20)
 install(
-    TARGETS px4_formation_control
+    TARGETS
+        px4_formation_control_lib
+        px4_formation_control
     DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY include/
+    DESTINATION include
 )
 
 install(DIRECTORY launch
