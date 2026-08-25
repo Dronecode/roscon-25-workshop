@@ -46,7 +46,26 @@ ros2 launch px4_formation_control formation.launch.py \
 	world:=default
 ```
 
-After startup, use QGroundControl to activate the `Formation` mode for the vehicles and arm them according to the PX4 safety rules. The mode is configured to prevent arming from the mode itself, so manual activation and arming may be required.
+After startup, use QGroundControl to activate the required mode and arm the vehicles according to the PX4 safety rules. Arming is allowed while the formation mode is active.
+
+## Executor exercise
+
+The package includes three executable variants:
+
+- `px4_formation_control`: the original formation mode. Takeoff then activate `Formation` manually.
+- `px4_formation_control_executor_exercise`: the workshop exercise. Complete the node by creating and registering a `px4_ros2::ModeExecutorBase` that takes off and then schedules the formation mode.
+- `px4_formation_control_executor_solution`: the completed exercise. Its executor starts with a 2 m takeoff, activates the formation mode when takeoff completes, and waits for disarming when the formation mode finishes.
+
+The launch file selects the solution by default. To try another variant, change `ACTIVE_EXECUTABLE_IDX` in `launch/formation.launch.py`:
+
+```python
+FORMATION_CONTROL_EXECUTABLE = (
+	'px4_formation_control',
+	'px4_formation_control_executor_exercise',
+	'px4_formation_control_executor_solution',
+)
+ACTIVE_EXECUTABLE_IDX = 1  # exercise
+```
 
 ## Default configuration
 
