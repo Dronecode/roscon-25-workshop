@@ -28,6 +28,11 @@ int main(int argc, char* argv[])
   }
 
   FormationControlMode mode(*node, node->get_parameter("px4_ns").as_string());
+  if (!mode.doRegister()) {
+    RCLCPP_ERROR(node->get_logger(), "Formation mode registration failed");
+    rclcpp::shutdown();
+    return 1;
+  }
   rclcpp::spin(node);
 
   rclcpp::shutdown();

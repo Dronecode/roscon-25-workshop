@@ -24,7 +24,7 @@ using namespace px4_ros2::literals;  // NOLINT
 class FormationControlMode : public px4_ros2::ModeBase {
  public:
   explicit FormationControlMode(rclcpp::Node& node, const std::string& topic_namespace_prefix = "")
-      : ModeBase(node, Settings{kName}.preventArming(true), topic_namespace_prefix),
+	: ModeBase(node, Settings{kName}, topic_namespace_prefix),
         _tf_prefix(node.get_parameter("tf_prefix").as_string()),
 				_neighbor_distances(node.get_parameter("neighbor_distances").as_double_array()),
 				_neighbor_prefixes(node.get_parameter("neighbor_prefixes").as_string_array()),
@@ -95,9 +95,6 @@ class FormationControlMode : public px4_ros2::ModeBase {
     });
 		RCLCPP_INFO(this->node().get_logger(), "FormationControlMode initialized with %zu neighbors, gain=%f",
 								_neighbor_base_link_frames.size(), _gain);
-		if (!this->doRegister()) {
-      throw px4_ros2::Exception("Registration failed");
-    }
   }
 
   void onActivate() override
