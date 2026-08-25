@@ -19,6 +19,8 @@ def _launch_setup(context):
     px4_instance = LaunchConfiguration('px4_instance').perform(context)
     px4_namespace = LaunchConfiguration('px4_ns').perform(context)
 
+    px4_extra_env_vars = LaunchConfiguration('px4_extra_env_vars').perform(context)
+
     ros_gz_sim_pkg_path = get_package_share_directory('ros_gz_sim')
     gz_spawn_path = path.join(ros_gz_sim_pkg_path, 'launch', 'gz_spawn_model.launch.py')
 
@@ -28,6 +30,14 @@ def _launch_setup(context):
         'PX4_GZ_STANDALONE': '1',
         'PX4_GZ_WORLD': world_name,
     }
+    px4_env.update(
+        dict(
+            (key.strip(), value.strip())
+            for env_var in px4_extra_env_vars.split(',')
+            if env_var.strip()
+            for key, value in [env_var.split('=', 1)]
+        )
+    )
     if px4_namespace:
         px4_env['PX4_UXRCE_DDS_NS'] = px4_namespace
 
@@ -49,7 +59,7 @@ def _launch_setup(context):
                 '-i', px4_instance,
             ],
             additional_env=px4_env,
-            name='px4',
+            name=f'px4_{px4_instance}',
             output='screen',
         ),
     ]
@@ -99,6 +109,11 @@ def generate_launch_description():
             'px4_ns',
             default_value='',
             description='PX4 namespace',
+        ),
+        DeclareLaunchArgument(
+            'px4_extra_env_vars',
+            default_value='',
+            description='Extra environment variables to set for PX4',
         ),
         DeclareLaunchArgument(
             'spawn_pos_x',

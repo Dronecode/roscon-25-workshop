@@ -52,6 +52,7 @@ def generate_launch_description() -> LaunchDescription:
                 'spawn_pos_x': '0.0',
                 'spawn_pos_y': '0.0',
                 'spawn_pos_z': '0.3',
+                'px4_extra_env_vars': 'PX4_PARAM_COM_RCL_EXCEPT=9,PX4_PARAM_COM_RC_IN_MODE=1,PX4_GZ_NO_FOLLOW=1',
             }.items(),
         ),
         IncludeLaunchDescription(
@@ -65,6 +66,7 @@ def generate_launch_description() -> LaunchDescription:
                 'spawn_pos_x': '10.0',
                 'spawn_pos_y': '0.0',
                 'spawn_pos_z': '0.3',
+                'px4_extra_env_vars': 'PX4_PARAM_COM_RCL_EXCEPT=9,PX4_PARAM_COM_RC_IN_MODE=4,PX4_GZ_NO_FOLLOW=1',
             }.items(),
         ),
         IncludeLaunchDescription(
@@ -78,6 +80,7 @@ def generate_launch_description() -> LaunchDescription:
                 'spawn_pos_x': '5.0',
                 'spawn_pos_y': '8.660254',
                 'spawn_pos_z': '0.3',
+                'px4_extra_env_vars': 'PX4_PARAM_COM_RCL_EXCEPT=9,PX4_PARAM_COM_RC_IN_MODE=4,PX4_GZ_NO_FOLLOW=1',
             }.items(),
         ),
         Node(
