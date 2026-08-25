@@ -54,11 +54,19 @@ add_executable(px4_formation_control_executor_solution
     src/solution.cpp
 )
 
+add_executable(px4_formation_control_executor_exercise
+    src/exercise.cpp
+)
+
 target_link_libraries(px4_formation_control
     px4_formation_control_lib
 )
 
 target_link_libraries(px4_formation_control_executor_solution
+    px4_formation_control_lib
+)
+
+target_link_libraries(px4_formation_control_executor_exercise
     px4_formation_control_lib
 )
 
@@ -72,10 +80,18 @@ ament_target_dependencies(px4_formation_control_executor_solution
     px4_ros2_cpp
 )
 
+ament_target_dependencies(px4_formation_control_executor_exercise
+    rclcpp
+    px4_ros2_cpp
+)
+
 target_compile_features(px4_formation_control
     PUBLIC c_std_99 cxx_std_20)
 
 target_compile_features(px4_formation_control_executor_solution
+    PUBLIC c_std_99 cxx_std_20)
+
+target_compile_features(px4_formation_control_executor_exercise
     PUBLIC c_std_99 cxx_std_20)
 
 install(
@@ -83,6 +99,7 @@ install(
         px4_formation_control_lib
         px4_formation_control
         px4_formation_control_executor_solution
+        px4_formation_control_executor_exercise
     DESTINATION lib/${PROJECT_NAME}
 )
 
