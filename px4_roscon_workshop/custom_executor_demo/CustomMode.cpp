@@ -50,7 +50,6 @@ void CustomWaypoints::onActivate() {
     _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f));
     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, -5.0f, -1.5f));
     _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
-    _trajectory_waypoints.push_back(Eigen::Vector3f(0.0f, 0.0f, -1.5f));
 
     _current_waypoint_index = 0; // Start at the first waypoint
     RCLCPP_INFO(_node.get_logger(), "CustomWaypoints mode activated");
@@ -94,7 +93,7 @@ void CustomYaw::updateSetpoint([[maybe_unused]] float dt_s) {
     Eigen::Vector3f velocity{0.0f, 0.0f, 0.0f};
     std::optional<Eigen::Vector3f> acceleration = std::nullopt;
     std::optional<float> yaw = std::nullopt;
-    std::optional<float> yaw_rate = 0.05f;
+    std::optional<float> yaw_rate = 0.2f;
     _trajectory_setpoint->update(velocity, acceleration, yaw, yaw_rate);
     _yaw_accumulator += yaw_rate.value() * dt_s; // Accumulate yaw rotation
     if (std::abs(_yaw_accumulator) > 2 * M_PI - 0.1f) {  // full rotation (tolerant)
