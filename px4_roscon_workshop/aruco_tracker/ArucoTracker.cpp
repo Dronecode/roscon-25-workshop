@@ -23,11 +23,13 @@ ArucoTrackerNode::ArucoTrackerNode() : Node("aruco_tracker_node")
   auto qos = rclcpp::QoS(1).best_effort();
 
   _image_sub = create_subscription<sensor_msgs::msg::Image>(
-      "/camera", qos, std::bind(&ArucoTrackerNode::image_callback, this, std::placeholders::_1));
+      "/camera", qos,
+      [this](const sensor_msgs::msg::Image::SharedPtr msg) { image_callback(msg); });
 
   _camera_info_sub = create_subscription<sensor_msgs::msg::CameraInfo>(
-      "/camera_info", qos,
-      std::bind(&ArucoTrackerNode::camera_info_callback, this, std::placeholders::_1));
+      "/camera_info", qos, [this](const sensor_msgs::msg::CameraInfo::SharedPtr msg) {
+        camera_info_callback(msg);
+      });
 
   // Publishers
   _image_pub = create_publisher<sensor_msgs::msg::Image>("/image_proc", qos);
@@ -45,11 +47,12 @@ void ArucoTrackerNode::loadParameters()
   get_parameter("marker_size", _param_marker_size);
 }
 
-void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
-{
+void ArucoTrackerNode::image_callback(
+    const sensor_msgs::msg::Image::SharedPtr& msg) {
   try {
     // Convert ROS image message to OpenCV image
-    cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+    cv_bridge::CvImagePtr const cv_ptr =
+        cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
 
     // Detect markers
     std::vector<int> ids;
@@ -58,13 +61,13 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr m
     cv::aruco::drawDetectedMarkers(cv_ptr->image, corners, ids);
 
     if (!_camera_matrix.empty() && !_dist_coeffs.empty()) {
-      std::vector<std::vector<cv::Point2f>> undistortedCorners;
+      std::vector<std::vector<cv::Point2f>> undistorted_corners;
 
       for (const auto& corner : corners) {
-        std::vector<cv::Point2f> undistortedCorner;
-        cv::undistortPoints(corner, undistortedCorner, _camera_matrix, _dist_coeffs, cv::noArray(),
-                            _camera_matrix);
-        undistortedCorners.push_back(undistortedCorner);
+        std::vector<cv::Point2f> undistorted_corner;
+        cv::undistortPoints(corner, undistorted_corner, _camera_matrix,
+                            _dist_coeffs, cv::noArray(), _camera_matrix);
+        undistorted_corners.push_back(undistorted_corner);
       }
 
       for (size_t i = 0; i < ids.size(); i++) {
@@ -73,8 +76,8 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr m
         }
 
         // Calculate marker size from camera intrinsics
-        float half_size = _param_marker_size / 2.0f;
-        std::vector<cv::Point3f> objectPoints = {
+        float const half_size = _param_marker_size / 2.0f;
+        std::vector<cv::Point3f> const object_points = {
             cv::Point3f(-half_size, half_size, 0),  // top left
             cv::Point3f(half_size, half_size, 0),   // top right
             cv::Point3f(half_size, -half_size, 0),  // bottom right
@@ -82,9 +85,10 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr m
         };
 
         // Use PnP solver to estimate pose
-        cv::Vec3d rvec, tvec;
-        cv::solvePnP(objectPoints, undistortedCorners[i], _camera_matrix, cv::noArray(), rvec,
-                     tvec);
+        cv::Vec3d rvec;
+        cv::Vec3d tvec;
+        cv::solvePnP(object_points, undistorted_corners[i], _camera_matrix,
+                     cv::noArray(), rvec, tvec);
         // Annotate the image
         cv::drawFrameAxes(cv_ptr->image, _camera_matrix, cv::noArray(), rvec, tvec,
                           _param_marker_size);
@@ -92,10 +96,12 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr m
         // Quaternion from rotation matrix
         cv::Mat rot_mat;
         cv::Rodrigues(rvec, rot_mat);
-        tf2::Matrix3x3 tf_rotation(
-            rot_mat.at<double>(0, 0), rot_mat.at<double>(0, 1), rot_mat.at<double>(0, 2),
-            rot_mat.at<double>(1, 0), rot_mat.at<double>(1, 1), rot_mat.at<double>(1, 2),
-            rot_mat.at<double>(2, 0), rot_mat.at<double>(2, 1), rot_mat.at<double>(2, 2));
+        tf2::Matrix3x3 const tf_rotation(
+            rot_mat.at<double>(0, 0), rot_mat.at<double>(0, 1),
+            rot_mat.at<double>(0, 2), rot_mat.at<double>(1, 0),
+            rot_mat.at<double>(1, 1), rot_mat.at<double>(1, 2),
+            rot_mat.at<double>(2, 0), rot_mat.at<double>(2, 1),
+            rot_mat.at<double>(2, 2));
         tf2::Quaternion quat;
         tf_rotation.getRotation(quat);
         quat.normalize();
@@ -134,8 +140,8 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr m
   }
 }
 
-void ArucoTrackerNode::camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr msg)
-{
+void ArucoTrackerNode::camera_info_callback(
+    const sensor_msgs::msg::CameraInfo::SharedPtr& msg) {
   // Always update the camera matrix and distortion coefficients from the new message
   _camera_matrix = cv::Mat(3, 3, CV_64F, const_cast<double*>(msg->k.data()))
                        .clone();  // Use clone to ensure a deep copy
@@ -168,23 +174,25 @@ void ArucoTrackerNode::camera_info_callback(const sensor_msgs::msg::CameraInfo::
   }
 }
 
-void ArucoTrackerNode::annotate_image(cv_bridge::CvImagePtr image, const cv::Vec3d& target)
-{
+void ArucoTrackerNode::annotate_image(const cv_bridge::CvImagePtr& image,
+                                      const cv::Vec3d& target) {
   // Annotate the image with the target position and marker size
   std::ostringstream stream;
   stream << std::fixed << std::setprecision(2);
   stream << "X: " << target[0] << " Y: " << target[1] << " Z: " << target[2];
-  std::string text_xyz = stream.str();
+  std::string const text_xyz = stream.str();
 
-  int fontFace = cv::FONT_HERSHEY_SIMPLEX;
-  double fontScale = 1;
-  int thickness = 2;
+  int const font_face = cv::FONT_HERSHEY_SIMPLEX;
+  double const font_scale = 1;
+  int const thickness = 2;
   int baseline = 0;
-  cv::Size textSize = cv::getTextSize(text_xyz, fontFace, fontScale, thickness, &baseline);
+  cv::Size const text_size =
+      cv::getTextSize(text_xyz, font_face, font_scale, thickness, &baseline);
   baseline += thickness;
-  cv::Point textOrg((image->image.cols - textSize.width - 10), (image->image.rows - 10));
-  cv::putText(image->image, text_xyz, textOrg, fontFace, fontScale, cv::Scalar(0, 255, 255),
-              thickness, 8);
+  cv::Point const text_org((image->image.cols - text_size.width - 10),
+                           (image->image.rows - 10));
+  cv::putText(image->image, text_xyz, text_org, font_face, font_scale,
+              cv::Scalar(0, 255, 255), thickness, 8);
 }
 
 int main(int argc, char** argv)

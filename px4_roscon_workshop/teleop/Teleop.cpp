@@ -1,5 +1,6 @@
 #include "Teleop.hpp"
 
+#include <cmath>
 #include <px4_ros2/components/node_with_mode.hpp>
 
 static const std::string kModeName = "Teleoperation";
@@ -55,7 +56,7 @@ void Teleop::updateSetpoint([[maybe_unused]] float dt_s)
 {
   const auto now = _clock->now();
 
-  if (((now - _last_twist_time) > _teleop_duration) || (_teleop_active == false)) {
+  if (((now - _last_twist_time) > _teleop_duration) || (!_teleop_active)) {
     RCLCPP_WARN(
         _node.get_logger(),
         "Teleop keyboard was closed or no Twist commands for %.0f seconds, exiting Teleop mode.",
@@ -66,23 +67,26 @@ void Teleop::updateSetpoint([[maybe_unused]] float dt_s)
 
   // Default values: zero velocity, no acceleration, no yaw input
   Eigen::Vector3f velocity_ned{0.f, 0.f, 0.f};
-  std::optional<Eigen::Vector3f> acceleration = std::nullopt;
-  std::optional<float> yaw = std::nullopt;
+  std::optional<Eigen::Vector3f> const acceleration = std::nullopt;
+  std::optional<float> const yaw = std::nullopt;
   std::optional<float> yaw_rate = std::nullopt;
 
   if ((now - _last_twist_time).seconds() <= 0.2) {
     // Convert Twist (assumed ENU) to NED
     // ENU: x=forward, y=left, z=up → NED: x=forward, y=right, z=down
     const geometry_msgs::msg::Twist& twist = _last_twist;
-    float yaw = _vehicle_attitude->yaw();  // Get current yaw from attitude
+    float const yaw =
+        _vehicle_attitude->yaw();  // Get current yaw from attitude
     // Convert to NED frame
     Eigen::Vector3f velocity_body;
     velocity_body.x() = twist.linear.x;
     velocity_body.y() = twist.linear.y;
     velocity_body.z() = twist.linear.z;
 
-    velocity_ned.x() = velocity_body.x() * cos(yaw) - velocity_body.y() * sin(yaw);
-    velocity_ned.y() = velocity_body.x() * sin(yaw) + velocity_body.y() * cos(yaw);
+    velocity_ned.x() =
+        velocity_body.x() * std::cos(yaw) - velocity_body.y() * std::sin(yaw);
+    velocity_ned.y() =
+        velocity_body.x() * std::sin(yaw) + velocity_body.y() * std::cos(yaw);
     velocity_ned.z() = velocity_body.z();
 
     yaw_rate = -twist.angular.z;  // ENU and NED both define yaw CCW from north

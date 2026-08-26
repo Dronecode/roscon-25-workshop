@@ -18,9 +18,10 @@ class ArucoTrackerNode : public rclcpp::Node {
  private:
   void loadParameters();
 
-  void image_callback(const sensor_msgs::msg::Image::SharedPtr msg);
-  void camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr msg);
-  void annotate_image(cv_bridge::CvImagePtr image, const cv::Vec3d& target);
+  void image_callback(const sensor_msgs::msg::Image::SharedPtr& msg);
+  void camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr& msg);
+  void annotate_image(const cv_bridge::CvImagePtr& image,
+                      const cv::Vec3d& target);
 
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr _image_sub;
   rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr _camera_info_sub;

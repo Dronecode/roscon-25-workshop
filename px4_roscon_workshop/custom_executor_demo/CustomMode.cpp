@@ -43,12 +43,12 @@ void CustomWaypoints::onActivate()
 {
   // Initialize waypoints
 
-  _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, -5.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
+  _trajectory_waypoints.emplace_back(5.0f, 0.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(5.0f, 5.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(-5.0f, 5.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(-5.0f, -5.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(5.0f, -5.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(5.0f, 0.0f, -1.5f);
 
   _current_waypoint_index = 0;  // Start at the first waypoint
   RCLCPP_INFO(_node.get_logger(), "CustomWaypoints mode activated");
@@ -92,9 +92,9 @@ void CustomYaw::onDeactivate()
 void CustomYaw::updateSetpoint([[maybe_unused]] float dt_s)
 {
   // Update the trajectory setpoint based on the current heading
-  Eigen::Vector3f velocity{0.0f, 0.0f, 0.0f};
-  std::optional<Eigen::Vector3f> acceleration = std::nullopt;
-  std::optional<float> yaw = std::nullopt;
+  Eigen::Vector3f const velocity{0.0f, 0.0f, 0.0f};
+  std::optional<Eigen::Vector3f> const acceleration = std::nullopt;
+  std::optional<float> const yaw = std::nullopt;
   std::optional<float> yaw_rate = 0.2f;
   _trajectory_setpoint->update(velocity, acceleration, yaw, yaw_rate);
   _yaw_accumulator += yaw_rate.value() * dt_s;         // Accumulate yaw rotation

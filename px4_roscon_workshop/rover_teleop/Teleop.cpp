@@ -56,7 +56,7 @@ void Teleop::updateSetpoint([[maybe_unused]] float dt_s)
 {
   const auto now = _clock->now();
 
-  if (((now - _last_twist_time) > _teleop_duration) || (_teleop_active == false)) {
+  if (((now - _last_twist_time) > _teleop_duration) || (!_teleop_active)) {
     RCLCPP_WARN(
         _node.get_logger(),
         "Teleop keyboard was closed or no Twist commands for %.0f seconds, exiting Teleop mode.",

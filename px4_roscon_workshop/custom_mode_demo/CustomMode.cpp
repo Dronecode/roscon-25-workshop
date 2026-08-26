@@ -25,13 +25,13 @@ void CustomWaypoints::onActivate()
 {
   // Initialize waypoints
 
-  _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 5.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, 5.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(-5.0f, -5.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, -5.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(5.0f, 0.0f, -1.5f));
-  _trajectory_waypoints.push_back(Eigen::Vector3f(0.0f, 0.0f, -1.5f));
+  _trajectory_waypoints.emplace_back(5.0f, 0.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(5.0f, 5.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(-5.0f, 5.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(-5.0f, -5.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(5.0f, -5.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(5.0f, 0.0f, -1.5f);
+  _trajectory_waypoints.emplace_back(0.0f, 0.0f, -1.5f);
 
   _current_waypoint_index = 0;
   RCLCPP_INFO(_node.get_logger(), "CustomWaypoints mode activated");

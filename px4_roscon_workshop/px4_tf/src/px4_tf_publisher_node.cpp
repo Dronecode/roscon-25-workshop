@@ -46,8 +46,8 @@ void Px4TfPublisherNode::make_static_transforms()
   tf_static_broadcaster_->sendTransform(static_transforms);
 }
 
-void Px4TfPublisherNode::handle_odometry(const px4_msgs::msg::VehicleOdometry::SharedPtr msg)
-{
+void Px4TfPublisherNode::handle_odometry(
+    const px4_msgs::msg::VehicleOdometry::SharedPtr& msg) {
   geometry_msgs::msg::TransformStamped t;
   t.header.stamp = this->get_clock()->now();
   t.header.frame_id = px4_tf_prefix_ + "odom_ned";

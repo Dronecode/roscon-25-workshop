@@ -16,5 +16,5 @@ class Px4TfPublisherNode : public rclcpp::Node {
   std::unique_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster_;
   rclcpp::Subscription<px4_msgs::msg::VehicleOdometry>::SharedPtr odom_sub_;
   void make_static_transforms();
-  void handle_odometry(const px4_msgs::msg::VehicleOdometry::SharedPtr msg);
+  void handle_odometry(const px4_msgs::msg::VehicleOdometry::SharedPtr& msg);
 };

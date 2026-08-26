@@ -25,7 +25,9 @@ FormationControlMode::FormationControlMode(rclcpp::Node& node,
       _has_global_position = true;
       if (msg.ref_timestamp != _last_global_ref_timestamp) {
         _last_global_ref_timestamp = msg.ref_timestamp;
-        double x, y, z;
+        double x;
+        double y;
+        double z;
         _geocentric.Forward(msg.ref_lat, msg.ref_lon, msg.ref_alt, x, y, z);
         RCLCPP_INFO(this->node().get_logger(),
                     "Global position reference updated: lat=%f, lon=%f, alt=%f", msg.ref_lat,
@@ -37,21 +39,21 @@ FormationControlMode::FormationControlMode(rclcpp::Node& node,
         _ekf_origin.transform.translation.x = x;
         _ekf_origin.transform.translation.y = y;
         _ekf_origin.transform.translation.z = z;
-        double cos_lat = std::cos(msg.ref_lat * M_PI / 180.0);
-        double sin_lat = std::sin(msg.ref_lat * M_PI / 180.0);
-        double cos_lon = std::cos(msg.ref_lon * M_PI / 180.0);
-        double sin_lon = std::sin(msg.ref_lon * M_PI / 180.0);
-        Eigen::Matrix3d R;
-        R(0, 0) = -sin_lon;
-        R(1, 0) = cos_lon;
-        R(2, 0) = 0.0;
-        R(0, 1) = -sin_lat * cos_lon;
-        R(1, 1) = -sin_lat * sin_lon;
-        R(2, 1) = cos_lat;
-        R(0, 2) = cos_lat * cos_lon;
-        R(1, 2) = cos_lat * sin_lon;
-        R(2, 2) = sin_lat;
-        Eigen::Quaterniond q(R);
+        double const cos_lat = std::cos(msg.ref_lat * M_PI / 180.0);
+        double const sin_lat = std::sin(msg.ref_lat * M_PI / 180.0);
+        double const cos_lon = std::cos(msg.ref_lon * M_PI / 180.0);
+        double const sin_lon = std::sin(msg.ref_lon * M_PI / 180.0);
+        Eigen::Matrix3d r;
+        r(0, 0) = -sin_lon;
+        r(1, 0) = cos_lon;
+        r(2, 0) = 0.0;
+        r(0, 1) = -sin_lat * cos_lon;
+        r(1, 1) = -sin_lat * sin_lon;
+        r(2, 1) = cos_lat;
+        r(0, 2) = cos_lat * cos_lon;
+        r(1, 2) = cos_lat * sin_lon;
+        r(2, 2) = sin_lat;
+        Eigen::Quaterniond q(r);
         _ekf_origin.transform.rotation.x = q.x();
         _ekf_origin.transform.rotation.y = q.y();
         _ekf_origin.transform.rotation.z = q.z();
@@ -91,15 +93,17 @@ void FormationControlMode::onActivate()
 void FormationControlMode::updateSetpoint(float dt_s)
 {
   Eigen::Vector2f velocity_en{0.0, 0.0};
-  for (const auto& toFrameRel : _neighbor_base_link_frames) {
+  for (const auto& to_frame_rel : _neighbor_base_link_frames) {
     geometry_msgs::msg::TransformStamped t;
     try {
-      t = _tf_buffer->lookupTransform(toFrameRel, _tf_prefix + "base_link", tf2::TimePointZero);
+      t = _tf_buffer->lookupTransform(to_frame_rel, _tf_prefix + "base_link",
+                                      tf2::TimePointZero);
       const Eigen::Vector2f relative_en{t.transform.translation.x, t.transform.translation.y};
       const float distance = relative_en.norm();
       const Eigen::Vector2f direction = relative_en.normalized();
       const float distance_error =
-          distance - _neighbor_distances[&toFrameRel - &_neighbor_base_link_frames[0]];
+          distance - _neighbor_distances[&to_frame_rel -
+                                         _neighbor_base_link_frames.data()];
       const Eigen::Vector2f individual_control = -distance_error * direction * _gain;
       velocity_en.x() += individual_control.x();
       velocity_en.y() += individual_control.y();

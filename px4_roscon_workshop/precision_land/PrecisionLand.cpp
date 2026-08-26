@@ -20,11 +20,16 @@ PrecisionLand::PrecisionLand(rclcpp::Node& node) : ModeBase(node, kModeName), _n
 
   _target_pose_sub = _node.create_subscription<geometry_msgs::msg::PoseStamped>(
       "/target_pose", rclcpp::QoS(1).best_effort(),
-      std::bind(&PrecisionLand::targetPoseCallback, this, std::placeholders::_1));
+      [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
+        targetPoseCallback(msg);
+      });
 
-  _vehicle_land_detected_sub = _node.create_subscription<px4_msgs::msg::VehicleLandDetected>(
-      "/fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
-      std::bind(&PrecisionLand::vehicleLandDetectedCallback, this, std::placeholders::_1));
+  _vehicle_land_detected_sub =
+      _node.create_subscription<px4_msgs::msg::VehicleLandDetected>(
+          "/fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
+          [this](const px4_msgs::msg::VehicleLandDetected::SharedPtr msg) {
+            vehicleLandDetectedCallback(msg);
+          });
 
   loadParameters();
 }
@@ -52,13 +57,12 @@ void PrecisionLand::loadParameters()
 }
 
 void PrecisionLand::vehicleLandDetectedCallback(
-    const px4_msgs::msg::VehicleLandDetected::SharedPtr msg)
-{
+    const px4_msgs::msg::VehicleLandDetected::SharedPtr& msg) {
   _land_detected = msg->landed;
 }
 
-void PrecisionLand::targetPoseCallback(const geometry_msgs::msg::PoseStamped::SharedPtr msg)
-{
+void PrecisionLand::targetPoseCallback(
+    const geometry_msgs::msg::PoseStamped::SharedPtr& msg) {
   if (_search_started) {
     auto tag = ArucoTag{
         .position =
@@ -78,16 +82,19 @@ PrecisionLand::ArucoTag PrecisionLand::getTagWorld(const ArucoTag& tag)
   // Convert from optical to FRD. This depends on camera mounting!
   // Optical (camera frame): X right, Y down, Z towards focal axis
   // FRD (drone frame/baselink): X forward, Y right, Z down
-  Eigen::Matrix3d R;
-  R << 0, -1, 0, 1, 0, 0, 0, 0, 1;
-  Eigen::Quaterniond quat_NED(R);
+  Eigen::Matrix3d r;
+  r << 0, -1, 0, 1, 0, 0, 0, 0, 1;
+  Eigen::Quaterniond const quat_ned(r);
 
   auto vehicle_position = Eigen::Vector3d(_vehicle_local_position->positionNed().cast<double>());
   auto vehicle_orientation = Eigen::Quaterniond(_vehicle_attitude->attitude().cast<double>());
 
-  Eigen::Affine3d drone_transform = Eigen::Translation3d(vehicle_position) * vehicle_orientation;
-  Eigen::Affine3d camera_transform = Eigen::Translation3d(0, 0, 0) * quat_NED;
-  Eigen::Affine3d tag_transform = Eigen::Translation3d(tag.position) * tag.orientation;
+  Eigen::Affine3d const drone_transform =
+      Eigen::Translation3d(vehicle_position) * vehicle_orientation;
+  Eigen::Affine3d const camera_transform =
+      Eigen::Translation3d(0, 0, 0) * quat_ned;
+  Eigen::Affine3d const tag_transform =
+      Eigen::Translation3d(tag.position) * tag.orientation;
   Eigen::Affine3d tag_world_transform = drone_transform * camera_transform * tag_transform;
 
   ArucoTag world_tag = {
@@ -113,7 +120,7 @@ void PrecisionLand::onDeactivate()
 
 void PrecisionLand::updateSetpoint(float dt_s)
 {
-  bool target_lost = checkTargetTimeout();
+  bool const target_lost = checkTargetTimeout();
 
   if (target_lost && !_target_lost_prev) {
     RCLCPP_INFO(_node.get_logger(), "Target lost: State %s", stateName(_state).c_str());
@@ -204,28 +211,30 @@ void PrecisionLand::updateSetpoint(float dt_s)
 
 Eigen::Vector2f PrecisionLand::calculateVelocitySetpointXY()
 {
-  float p_gain = _param_vel_p_gain;
-  float i_gain = _param_vel_i_gain;
+  float const p_gain = _param_vel_p_gain;
+  float const i_gain = _param_vel_i_gain;
 
   // P component
-  float delta_pos_x = _vehicle_local_position->positionNed().x() - _tag.position.x();
-  float delta_pos_y = _vehicle_local_position->positionNed().y() - _tag.position.y();
+  float const delta_pos_x =
+      _vehicle_local_position->positionNed().x() - _tag.position.x();
+  float const delta_pos_y =
+      _vehicle_local_position->positionNed().y() - _tag.position.y();
 
   // I component
   _vel_x_integral += delta_pos_x;
   _vel_y_integral += delta_pos_y;
-  float max_integral = _param_max_velocity;
+  float const max_integral = _param_max_velocity;
   _vel_x_integral = std::clamp(_vel_x_integral, -1.f * max_integral, max_integral);
   _vel_y_integral = std::clamp(_vel_y_integral, -1.f * max_integral, max_integral);
 
-  float Xp = delta_pos_x * p_gain;
-  float Xi = _vel_x_integral * i_gain;
-  float Yp = delta_pos_y * p_gain;
-  float Yi = _vel_y_integral * i_gain;
+  float const xp = delta_pos_x * p_gain;
+  float const xi = _vel_x_integral * i_gain;
+  float const yp = delta_pos_y * p_gain;
+  float const yi = _vel_y_integral * i_gain;
 
   // Sum P and I gains
-  float vx = -1.f * (Xp + Xi);
-  float vy = -1.f * (Yp + Yi);
+  float vx = -1.f * (xp + xi);
+  float vy = -1.f * (yp + yi);
 
   // 0.1m/s min vel and 3m/s max vel
   vx = std::clamp(vx, -1.f * _param_max_velocity, _param_max_velocity);
@@ -252,21 +261,22 @@ void PrecisionLand::generateSearchWaypoints()
   // Generate spiral search waypoints
   // The search waypoints are generated in the NED frame
   // Parameters for the search pattern
-  double start_x = _vehicle_local_position->positionNed().x();
-  double start_y = _vehicle_local_position->positionNed().y();
+  double const start_x = _vehicle_local_position->positionNed().x();
+  double const start_y = _vehicle_local_position->positionNed().y();
   double current_z = _vehicle_local_position->positionNed().z();
   auto min_z = -1.0;
 
-  double max_radius = 2.0;
-  double layer_spacing = 0.5;
-  int points_per_layer = 16;
+  double const max_radius = 2.0;
+  double const layer_spacing = 0.5;
+  int const points_per_layer = 16;
   std::vector<Eigen::Vector3f> waypoints;
 
   // Generate waypoints
   // Calculate the number of layers needed
-  int num_layers = (static_cast<int>((min_z - current_z) / layer_spacing) / 2) < 1
-                       ? 1
-                       : (static_cast<int>((min_z - current_z) / layer_spacing) / 2);
+  int const num_layers =
+      (static_cast<int>((min_z - current_z) / layer_spacing) / 2) < 1
+          ? 1
+          : (static_cast<int>((min_z - current_z) / layer_spacing) / 2);
 
   // Generate waypoints
   for (int layer = 0; layer < num_layers; ++layer) {
@@ -276,12 +286,12 @@ void PrecisionLand::generateSearchWaypoints()
     double radius = 0.0;
 
     for (int point = 0; point < points_per_layer + 1; ++point) {
-      double angle = 2.0 * M_PI * point / points_per_layer;
-      double x = start_x + radius * cos(angle);
-      double y = start_y + radius * sin(angle);
-      double z = current_z;
+      double const angle = 2.0 * M_PI * point / points_per_layer;
+      double const x = start_x + radius * cos(angle);
+      double const y = start_y + radius * sin(angle);
+      double const z = current_z;
 
-      layer_waypoints.push_back(Eigen::Vector3f(x, y, z));
+      layer_waypoints.emplace_back(x, y, z);
       radius += max_radius / points_per_layer;
     }
 
