@@ -4,8 +4,8 @@ using namespace px4_ros2::literals;  // NOLINT
 
 static const std::string kName = "Formation";
 
-FormationControlMode::FormationControlMode(
-    rclcpp::Node& node, const std::string& topic_namespace_prefix)
+FormationControlMode::FormationControlMode(rclcpp::Node& node,
+                                           const std::string& topic_namespace_prefix)
     : ModeBase(node, Settings{kName}, topic_namespace_prefix),
       _tf_prefix(node.get_parameter("tf_prefix").as_string()),
       _neighbor_distances(node.get_parameter("neighbor_distances").as_double_array()),
@@ -28,10 +28,10 @@ FormationControlMode::FormationControlMode(
         double x, y, z;
         _geocentric.Forward(msg.ref_lat, msg.ref_lon, msg.ref_alt, x, y, z);
         RCLCPP_INFO(this->node().get_logger(),
-                    "Global position reference updated: lat=%f, lon=%f, alt=%f",
-                    msg.ref_lat, msg.ref_lon, msg.ref_alt);
-        RCLCPP_INFO(this->node().get_logger(),
-                    "ECEF position reference updated: x=%f, y=%f, z=%f", x, y, z);
+                    "Global position reference updated: lat=%f, lon=%f, alt=%f", msg.ref_lat,
+                    msg.ref_lon, msg.ref_alt);
+        RCLCPP_INFO(this->node().get_logger(), "ECEF position reference updated: x=%f, y=%f, z=%f",
+                    x, y, z);
         _ekf_origin.header.frame_id = "earth";
         _ekf_origin.child_frame_id = _tf_prefix + "map";
         _ekf_origin.transform.translation.x = x;
@@ -94,8 +94,7 @@ void FormationControlMode::updateSetpoint(float dt_s)
   for (const auto& toFrameRel : _neighbor_base_link_frames) {
     geometry_msgs::msg::TransformStamped t;
     try {
-      t = _tf_buffer->lookupTransform(
-          toFrameRel, _tf_prefix + "base_link", tf2::TimePointZero);
+      t = _tf_buffer->lookupTransform(toFrameRel, _tf_prefix + "base_link", tf2::TimePointZero);
       const Eigen::Vector2f relative_en{t.transform.translation.x, t.transform.translation.y};
       const float distance = relative_en.norm();
       const Eigen::Vector2f direction = relative_en.normalized();
@@ -109,8 +108,8 @@ void FormationControlMode::updateSetpoint(float dt_s)
     }
   }
   const px4_ros2::TrajectorySetpoint setpoint = px4_ros2::TrajectorySetpoint()
-      .withVelocityX(velocity_en.y())
-      .withVelocityY(velocity_en.x())
-      .withPositionZ(-2.0f);
+                                                    .withVelocityX(velocity_en.y())
+                                                    .withVelocityY(velocity_en.x())
+                                                    .withPositionZ(-2.0f);
   _trajectory_setpoint->update(setpoint);
 }

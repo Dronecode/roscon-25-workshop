@@ -2,40 +2,39 @@
 // ORIGINAL VERSION - ArucoTracker.hpp
 // ============================================================================
 #pragma once
-#include <memory>
-#include <rclcpp/rclcpp.hpp>
-#include <sensor_msgs/msg/image.hpp>
-#include <sensor_msgs/msg/camera_info.hpp>
 #include <cv_bridge/cv_bridge.hpp>
-#include <opencv2/opencv.hpp>
-#include <opencv2/aruco.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
+#include <memory>
+#include <opencv2/aruco.hpp>
+#include <opencv2/opencv.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/camera_info.hpp>
+#include <sensor_msgs/msg/image.hpp>
 
-class ArucoTrackerNode : public rclcpp::Node
-{
-public:
-	ArucoTrackerNode();
+class ArucoTrackerNode : public rclcpp::Node {
+ public:
+  ArucoTrackerNode();
 
-private:
-	void loadParameters();
+ private:
+  void loadParameters();
 
-	void image_callback(const sensor_msgs::msg::Image::SharedPtr msg);
-	void camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr msg);
-	void annotate_image(cv_bridge::CvImagePtr image, const cv::Vec3d& target);
+  void image_callback(const sensor_msgs::msg::Image::SharedPtr msg);
+  void camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr msg);
+  void annotate_image(cv_bridge::CvImagePtr image, const cv::Vec3d& target);
 
-	rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr _image_sub;
-	rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr _camera_info_sub;
-	rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr _image_pub;
-	rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr _target_pose_pub;
+  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr _image_sub;
+  rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr _camera_info_sub;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr _image_pub;
+  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr _target_pose_pub;
 
-	cv::Ptr<cv::aruco::Dictionary> _dictionary;
-	cv::Ptr<cv::aruco::DetectorParameters> _detector_params;
-	cv::Mat _camera_matrix;
-	cv::Mat _dist_coeffs;
+  cv::Ptr<cv::aruco::Dictionary> _dictionary;
+  cv::Ptr<cv::aruco::DetectorParameters> _detector_params;
+  cv::Mat _camera_matrix;
+  cv::Mat _dist_coeffs;
 
-	int _param_aruco_id {};
-	int _param_dictionary {};
-	double _param_marker_size {};
+  int _param_aruco_id{};
+  int _param_dictionary{};
+  double _param_marker_size{};
 };
 // // ============================================================================
 // // ALTERNATIVE VERSION - For exercises
