@@ -20,10 +20,8 @@ class PrecisionLand : public px4_ros2::ModeBase {
  public:
   explicit PrecisionLand(rclcpp::Node& node);
 
-  void targetPoseCallback(
-      const geometry_msgs::msg::PoseStamped::SharedPtr& msg);
-  void vehicleLandDetectedCallback(
-      const px4_msgs::msg::VehicleLandDetected::SharedPtr& msg);
+  void targetPoseCallback(const geometry_msgs::msg::PoseStamped::SharedPtr& msg);
+  void vehicleLandDetectedCallback(const px4_msgs::msg::VehicleLandDetected::SharedPtr& msg);
 
   // See ModeBasep
   void onActivate() override;

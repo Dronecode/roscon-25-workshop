@@ -96,14 +96,12 @@ void FormationControlMode::updateSetpoint(float dt_s)
   for (const auto& to_frame_rel : _neighbor_base_link_frames) {
     geometry_msgs::msg::TransformStamped t;
     try {
-      t = _tf_buffer->lookupTransform(to_frame_rel, _tf_prefix + "base_link",
-                                      tf2::TimePointZero);
+      t = _tf_buffer->lookupTransform(to_frame_rel, _tf_prefix + "base_link", tf2::TimePointZero);
       const Eigen::Vector2f relative_en{t.transform.translation.x, t.transform.translation.y};
       const float distance = relative_en.norm();
       const Eigen::Vector2f direction = relative_en.normalized();
       const float distance_error =
-          distance - _neighbor_distances[&to_frame_rel -
-                                         _neighbor_base_link_frames.data()];
+          distance - _neighbor_distances[&to_frame_rel - _neighbor_base_link_frames.data()];
       const Eigen::Vector2f individual_control = -distance_error * direction * _gain;
       velocity_en.x() += individual_control.x();
       velocity_en.y() += individual_control.y();

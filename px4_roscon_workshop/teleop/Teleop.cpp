@@ -75,18 +75,15 @@ void Teleop::updateSetpoint([[maybe_unused]] float dt_s)
     // Convert Twist (assumed ENU) to NED
     // ENU: x=forward, y=left, z=up → NED: x=forward, y=right, z=down
     const geometry_msgs::msg::Twist& twist = _last_twist;
-    float const yaw =
-        _vehicle_attitude->yaw();  // Get current yaw from attitude
+    float const yaw = _vehicle_attitude->yaw();  // Get current yaw from attitude
     // Convert to NED frame
     Eigen::Vector3f velocity_body;
     velocity_body.x() = twist.linear.x;
     velocity_body.y() = twist.linear.y;
     velocity_body.z() = twist.linear.z;
 
-    velocity_ned.x() =
-        velocity_body.x() * std::cos(yaw) - velocity_body.y() * std::sin(yaw);
-    velocity_ned.y() =
-        velocity_body.x() * std::sin(yaw) + velocity_body.y() * std::cos(yaw);
+    velocity_ned.x() = velocity_body.x() * std::cos(yaw) - velocity_body.y() * std::sin(yaw);
+    velocity_ned.y() = velocity_body.x() * std::sin(yaw) + velocity_body.y() * std::cos(yaw);
     velocity_ned.z() = velocity_body.z();
 
     yaw_rate = -twist.angular.z;  // ENU and NED both define yaw CCW from north

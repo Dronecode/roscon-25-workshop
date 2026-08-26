@@ -27,9 +27,8 @@ ArucoTrackerNode::ArucoTrackerNode() : Node("aruco_tracker_node")
       [this](const sensor_msgs::msg::Image::SharedPtr msg) { image_callback(msg); });
 
   _camera_info_sub = create_subscription<sensor_msgs::msg::CameraInfo>(
-      "/camera_info", qos, [this](const sensor_msgs::msg::CameraInfo::SharedPtr msg) {
-        camera_info_callback(msg);
-      });
+      "/camera_info", qos,
+      [this](const sensor_msgs::msg::CameraInfo::SharedPtr msg) { camera_info_callback(msg); });
 
   // Publishers
   _image_pub = create_publisher<sensor_msgs::msg::Image>("/image_proc", qos);
@@ -47,8 +46,8 @@ void ArucoTrackerNode::loadParameters()
   get_parameter("marker_size", _param_marker_size);
 }
 
-void ArucoTrackerNode::image_callback(
-    const sensor_msgs::msg::Image::SharedPtr& msg) {
+void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr& msg)
+{
   try {
     // Convert ROS image message to OpenCV image
     cv_bridge::CvImagePtr const cv_ptr =
@@ -65,8 +64,8 @@ void ArucoTrackerNode::image_callback(
 
       for (const auto& corner : corners) {
         std::vector<cv::Point2f> undistorted_corner;
-        cv::undistortPoints(corner, undistorted_corner, _camera_matrix,
-                            _dist_coeffs, cv::noArray(), _camera_matrix);
+        cv::undistortPoints(corner, undistorted_corner, _camera_matrix, _dist_coeffs, cv::noArray(),
+                            _camera_matrix);
         undistorted_corners.push_back(undistorted_corner);
       }
 
@@ -87,8 +86,8 @@ void ArucoTrackerNode::image_callback(
         // Use PnP solver to estimate pose
         cv::Vec3d rvec;
         cv::Vec3d tvec;
-        cv::solvePnP(object_points, undistorted_corners[i], _camera_matrix,
-                     cv::noArray(), rvec, tvec);
+        cv::solvePnP(object_points, undistorted_corners[i], _camera_matrix, cv::noArray(), rvec,
+                     tvec);
         // Annotate the image
         cv::drawFrameAxes(cv_ptr->image, _camera_matrix, cv::noArray(), rvec, tvec,
                           _param_marker_size);
@@ -97,11 +96,9 @@ void ArucoTrackerNode::image_callback(
         cv::Mat rot_mat;
         cv::Rodrigues(rvec, rot_mat);
         tf2::Matrix3x3 const tf_rotation(
-            rot_mat.at<double>(0, 0), rot_mat.at<double>(0, 1),
-            rot_mat.at<double>(0, 2), rot_mat.at<double>(1, 0),
-            rot_mat.at<double>(1, 1), rot_mat.at<double>(1, 2),
-            rot_mat.at<double>(2, 0), rot_mat.at<double>(2, 1),
-            rot_mat.at<double>(2, 2));
+            rot_mat.at<double>(0, 0), rot_mat.at<double>(0, 1), rot_mat.at<double>(0, 2),
+            rot_mat.at<double>(1, 0), rot_mat.at<double>(1, 1), rot_mat.at<double>(1, 2),
+            rot_mat.at<double>(2, 0), rot_mat.at<double>(2, 1), rot_mat.at<double>(2, 2));
         tf2::Quaternion quat;
         tf_rotation.getRotation(quat);
         quat.normalize();
@@ -140,8 +137,8 @@ void ArucoTrackerNode::image_callback(
   }
 }
 
-void ArucoTrackerNode::camera_info_callback(
-    const sensor_msgs::msg::CameraInfo::SharedPtr& msg) {
+void ArucoTrackerNode::camera_info_callback(const sensor_msgs::msg::CameraInfo::SharedPtr& msg)
+{
   // Always update the camera matrix and distortion coefficients from the new message
   _camera_matrix = cv::Mat(3, 3, CV_64F, const_cast<double*>(msg->k.data()))
                        .clone();  // Use clone to ensure a deep copy
@@ -174,8 +171,8 @@ void ArucoTrackerNode::camera_info_callback(
   }
 }
 
-void ArucoTrackerNode::annotate_image(const cv_bridge::CvImagePtr& image,
-                                      const cv::Vec3d& target) {
+void ArucoTrackerNode::annotate_image(const cv_bridge::CvImagePtr& image, const cv::Vec3d& target)
+{
   // Annotate the image with the target position and marker size
   std::ostringstream stream;
   stream << std::fixed << std::setprecision(2);
@@ -186,13 +183,11 @@ void ArucoTrackerNode::annotate_image(const cv_bridge::CvImagePtr& image,
   double const font_scale = 1;
   int const thickness = 2;
   int baseline = 0;
-  cv::Size const text_size =
-      cv::getTextSize(text_xyz, font_face, font_scale, thickness, &baseline);
+  cv::Size const text_size = cv::getTextSize(text_xyz, font_face, font_scale, thickness, &baseline);
   baseline += thickness;
-  cv::Point const text_org((image->image.cols - text_size.width - 10),
-                           (image->image.rows - 10));
-  cv::putText(image->image, text_xyz, text_org, font_face, font_scale,
-              cv::Scalar(0, 255, 255), thickness, 8);
+  cv::Point const text_org((image->image.cols - text_size.width - 10), (image->image.rows - 10));
+  cv::putText(image->image, text_xyz, text_org, font_face, font_scale, cv::Scalar(0, 255, 255),
+              thickness, 8);
 }
 
 int main(int argc, char** argv)
@@ -281,7 +276,8 @@ int main(int argc, char** argv)
 // 			for (const auto& corner : corners) {
 // 				std::vector<cv::Point2f> undistortedCorner;
 // 				cv::undistortPoints(corner, undistortedCorner, _camera_matrix,
-// _dist_coeffs, cv::noArray(), _camera_matrix); 				undistortedCorners.push_back(undistortedCorner);
+// _dist_coeffs, cv::noArray(), _camera_matrix);
+// undistortedCorners.push_back(undistortedCorner);
 // 			}
 
 // 			for (size_t i = 0; i < ids.size(); i++) {
@@ -290,8 +286,8 @@ int main(int argc, char** argv)
 // 				}
 // 				// verify the marker size using the distance to ground
 // 				float pixel_width = cv::norm(undistortedCorners[i][0] -
-// undistortedCorners[i][1]); 				float focal_length = _camera_matrix.at<double>(0, 0);
-// 				_calculated_marker_size = (pixel_width / focal_length) *
+// undistortedCorners[i][1]); 				float focal_length =
+// _camera_matrix.at<double>(0, 0); 				_calculated_marker_size = (pixel_width / focal_length) *
 // _distance_to_ground;
 // 				// RCLCPP_INFO(get_logger(), "Calculated marker size: %f",
 // _calculated_marker_size);
@@ -365,11 +361,11 @@ int main(int argc, char** argv)
 // 	// Log the first row of the camera matrix to verify correct values
 // 	RCLCPP_INFO(get_logger(), "Camera matrix updated:\n[%f, %f, %f]\n[%f, %f, %f]\n[%f, %f,
 // %f]", 		    _camera_matrix.at<double>(0, 0), _camera_matrix.at<double>(0, 1),
-// _camera_matrix.at<double>(0, 2), 		    _camera_matrix.at<double>(1, 0), _camera_matrix.at<double>(1,
-// 1), _camera_matrix.at<double>(1, 2), 		    _camera_matrix.at<double>(2, 0),
-// _camera_matrix.at<double>(2, 1), _camera_matrix.at<double>(2, 2)); 	RCLCPP_INFO(get_logger(),
-// "Camera Matrix: fx=%f, fy=%f, cx=%f, cy=%f", 		    _camera_matrix.at<double>(0, 0), // fx
-// 		    _camera_matrix.at<double>(1, 1), // fy
+// _camera_matrix.at<double>(0, 2), 		    _camera_matrix.at<double>(1, 0),
+// _camera_matrix.at<double>(1, 1), _camera_matrix.at<double>(1, 2),
+// _camera_matrix.at<double>(2, 0), _camera_matrix.at<double>(2, 1), _camera_matrix.at<double>(2,
+// 2)); 	RCLCPP_INFO(get_logger(), "Camera Matrix: fx=%f, fy=%f, cx=%f, cy=%f",
+// _camera_matrix.at<double>(0, 0), // fx 		    _camera_matrix.at<double>(1, 1), // fy
 // 		    _camera_matrix.at<double>(0, 2), // cx
 // 		    _camera_matrix.at<double>(1, 2)  // cy
 // 		   );

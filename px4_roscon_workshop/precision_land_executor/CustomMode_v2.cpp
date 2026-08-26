@@ -71,16 +71,13 @@ PrecisionLand::PrecisionLand(rclcpp::Node& node)
 
   _target_pose_sub = _node.create_subscription<geometry_msgs::msg::PoseStamped>(
       "/target_pose", rclcpp::QoS(1).best_effort(),
-      [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg) {
-        targetPoseCallback(msg);
-      });
+      [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg) { targetPoseCallback(msg); });
 
-  _vehicle_land_detected_sub =
-      _node.create_subscription<px4_msgs::msg::VehicleLandDetected>(
-          "/fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
-          [this](const px4_msgs::msg::VehicleLandDetected::SharedPtr msg) {
-            vehicleLandDetectedCallback(msg);
-          });
+  _vehicle_land_detected_sub = _node.create_subscription<px4_msgs::msg::VehicleLandDetected>(
+      "/fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
+      [this](const px4_msgs::msg::VehicleLandDetected::SharedPtr msg) {
+        vehicleLandDetectedCallback(msg);
+      });
 
   loadParameters();
 }
@@ -108,12 +105,13 @@ void PrecisionLand::loadParameters()
 }
 
 void PrecisionLand::vehicleLandDetectedCallback(
-    const px4_msgs::msg::VehicleLandDetected::SharedPtr& msg) {
+    const px4_msgs::msg::VehicleLandDetected::SharedPtr& msg)
+{
   _land_detected = msg->landed;
 }
 
-void PrecisionLand::targetPoseCallback(
-    const geometry_msgs::msg::PoseStamped::SharedPtr& msg) {
+void PrecisionLand::targetPoseCallback(const geometry_msgs::msg::PoseStamped::SharedPtr& msg)
+{
   if (_search_started) {
     auto tag = ArucoTag{
         .position =
@@ -142,10 +140,8 @@ PrecisionLand::ArucoTag PrecisionLand::getTagWorld(const ArucoTag& tag)
 
   Eigen::Affine3d const drone_transform =
       Eigen::Translation3d(vehicle_position) * vehicle_orientation;
-  Eigen::Affine3d const camera_transform =
-      Eigen::Translation3d(0, 0, 0) * quat_ned;
-  Eigen::Affine3d const tag_transform =
-      Eigen::Translation3d(tag.position) * tag.orientation;
+  Eigen::Affine3d const camera_transform = Eigen::Translation3d(0, 0, 0) * quat_ned;
+  Eigen::Affine3d const tag_transform = Eigen::Translation3d(tag.position) * tag.orientation;
   Eigen::Affine3d tag_world_transform = drone_transform * camera_transform * tag_transform;
 
   ArucoTag world_tag = {
@@ -266,10 +262,8 @@ Eigen::Vector2f PrecisionLand::calculateVelocitySetpointXY()
   float const i_gain = _param_vel_i_gain;
 
   // P component
-  float const delta_pos_x =
-      _vehicle_local_position->positionNed().x() - _tag.position.x();
-  float const delta_pos_y =
-      _vehicle_local_position->positionNed().y() - _tag.position.y();
+  float const delta_pos_x = _vehicle_local_position->positionNed().x() - _tag.position.x();
+  float const delta_pos_y = _vehicle_local_position->positionNed().y() - _tag.position.y();
 
   // I component
   _vel_x_integral += delta_pos_x;
@@ -324,10 +318,9 @@ void PrecisionLand::generateSearchWaypoints()
 
   // Generate waypoints
   // Calculate the number of layers needed
-  int const num_layers =
-      (static_cast<int>((min_z - current_z) / layer_spacing) / 2) < 1
-          ? 1
-          : (static_cast<int>((min_z - current_z) / layer_spacing) / 2);
+  int const num_layers = (static_cast<int>((min_z - current_z) / layer_spacing) / 2) < 1
+                             ? 1
+                             : (static_cast<int>((min_z - current_z) / layer_spacing) / 2);
 
   // Generate waypoints
   for (int layer = 0; layer < num_layers; ++layer) {
