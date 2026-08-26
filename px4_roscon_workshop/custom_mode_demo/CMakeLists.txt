@@ -25,8 +25,20 @@ ament_target_dependencies(${PROJECT_NAME}
   geometry_msgs
 )
 
+# Solution executable: go-to setpoints instead of trajectory setpoints
+add_executable(${PROJECT_NAME}_solution
+  solution.cpp
+)
+
+ament_target_dependencies(${PROJECT_NAME}_solution
+  rclcpp
+  px4_ros2_cpp
+  Eigen3
+  geometry_msgs
+)
+
 # Install the binary
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_solution
   DESTINATION lib/${PROJECT_NAME}
 )
 
