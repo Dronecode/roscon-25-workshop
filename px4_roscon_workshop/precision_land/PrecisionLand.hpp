@@ -45,7 +45,7 @@ class PrecisionLand : public px4_ros2::ModeBase {
   Eigen::Vector2f calculateVelocitySetpointXY();
   bool checkTargetTimeout();
   bool positionReached(const Eigen::Vector3f& target) const;
-	bool horizontalPositionReached(const Eigen::Vector3f& target) const;
+  bool horizontalPositionReached(const Eigen::Vector3f& target) const;
 
   enum class State {
     Idle,
