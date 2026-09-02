@@ -10,25 +10,23 @@ static const bool kEnableDebugOutput = true;
 
 using namespace px4_ros2::literals;
 
-namespace
-{
+namespace {
 // PX4's own multi-instance convention prefixes every fmu/... topic with
 // e.g. "/px4_1/" for instance 1 (instance 0 stays unprefixed). This lets
 // PrecisionLand target a specific instance instead of always defaulting
 // to instance 0, via the "px4_namespace" parameter, e.g. "/px4_1/".
-std::string readPx4NamespacePrefix(rclcpp::Node &node)
+std::string readPx4NamespacePrefix(rclcpp::Node& node)
 {
-	if (!node.has_parameter("px4_namespace")) {
-		node.declare_parameter<std::string>("px4_namespace", "");
-	}
+  if (!node.has_parameter("px4_namespace")) {
+    node.declare_parameter<std::string>("px4_namespace", "");
+  }
 
-	return node.get_parameter("px4_namespace").as_string();
+  return node.get_parameter("px4_namespace").as_string();
 }
-} // namespace
+}  // namespace
 
 PrecisionLand::PrecisionLand(rclcpp::Node& node)
-	: ModeBase(node, kModeName, readPx4NamespacePrefix(node))
-	, _node(node)
+    : ModeBase(node, kModeName, readPx4NamespacePrefix(node)), _node(node)
 {
   _trajectory_setpoint = std::make_shared<px4_ros2::TrajectorySetpointType>(*this);
 
@@ -122,14 +120,14 @@ PrecisionLand::ArucoTag PrecisionLand::getTagWorld(const ArucoTag& tag)
 
 void PrecisionLand::onActivate()
 {
-	// Don't generate waypoints from the current position here: right after
-	// activation the local position subscription may not have received a
-	// single message yet, and reading it (via positionNed()) would throw
-	// and abort the whole node. Defer it to the first Search cycle instead,
-	// where we can wait for valid data rather than crash on it.
-	_search_waypoints_generated = false;
-	_search_started = true;
-	switchToState(State::Search);
+  // Don't generate waypoints from the current position here: right after
+  // activation the local position subscription may not have received a
+  // single message yet, and reading it (via positionNed()) would throw
+  // and abort the whole node. Defer it to the first Search cycle instead,
+  // where we can wait for valid data rather than crash on it.
+  _search_waypoints_generated = false;
+  _search_started = true;
+  switchToState(State::Search);
 }
 
 void PrecisionLand::onDeactivate()
@@ -198,7 +196,7 @@ void PrecisionLand::updateSetpoint(float dt_s)
       }
 
       // Approach using position setpoints. Recomputed every cycle from the
-		  // latest tag position, so this also tracks a slowly moving target.
+      // latest tag position, so this also tracks a slowly moving target.
       auto target_position =
           Eigen::Vector3f(_tag.position.x(), _tag.position.y(), _approach_altitude);
 
@@ -362,9 +360,9 @@ bool PrecisionLand::positionReached(const Eigen::Vector3f& target) const
 
 bool PrecisionLand::horizontalPositionReached(const Eigen::Vector3f& target) const
 {
-	auto position = _vehicle_local_position->positionNed();
-	const auto delta_pos_xy = Eigen::Vector2f(target.x() - position.x(), target.y() - position.y());
-	return delta_pos_xy.norm() < _param_delta_position;
+  auto position = _vehicle_local_position->positionNed();
+  const auto delta_pos_xy = Eigen::Vector2f(target.x() - position.x(), target.y() - position.y());
+  return delta_pos_xy.norm() < _param_delta_position;
 }
 
 std::string PrecisionLand::stateName(State state)
