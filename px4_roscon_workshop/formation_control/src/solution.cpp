@@ -18,8 +18,7 @@ void FormationExecutor::onActivate()
 
 void FormationExecutor::onDeactivate(DeactivateReason reason)
 {
-  RCLCPP_INFO(node().get_logger(), "Formation executor deactivated: %d",
-              static_cast<int>(reason));
+  RCLCPP_INFO(node().get_logger(), "Formation executor deactivated: %d", static_cast<int>(reason));
 }
 
 void FormationExecutor::switchToState(State state, px4_ros2::Result previous_result)
@@ -32,17 +31,12 @@ void FormationExecutor::switchToState(State state, px4_ros2::Result previous_res
 
   switch (state) {
     case State::Takeoff:
-      takeoff(
-          [this](px4_ros2::Result result) {
-            switchToState(State::Formation, result);
-          },
-          2.0f);
+      takeoff([this](px4_ros2::Result result) { switchToState(State::Formation, result); }, 2.0f);
       break;
     case State::Formation:
-      scheduleMode(ownedMode().id(),
-                   [this](px4_ros2::Result result) {
-                     switchToState(State::WaitUntilDisarmed, result);
-                   });
+      scheduleMode(ownedMode().id(), [this](px4_ros2::Result result) {
+        switchToState(State::WaitUntilDisarmed, result);
+      });
       break;
     case State::WaitUntilDisarmed:
       waitUntilDisarmed([](px4_ros2::Result) {});
@@ -60,10 +54,10 @@ int main(int argc, char* argv[])
   node->declare_parameter("neighbor_distances", std::vector<double>{});
   node->declare_parameter("neighbor_prefixes", std::vector<std::string>{});
   node->declare_parameter("gain", 1.0);
-  
+
   if (kEnableDebugOutput) {
-    auto ret = rcutils_logging_set_logger_level(node->get_logger().get_name(),
-                                                RCUTILS_LOG_SEVERITY_DEBUG);
+    auto ret =
+        rcutils_logging_set_logger_level(node->get_logger().get_name(), RCUTILS_LOG_SEVERITY_DEBUG);
 
     if (ret != RCUTILS_RET_OK) {
       RCLCPP_ERROR(node->get_logger(), "Error setting severity: %s",

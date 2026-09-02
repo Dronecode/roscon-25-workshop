@@ -15,10 +15,10 @@ int main(int argc, char* argv[])
   node->declare_parameter("neighbor_distances", std::vector<double>{});
   node->declare_parameter("neighbor_prefixes", std::vector<std::string>{});
   node->declare_parameter("gain", 1.0);
-  
+
   if (kEnableDebugOutput) {
-    auto ret = rcutils_logging_set_logger_level(node->get_logger().get_name(),
-                                                RCUTILS_LOG_SEVERITY_DEBUG);
+    auto ret =
+        rcutils_logging_set_logger_level(node->get_logger().get_name(), RCUTILS_LOG_SEVERITY_DEBUG);
 
     if (ret != RCUTILS_RET_OK) {
       RCLCPP_ERROR(node->get_logger(), "Error setting severity: %s",
