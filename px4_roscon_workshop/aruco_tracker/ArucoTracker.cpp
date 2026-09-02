@@ -287,8 +287,8 @@ int main(int argc, char** argv)
 // 				// verify the marker size using the distance to ground
 // 				float pixel_width = cv::norm(undistortedCorners[i][0] -
 // undistortedCorners[i][1]); 				float focal_length =
-// _camera_matrix.at<double>(0, 0); 				_calculated_marker_size = (pixel_width / focal_length) *
-// _distance_to_ground;
+// _camera_matrix.at<double>(0, 0); 				_calculated_marker_size =
+// (pixel_width / focal_length) * _distance_to_ground;
 // 				// RCLCPP_INFO(get_logger(), "Calculated marker size: %f",
 // _calculated_marker_size);
 

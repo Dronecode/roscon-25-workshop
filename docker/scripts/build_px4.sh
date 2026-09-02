@@ -16,7 +16,7 @@ index fed292b9d1..1d34854077 100644
 @@ -126,15 +126,6 @@ then
  	set AUTOCNF yes
  fi
- 
+
 -# Allow overriding parameters via env variables: export PX4_PARAM_{name}={value}
 -env | while IFS='=' read -r line; do
 -  value=${line#*=}
@@ -32,7 +32,7 @@ index fed292b9d1..1d34854077 100644
 @@ -239,6 +230,15 @@ then
  	exit 1
  fi
- 
+
 +# Allow overriding parameters via env variables: export PX4_PARAM_{name}={value}
 +env | while IFS='=' read -r line; do
 +  value=${line#*=}
@@ -43,7 +43,7 @@ index fed292b9d1..1d34854077 100644
 +done
 +
  dataman start
- 
+
  # only start the simulator if not in replay mode, as both control the lockstep time
 EOF
 

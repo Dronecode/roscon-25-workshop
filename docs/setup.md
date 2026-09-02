@@ -35,7 +35,7 @@ Download QGC
 ### ROS 2 workspace setup
 
 1. Create a ROS 2 workspace
-   
+
     ```bash
     mkdir -p ~/workspaces/px4_roscon26_ws/src
     cd ~/workspaces/px4_roscon26_ws/src
@@ -51,14 +51,14 @@ Pick `ros-jazzy-desktop`.
     ```
 
 1. Clone the dependencies
-   
+
     ```bash
     cd ~/workspaces/px4_roscon26_ws
     vcs import src < ./src/roscon-25-workshop/jazzy.repos
     ```
 
 1. Install dependencies
-   
+
     ```bash
     cd ~/workspaces/px4_roscon26_ws
     source /opt/ros/jazzy/setup.bash
@@ -66,7 +66,7 @@ Pick `ros-jazzy-desktop`.
     ```
 
 1. Build the workspace
-   
+
     ```bash
     cd ~/workspaces/px4_roscon26_ws
     source /opt/ros/jazzy/setup.bash

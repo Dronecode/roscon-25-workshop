@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-from platform import node
 import rclpy
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
 
-import sys, select, termios, tty
+import sys
+import select
+import termios
+import tty
 
 settings = termios.tcgetattr(sys.stdin)
 
@@ -29,24 +31,24 @@ CTRL-C to quit
 
 # Format: (pitch, roll, throttle, yaw)
 moveBindings = {
-    'w': (1, 0, 0, 0),    # Pitch forward
-    's': (-1, 0, 0, 0),   # Pitch backward
-    'a': (0, -1, 0, 0),   # Roll left
-    'd': (0, 1, 0, 0),    # Roll right
-    'r': (0, 0, 1, 0),    # Throttle up
-    'f': (0, 0, -1, 0),   # Throttle down
-    'q': (0, 0, 0, 1),    # Yaw left
-    'e': (0, 0, 0, -1),   # Yaw right
+    "w": (1, 0, 0, 0),  # Pitch forward
+    "s": (-1, 0, 0, 0),  # Pitch backward
+    "a": (0, -1, 0, 0),  # Roll left
+    "d": (0, 1, 0, 0),  # Roll right
+    "r": (0, 0, 1, 0),  # Throttle up
+    "f": (0, 0, -1, 0),  # Throttle down
+    "q": (0, 0, 0, 1),  # Yaw left
+    "e": (0, 0, 0, -1),  # Yaw right
 }
 
 # Speed tuning bindings (linear, angular)
 speedBindings = {
-    't': (1.1, 1.1),  # Increase both
-    'g': (0.9, 0.9),  # Decrease both
-    'y': (1.1, 1.0),  # Increase linear only
-    'h': (0.9, 1.0),  # Decrease linear only
-    'u': (1.0, 1.1),  # Increase angular only
-    'j': (1.0, 0.9),  # Decrease angular only
+    "t": (1.1, 1.1),  # Increase both
+    "g": (0.9, 0.9),  # Decrease both
+    "y": (1.1, 1.0),  # Increase linear only
+    "h": (0.9, 1.0),  # Decrease linear only
+    "u": (1.0, 1.1),  # Increase angular only
+    "j": (1.0, 0.9),  # Decrease angular only
 }
 
 
@@ -67,15 +69,15 @@ def main(args=None):
         args = sys.argv
 
     rclpy.init()
-    node = rclpy.create_node('teleop_twist_keyboard')
+    node = rclpy.create_node("teleop_twist_keyboard")
 
     qos = QoSProfile(
-    reliability=QoSReliabilityPolicy.RELIABLE,
-    history=QoSHistoryPolicy.KEEP_LAST,
-    depth=10
+        reliability=QoSReliabilityPolicy.RELIABLE,
+        history=QoSHistoryPolicy.KEEP_LAST,
+        depth=10,
     )
-    pub = node.create_publisher(Twist, 'cmd_vel', qos)
-    active_pub = node.create_publisher(Bool, '/teleop/active', qos)
+    pub = node.create_publisher(Twist, "cmd_vel", qos)
+    active_pub = node.create_publisher(Bool, "/teleop/active", qos)
     # Publish active=True at start
     active_msg = Bool()
     active_msg.data = True
@@ -97,7 +99,7 @@ def main(args=None):
                 speed *= speedBindings[key][0]
                 turn *= speedBindings[key][1]
                 print(vels(speed, turn))
-                
+
                 pitch = roll = throttle = yaw = 0.0
 
                 if status == 14:
@@ -106,7 +108,7 @@ def main(args=None):
             else:
                 pitch = roll = throttle = yaw = 0.0
 
-                if key == '\x03':
+                if key == "\x03":
                     break
 
             twist = Twist()
@@ -135,6 +137,6 @@ def main(args=None):
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
         print("\nTeleop shutdown. Sent /teleop/active = False")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
-    
