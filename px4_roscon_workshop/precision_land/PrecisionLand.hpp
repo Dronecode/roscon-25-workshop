@@ -45,6 +45,7 @@ class PrecisionLand : public px4_ros2::ModeBase {
   Eigen::Vector2f calculateVelocitySetpointXY();
   bool checkTargetTimeout();
   bool positionReached(const Eigen::Vector3f& target) const;
+	bool horizontalPositionReached(const Eigen::Vector3f& target) const;
 
   enum class State {
     Idle,
@@ -70,6 +71,7 @@ class PrecisionLand : public px4_ros2::ModeBase {
   // Data
   State _state = State::Search;
   bool _search_started = false;
+  bool _search_waypoints_generated = false;
 
   ArucoTag _tag;
   float _approach_altitude = {};
