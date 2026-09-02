@@ -5,11 +5,11 @@ using TeleopNodeWithExecutor = px4_ros2::NodeWithModeExecutor<TeleopExecutor, Te
 static const std::string kNodeName = "teleop_node";
 static const bool kEnableDebugOutput = true;
 
-TeleopExecutor::TeleopExecutor(rclcpp::Node &node, px4_ros2::ModeBase &owned_mode)
-    : ModeExecutorBase(node, Settings{}, owned_mode), _node(node) {}
+TeleopExecutor::TeleopExecutor(px4_ros2::ModeBase &owned_mode)
+    : ModeExecutorBase(Settings{}, owned_mode) {}
 
 void TeleopExecutor::onActivate() {
-    RCLCPP_INFO(_node.get_logger(), "TeleopExecutor activated");
+    RCLCPP_INFO(node().get_logger(), "TeleopExecutor activated");
     switchToState(State::Takeoff, px4_ros2::Result::Success);
 }
 
@@ -17,23 +17,23 @@ void TeleopExecutor::onDeactivate(DeactivateReason reason) {
     const char *reason_str = (reason == DeactivateReason::FailsafeActivated)
                                  ? "failsafe activated"
                                  : "other reason";
-    RCLCPP_INFO(_node.get_logger(), "TeleopExecutor deactivated: %s", reason_str);
+    RCLCPP_INFO(node().get_logger(), "TeleopExecutor deactivated: %s", reason_str);
 }
 
 void TeleopExecutor::switchToState(State state, px4_ros2::Result previous_result) {
     _state = state;
     if (previous_result != px4_ros2::Result::Success) {
-        RCLCPP_WARN(_node.get_logger(),
+        RCLCPP_WARN(node().get_logger(),
                     "Switching to state %d due to previous result: %d",
                     static_cast<int>(state), static_cast<int>(previous_result));
     }
 
-    RCLCPP_INFO(_node.get_logger(), "Switched to state: %d", static_cast<int>(state));
+    RCLCPP_INFO(node().get_logger(), "Switched to state: %d", static_cast<int>(state));
 
     // Handle state-specific logic here
     switch (state) {
         case State::Takeoff:
-            RCLCPP_INFO(_node.get_logger(), "Initiating takeoff...");
+            RCLCPP_INFO(node().get_logger(), "Initiating takeoff...");
             takeoff(
                 [this](px4_ros2::Result result) {
                     switchToState(State::TeleOperation, result);
@@ -62,7 +62,7 @@ void TeleopExecutor::switchToState(State state, px4_ros2::Result previous_result
             break;
         case State::WaitUntilDisarmed:
             waitUntilDisarmed([this](px4_ros2::Result result) {
-                RCLCPP_INFO(_node.get_logger(), "All states complete (%s)", resultToString(result));
+                RCLCPP_INFO(node().get_logger(), "All states complete (%s)", resultToString(result));
             });
             break;
     }

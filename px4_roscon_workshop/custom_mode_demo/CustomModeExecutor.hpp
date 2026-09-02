@@ -10,7 +10,7 @@
 
 class CustomModeExecutor : public px4_ros2::ModeExecutorBase {
 public:
-    CustomModeExecutor(rclcpp::Node &node, px4_ros2::ModeBase &owned_mode,
+    CustomModeExecutor(px4_ros2::ModeBase &owned_mode,
                        px4_ros2::ModeBase &second_mode);
 
     // See ModeExecutorBase
@@ -18,8 +18,6 @@ public:
     void onDeactivate(DeactivateReason reason) override;
 
 private:
-    // ROS2
-    rclcpp::Node &_node;
     px4_ros2::ModeBase &_second_mode;
 
     // State management
@@ -45,7 +43,7 @@ private:
 
 // class CustomModeExecutor : public px4_ros2::ModeExecutorBase {
 // public:
-//     CustomModeExecutor(rclcpp::Node &node, px4_ros2::ModeBase &owned_mode,
+//     CustomModeExecutor(px4_ros2::ModeBase &owned_mode,
 //                        px4_ros2::ModeBase &second_mode, px4_ros2::ModeBase &third_mode);
     
 //     // See ModeExecutorBase
@@ -53,8 +51,6 @@ private:
 //     void onDeactivate(DeactivateReason reason) override;
 
 // private:
-//     // ROS2
-//     rclcpp::Node &_node;
 //     px4_ros2::ModeBase &_second_mode;
 //     px4_ros2::ModeBase &_third_mode;
 

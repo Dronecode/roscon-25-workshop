@@ -3,6 +3,9 @@
 // ============================================================================
 #include "ArucoTracker.hpp"
 #include <sstream>
+#include <tf2/LinearMath/Matrix3x3.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 ArucoTrackerNode::ArucoTrackerNode()
 	: Node("aruco_tracker_node")
@@ -11,12 +14,10 @@ ArucoTrackerNode::ArucoTrackerNode()
 
 	// TODO: params to adjust detector params
 	// See: https://docs.opencv.org/4.x/d1/dcd/structcv_1_1aruco_1_1DetectorParameters.html
-	auto detectorParams = cv::aruco::DetectorParameters();
+	_detector_params = cv::aruco::DetectorParameters::create();
 
 	// See: https://docs.opencv.org/4.x/d1/d21/aruco__dictionary_8hpp.html
-	auto dictionary = cv::aruco::getPredefinedDictionary(_param_dictionary);
-
-	_detector = std::make_unique<cv::aruco::ArucoDetector>(dictionary, detectorParams);
+	_dictionary = cv::aruco::getPredefinedDictionary(_param_dictionary);
 
 	auto qos = rclcpp::QoS(1).best_effort();
 
@@ -51,7 +52,7 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr m
 		// Detect markers
 		std::vector<int> ids;
 		std::vector<std::vector<cv::Point2f>> corners;
-		_detector->detectMarkers(cv_ptr->image, corners, ids);
+		cv::aruco::detectMarkers(cv_ptr->image, _dictionary, corners, ids, _detector_params);
 		cv::aruco::drawDetectedMarkers(cv_ptr->image, corners, ids);
 
 		if (!_camera_matrix.empty() && !_dist_coeffs.empty()) {
@@ -87,7 +88,13 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr m
 				// Quaternion from rotation matrix
 				cv::Mat rot_mat;
 				cv::Rodrigues(rvec, rot_mat);
-				cv::Quatd quat = cv::Quatd::createFromRotMat(rot_mat).normalize();
+				tf2::Matrix3x3 tf_rotation(
+					rot_mat.at<double>(0, 0), rot_mat.at<double>(0, 1), rot_mat.at<double>(0, 2),
+					rot_mat.at<double>(1, 0), rot_mat.at<double>(1, 1), rot_mat.at<double>(1, 2),
+					rot_mat.at<double>(2, 0), rot_mat.at<double>(2, 1), rot_mat.at<double>(2, 2));
+				tf2::Quaternion quat;
+				tf_rotation.getRotation(quat);
+				quat.normalize();
 
 				// Publish target pose
 				geometry_msgs::msg::PoseStamped pose_msg;
@@ -96,10 +103,7 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr m
 				pose_msg.pose.position.x = tvec[0];
 				pose_msg.pose.position.y = tvec[1];
 				pose_msg.pose.position.z = tvec[2];
-				pose_msg.pose.orientation.x = quat.x;
-				pose_msg.pose.orientation.y = quat.y;
-				pose_msg.pose.orientation.z = quat.z;
-				pose_msg.pose.orientation.w = quat.w;
+				pose_msg.pose.orientation = tf2::toMsg(quat);
 
 				_target_pose_pub->publish(pose_msg);
 

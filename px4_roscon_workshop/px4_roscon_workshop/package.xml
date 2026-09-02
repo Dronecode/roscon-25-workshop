@@ -4,7 +4,7 @@
   <name>px4_roscon_workshop</name>
   <version>0.0.1</version>
   <description>Utility package to facilitate communication between PX4 and ROS 2</description>
-  <maintainer email="ubuntu@todo.todo">ubuntu</maintainer>
+  <maintainer email="beniamino.pozzan@gmail.com">Beniamino Pozzan</maintainer>
   <license>CC-BY-SA-4.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

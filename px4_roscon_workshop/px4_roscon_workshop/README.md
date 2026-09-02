@@ -18,7 +18,7 @@ The launchfile will
 - Start the MicroXRCEAgent agent
 
 You can use [Foxglove client](https://foxglove.dev/) to visualize the drone position and get other insights.
-The [roscon-25-workshop](../../foxglove/roscon-25-workshop.json) layout provides 3D visualization, xy-map and altitude plot.
+The [px4_roscon_workshop](../../foxglove/px4_roscon_workshop.json) layout provides 3D visualization, xy-map and altitude plot.
 
 Gazebo, PX4 and QGC are not automatically started by this launchfile.
 Please refer to [the setup](../../docs/setup.md) to know more on how to start them.

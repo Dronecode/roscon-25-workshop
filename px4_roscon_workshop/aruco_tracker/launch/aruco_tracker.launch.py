@@ -16,8 +16,8 @@ def launch_setup(context, *args, **kwargs):
     world_name = LaunchConfiguration("world_name").perform(context)
     model_name = LaunchConfiguration("model_name").perform(context)
 
-    camera_topic = f"/world/{world_name}/model/{model_name}/link/camera_link/sensor/imager/image"
-    camera_info_topic = f"/world/{world_name}/model/{model_name}/link/camera_link/sensor/imager/camera_info"
+    camera_topic = f"/world/{world_name}/model/{model_name}/link/camera_link/sensor/camera/image"
+    camera_info_topic = f"/world/{world_name}/model/{model_name}/link/camera_link/sensor/camera/camera_info"
 
     pkg_share = FindPackageShare("aruco_tracker").find("aruco_tracker")
 
@@ -98,7 +98,7 @@ def launch_setup(context, *args, **kwargs):
                 ComposableNode(
                     package='tf2_ros',
                     plugin='tf2_ros::StaticTransformBroadcasterNode',
-                    name='camera_to_camera_frame_broadcaster',
+                    name='camera_to_camera_link_broadcaster',
                     parameters=[{
                         'use_sim_time': True,
                         'translation.x': 0.0,
@@ -109,7 +109,7 @@ def launch_setup(context, *args, **kwargs):
                         'rotation.z': 0.0,
                         'rotation.w': 10.0,
                         'frame_id': 'x500_mono_cam_down_0/camera_link/imager',
-                        'child_frame_id': 'camera_frame'
+                        'child_frame_id': 'camera_link'
                     }]
                 ),
             ]
