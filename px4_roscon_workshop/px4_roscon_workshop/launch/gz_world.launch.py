@@ -15,6 +15,7 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
 )
+from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -47,9 +48,17 @@ def _launch_setup(context):
         "gz_bridge",
         "server.config",
     )
-    gz_launch_path = path.join(ros_gz_sim_pkg_path, "launch", "ros_gz_sim.launch.py")
+    # Newer ros_gz_sim (e.g. on ROS 2 Jazzy) ships a ros_gz_sim.launch.py wrapper
+    # that starts gz sim and the ros_gz_bridge together. Older ros_gz_sim (e.g. on
+    # ROS 2 Humble) only ships gz_sim.launch.py, so the bridge must be started
+    # separately via the parameter_bridge node. Detect which is available so this
+    # launch file works unmodified on both distros.
+    ros_gz_sim_wrapper_path = path.join(
+        ros_gz_sim_pkg_path, "launch", "ros_gz_sim.launch.py"
+    )
+    has_ros_gz_sim_wrapper = path.isfile(ros_gz_sim_wrapper_path)
 
-    return [
+    common_actions = [
         SetEnvironmentVariable(
             "GZ_SIM_RESOURCE_PATH",
             ":".join(
@@ -67,20 +76,50 @@ def _launch_setup(context):
             ),
         ),
         SetEnvironmentVariable("GZ_SIM_SERVER_CONFIG_PATH", px4_gz_server_config_path),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(gz_launch_path),
-            launch_arguments={
-                "world_sdf_file": f"{world_name}.sdf",
-                "bridge_name": "gz_ros_bridge",
-                "config_file": bridge_config_file,
-            }.items(),
-        ),
-        ExecuteProcess(
-            cmd=["MicroXRCEAgent", "udp4", "--port", "8888", "-v", "1"],
-            name="microxrce_agent",
-            output="screen",
-        ),
     ]
+
+    if has_ros_gz_sim_wrapper:
+        gz_actions = [
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(ros_gz_sim_wrapper_path),
+                launch_arguments={
+                    "world_sdf_file": f"{world_name}.sdf",
+                    "bridge_name": "gz_ros_bridge",
+                    "config_file": bridge_config_file,
+                }.items(),
+            ),
+        ]
+    else:
+        gz_sim_launch_path = path.join(
+            ros_gz_sim_pkg_path, "launch", "gz_sim.launch.py"
+        )
+        gz_actions = [
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(gz_sim_launch_path),
+                launch_arguments={
+                    "gz_args": f"-r {world_name}.sdf",
+                }.items(),
+            ),
+            Node(
+                package="ros_gz_bridge",
+                executable="parameter_bridge",
+                name="gz_ros_bridge",
+                parameters=[{"config_file": bridge_config_file}],
+                output="screen",
+            ),
+        ]
+
+    return (
+        common_actions
+        + gz_actions
+        + [
+            ExecuteProcess(
+                cmd=["MicroXRCEAgent", "udp4", "--port", "8888", "-v", "1"],
+                name="microxrce_agent",
+                output="screen",
+            ),
+        ]
+    )
 
 
 def generate_launch_description():
