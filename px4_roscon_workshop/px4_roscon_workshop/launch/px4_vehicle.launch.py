@@ -14,6 +14,7 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
 )
+from launch_ros.actions import Node
 
 
 def _launch_setup(context):
@@ -30,6 +31,11 @@ def _launch_setup(context):
 
     ros_gz_sim_pkg_path = get_package_share_directory("ros_gz_sim")
     gz_spawn_path = path.join(ros_gz_sim_pkg_path, "launch", "gz_spawn_model.launch.py")
+    has_gz_spawn_launch = path.isfile(gz_spawn_path)
+
+    spawn_x = LaunchConfiguration("spawn_pos_x").perform(context)
+    spawn_y = LaunchConfiguration("spawn_pos_y").perform(context)
+    spawn_z = LaunchConfiguration("spawn_pos_z").perform(context)
 
     px4_env = {
         "PX4_SYS_AUTOSTART": LaunchConfiguration("px4_autostart_id").perform(context),
@@ -48,18 +54,48 @@ def _launch_setup(context):
     if px4_namespace:
         px4_env["PX4_UXRCE_DDS_NS"] = px4_namespace
 
-    return [
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(gz_spawn_path),
-            launch_arguments={
-                "world": world_name,
-                "file": model_path,
-                "entity_name": model_name,
-                "x": LaunchConfiguration("spawn_pos_x").perform(context),
-                "y": LaunchConfiguration("spawn_pos_y").perform(context),
-                "z": LaunchConfiguration("spawn_pos_z").perform(context),
-            }.items(),
-        ),
+    # Newer ros_gz_sim (e.g. on ROS 2 Jazzy) ships a gz_spawn_model.launch.py
+    # wrapper. Older ros_gz_sim (e.g. on ROS 2 Humble) does not, and the model
+    # must be spawned directly via `ros2 run ros_gz_sim create` instead. Detect
+    # which is available so this launch file works unmodified on both distros.
+    if has_gz_spawn_launch:
+        spawn_actions = [
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(gz_spawn_path),
+                launch_arguments={
+                    "world": world_name,
+                    "file": model_path,
+                    "entity_name": model_name,
+                    "x": spawn_x,
+                    "y": spawn_y,
+                    "z": spawn_z,
+                }.items(),
+            ),
+        ]
+    else:
+        spawn_actions = [
+            Node(
+                package="ros_gz_sim",
+                executable="create",
+                arguments=[
+                    "-world",
+                    world_name,
+                    "-file",
+                    model_path,
+                    "-name",
+                    model_name,
+                    "-x",
+                    spawn_x,
+                    "-y",
+                    spawn_y,
+                    "-z",
+                    spawn_z,
+                ],
+                output="screen",
+            ),
+        ]
+
+    return spawn_actions + [
         ExecuteProcess(
             cmd=[
                 path.join(
