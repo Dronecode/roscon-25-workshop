@@ -8,6 +8,7 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
 )
+from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -93,35 +94,19 @@ def generate_launch_description() -> LaunchDescription:
                     "px4_extra_env_vars": "PX4_PARAM_COM_RCL_EXCEPT=9,PX4_PARAM_COM_RC_IN_MODE=1,PX4_GZ_NO_FOLLOW=1",
                 }.items(),
             ),
-            # Node(
-            #     package="px4_formation_control",
-            #     executable=FORMATION_CONTROL_EXECUTABLE[ACTIVE_EXECUTABLE_IDX],
-            #     name="formation_controller_0",
-            #     output="screen",
-            #     parameters=[
-            #         {
-            #             "px4_ns": "/px4_0/",
-            #             "tf_prefix": "px4_0",
-            #             "neighbor_prefixes": ["px4_1", "px4_2"],
-            #             "neighbor_distances": [10.0, 10.0],
-            #             "gain": 1.0,
-            #         }
-            #     ],
-            # ),
-            # Node(
-            #     package="px4_formation_control",
-            #     executable=FORMATION_CONTROL_EXECUTABLE[ACTIVE_EXECUTABLE_IDX],
-            #     name="formation_controller_1",
-            #     output="screen",
-            #     parameters=[
-            #         {
-            #             "px4_ns": "/px4_1/",
-            #             "tf_prefix": "px4_1",
-            #             "neighbor_prefixes": ["px4_0", "px4_2"],
-            #             "neighbor_distances": [10.0, 10.0],
-            #             "gain": 1.0,
-            #         }
-            #     ],
-            # )
+            Node(
+                package="precision_land",
+                executable="precision_land",
+                name="precision_land_node",
+                output="screen",
+                namespace="px4_0",
+            ),
+            Node(
+                package="rover_teleop",
+                executable="rover_teleop",
+                name="rover_teleop_node",
+                output="screen",
+                namespace="px4_1",
+            ),
         ]
     )
