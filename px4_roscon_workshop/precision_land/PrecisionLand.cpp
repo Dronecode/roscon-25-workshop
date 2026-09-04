@@ -10,23 +10,7 @@ static const bool kEnableDebugOutput = true;
 
 using namespace px4_ros2::literals;
 
-namespace {
-// PX4's own multi-instance convention prefixes every fmu/... topic with
-// e.g. "/px4_1/" for instance 1 (instance 0 stays unprefixed). This lets
-// PrecisionLand target a specific instance instead of always defaulting
-// to instance 0, via the "px4_namespace" parameter, e.g. "/px4_1/".
-std::string readPx4NamespacePrefix(rclcpp::Node& node)
-{
-  if (!node.has_parameter("px4_namespace")) {
-    node.declare_parameter<std::string>("px4_namespace", "");
-  }
-
-  return node.get_parameter("px4_namespace").as_string();
-}
-}  // namespace
-
-PrecisionLand::PrecisionLand(rclcpp::Node& node)
-    : ModeBase(node, kModeName, readPx4NamespacePrefix(node)), _node(node)
+PrecisionLand::PrecisionLand(rclcpp::Node& node) : ModeBase(node, kModeName), _node(node)
 {
   _trajectory_setpoint = std::make_shared<px4_ros2::TrajectorySetpointType>(*this);
 
@@ -39,7 +23,7 @@ PrecisionLand::PrecisionLand(rclcpp::Node& node)
       [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg) { targetPoseCallback(msg); });
 
   _vehicle_land_detected_sub = _node.create_subscription<px4_msgs::msg::VehicleLandDetected>(
-      readPx4NamespacePrefix(node) + "fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
+      "fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
       [this](const px4_msgs::msg::VehicleLandDetected::SharedPtr msg) {
         vehicleLandDetectedCallback(msg);
       });
