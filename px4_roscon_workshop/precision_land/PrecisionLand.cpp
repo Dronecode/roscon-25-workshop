@@ -39,7 +39,7 @@ PrecisionLand::PrecisionLand(rclcpp::Node& node)
       [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg) { targetPoseCallback(msg); });
 
   _vehicle_land_detected_sub = _node.create_subscription<px4_msgs::msg::VehicleLandDetected>(
-      readPx4NamespacePrefix(node) + "/fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
+      readPx4NamespacePrefix(node) + "fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
       [this](const px4_msgs::msg::VehicleLandDetected::SharedPtr msg) {
         vehicleLandDetectedCallback(msg);
       });
