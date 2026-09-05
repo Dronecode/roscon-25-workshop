@@ -16,6 +16,7 @@ def generate_launch_description() -> LaunchDescription:
     px4_roscon_workshop_share = FindPackageShare("px4_roscon_workshop").find(
         "px4_roscon_workshop"
     )
+    aruco_tracker_share = FindPackageShare("aruco_tracker").find("aruco_tracker")
     gz_world_launch = path.join(
         px4_roscon_workshop_share,
         "launch",
@@ -25,6 +26,11 @@ def generate_launch_description() -> LaunchDescription:
         px4_roscon_workshop_share,
         "launch",
         "px4_vehicle.launch.py",
+    )
+    aruco_tracker_launch = path.join(
+        aruco_tracker_share,
+        "launch",
+        "aruco_tracker.launch.py",
     )
     rover_pkg_share = FindPackageShare(package="rover_teleop").find("rover_teleop")
 
@@ -92,6 +98,13 @@ def generate_launch_description() -> LaunchDescription:
                     "spawn_pos_y": "0.0",
                     "spawn_pos_z": "0.0",
                     "px4_extra_env_vars": "PX4_PARAM_COM_RCL_EXCEPT=9,PX4_PARAM_COM_RC_IN_MODE=1,PX4_GZ_NO_FOLLOW=1",
+                }.items(),
+            ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(aruco_tracker_launch),
+                launch_arguments={
+                    "world_name": LaunchConfiguration("world"),
+                    "model_name": "x500_mono_cam_down_0",
                 }.items(),
             ),
             Node(
