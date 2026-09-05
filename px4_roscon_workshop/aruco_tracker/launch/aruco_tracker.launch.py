@@ -90,7 +90,7 @@ def launch_setup(context, *args, **kwargs):
                             "rotation.z": 0.0,
                             "rotation.w": 0.0,
                             "frame_id": "base_link",
-                            "child_frame_id": "x500_mono_cam_down_0/camera_link/imager",
+                            "child_frame_id": f"{model_name}/camera_link/imager",
                         }
                     ],
                 ),
@@ -108,7 +108,7 @@ def launch_setup(context, *args, **kwargs):
                             "rotation.y": 0.0,
                             "rotation.z": 0.0,
                             "rotation.w": 10.0,
-                            "frame_id": "x500_mono_cam_down_0/camera_link/imager",
+                            "frame_id": f"{model_name}/camera_link/imager",
                             "child_frame_id": "camera_link",
                         }
                     ],
