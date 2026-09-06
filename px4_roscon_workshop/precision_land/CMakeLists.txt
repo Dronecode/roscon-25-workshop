@@ -27,6 +27,8 @@ target_compile_features(precision_land PUBLIC c_std_99 cxx_std_17)
 
 install(TARGETS precision_land DESTINATION lib/${PROJECT_NAME})
 
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
+
 if(BUILD_TESTING)
     find_package(ament_lint_auto REQUIRED)
     ament_lint_auto_find_test_dependencies()
