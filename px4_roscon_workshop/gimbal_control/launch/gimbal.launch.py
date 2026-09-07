@@ -9,6 +9,7 @@ from launch.substitutions import (
     PathJoinSubstitution,
 )
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.actions import Node
 
 
 def generate_launch_description() -> LaunchDescription:
@@ -24,6 +25,10 @@ def generate_launch_description() -> LaunchDescription:
         px4_roscon_workshop_share,
         "launch",
         "px4_vehicle.launch.py",
+    )
+
+    camera_topic = (
+        "/world/rover/model/vtol_gimbal_0/link/camera_link/sensor/camera/image"
     )
 
     return LaunchDescription(
@@ -70,8 +75,44 @@ def generate_launch_description() -> LaunchDescription:
                     "spawn_pos_x": "0.0",
                     "spawn_pos_y": "0.0",
                     "spawn_pos_z": "0.3",
-                    "px4_extra_env_vars": "PX4_PARAM_COM_RCL_EXCEPT=9,PX4_PARAM_COM_RC_IN_MODE=1,PX4_GZ_NO_FOLLOW=1",
+                    "px4_extra_env_vars": ",".join(
+                        [
+                            "PX4_PARAM_COM_RCL_EXCEPT=9",
+                            "PX4_PARAM_COM_RC_IN_MODE=1",
+                            "PX4_GZ_NO_FOLLOW=1",
+                            "PX4_PARAM_MNT_MAN_ROLL=1",
+                            "PX4_PARAM_MNT_MAN_PITCH=2",
+                            "PX4_PARAM_MNT_MAN_YAW=3",
+                            "PX4_PARAM_MNT_RANGE_ROLL=180",
+                            "PX4_PARAM_MNT_MAX_PITCH=45",
+                            "PX4_PARAM_MNT_MIN_PITCH=-135",
+                            "PX4_PARAM_MNT_RANGE_YAW=720",
+                            "PX4_PARAM_MNT_MODE_OUT=2",
+                        ]
+                    ),
                 }.items(),
+            ),
+            Node(
+                package="ros_gz_image",
+                executable="image_bridge",
+                name="camera_image_bridge",
+                output="screen",
+                arguments=[
+                    camera_topic,
+                ],
+                remappings=[
+                    (camera_topic, "/camera"),
+                    (f"{camera_topic}/compressed", "/camera/compressed"),
+                ],
             ),
         ]
     )
+
+
+# ros2 topic pub -r 5 /px4_0/fmu/in/gimbal_controls px4_msgs/msg/GimbalControls "timestamp: 0
+# timestamp_sample: 0
+# control:
+# - 0.0
+# - 0.0
+# - 0.0
+# "
