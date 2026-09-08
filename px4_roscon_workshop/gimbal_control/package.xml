@@ -9,6 +9,10 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>rclcpp</depend>
+  <depend>geometry_msgs</depend>
+  <depend>px4_msgs</depend>
+
   <exec_depend>px4_roscon_workshop</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>

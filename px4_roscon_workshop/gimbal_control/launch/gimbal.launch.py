@@ -73,7 +73,6 @@ def generate_launch_description() -> LaunchDescription:
                     "px4_instance": "0",
                     "px4_autostart_id": "4004",
                     "model": "vtol_gimbal_0",
-                    "px4_ns": "px4_0",
                     "spawn_pos_x": "0.0",
                     "spawn_pos_y": "0.0",
                     "spawn_pos_z": "0.3",
@@ -105,6 +104,15 @@ def generate_launch_description() -> LaunchDescription:
                 remappings=[
                     (camera_topic, "/camera"),
                     (f"{camera_topic}/compressed", "/camera/compressed"),
+                ],
+            ),
+            Node(
+                package="px4_gimbal_control",
+                executable="gimbal_teleop",
+                name="gimbal_teleop",
+                output="screen",
+                parameters=[
+                    {"yaw_limit": 270.0, "pitch_min": -135.0, "pitch_max": 45.0}
                 ],
             ),
         ]
