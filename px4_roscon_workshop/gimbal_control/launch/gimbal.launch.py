@@ -9,7 +9,7 @@ from launch.substitutions import (
     PathJoinSubstitution,
 )
 from launch_ros.substitutions import FindPackageShare
-from launch_ros.actions import Node
+from launch_ros.actions import Node, SetParameter
 
 
 def generate_launch_description() -> LaunchDescription:
@@ -34,6 +34,7 @@ def generate_launch_description() -> LaunchDescription:
 
     return LaunchDescription(
         [
+            SetParameter(name="use_sim_time", value=True),
             DeclareLaunchArgument(
                 "px4_autopilot_path",
                 default_value=EnvironmentVariable(
@@ -114,6 +115,12 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[
                     {"yaw_limit": 270.0, "pitch_min": -135.0, "pitch_max": 45.0}
                 ],
+            ),
+            Node(
+                package="px4_gimbal_control",
+                executable="mouse_pointer_gimbal_control",
+                name="mouse_pointer_gimbal_control",
+                output="screen",
             ),
         ]
     )
