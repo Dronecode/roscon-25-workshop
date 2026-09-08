@@ -11,6 +11,12 @@ from launch.substitutions import (
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node, SetParameter
 
+MOUSE_POINTER_GIMBAL_CONTROL_EXECUTABLE = (
+    "mouse_pointer_gimbal_control_exercise",
+    "mouse_pointer_gimbal_control_solution",
+)
+ACTIVE_EXECUTABLE_IDX = 1  # solution
+
 
 def generate_launch_description() -> LaunchDescription:
     pkg_share = FindPackageShare("px4_gimbal_control").find("px4_gimbal_control")
@@ -118,7 +124,9 @@ def generate_launch_description() -> LaunchDescription:
             ),
             Node(
                 package="px4_gimbal_control",
-                executable="mouse_pointer_gimbal_control",
+                executable=MOUSE_POINTER_GIMBAL_CONTROL_EXECUTABLE[
+                    ACTIVE_EXECUTABLE_IDX
+                ],
                 name="mouse_pointer_gimbal_control",
                 output="screen",
             ),
