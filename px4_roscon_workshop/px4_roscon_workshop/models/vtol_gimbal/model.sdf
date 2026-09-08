@@ -12,5 +12,352 @@
       <parent>base_link</parent>
       <child>cgo3_mount_link</child>
     </joint>
+
+    <!--
+      Landing legs: the gimbal/camera hangs down to about z=-0.183 relative to
+      base_link, well below the flying-wing belly (z=-0.095), so without legs
+      the aircraft would land on the gimbal. These add ground clearance at the
+      four motor-mount corners. Negligible mass/inertia since they are fixed
+      to base_link and only need to be geometrically present.
+    -->
+    <link name="landing_leg_0">
+      <pose>0.35 0.35 0.146 0 0 0</pose>
+      <inertial>
+        <mass>0.00000001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.000001</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+      <collision name="landing_leg_0_strut_collision">
+        <geometry>
+          <cylinder>
+            <length>0.24</length>
+            <radius>0.015</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>1.0</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="landing_leg_0_strut_visual">
+        <geometry>
+          <cylinder>
+            <length>0.24</length>
+            <radius>0.015</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>.175 .175 .175 1.0</ambient>
+          <diffuse>.175 .175 .175 1.0</diffuse>
+        </material>
+      </visual>
+      <collision name="landing_leg_0_foot_collision">
+        <pose>0 0 -0.12 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>1.0</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="landing_leg_0_foot_visual">
+        <pose>0 0 -0.12 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>.175 .175 .175 1.0</ambient>
+          <diffuse>.175 .175 .175 1.0</diffuse>
+        </material>
+      </visual>
+    </link>
+    <joint name="landing_leg_0_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>landing_leg_0</child>
+    </joint>
+
+    <link name="landing_leg_1">
+      <pose>0.35 -0.35 0.146 0 0 0</pose>
+      <inertial>
+        <mass>0.00000001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.000001</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+      <collision name="landing_leg_1_strut_collision">
+        <geometry>
+          <cylinder>
+            <length>0.24</length>
+            <radius>0.015</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>1.0</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="landing_leg_1_strut_visual">
+        <geometry>
+          <cylinder>
+            <length>0.24</length>
+            <radius>0.015</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>.175 .175 .175 1.0</ambient>
+          <diffuse>.175 .175 .175 1.0</diffuse>
+        </material>
+      </visual>
+      <collision name="landing_leg_1_foot_collision">
+        <pose>0 0 -0.12 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>1.0</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="landing_leg_1_foot_visual">
+        <pose>0 0 -0.12 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>.175 .175 .175 1.0</ambient>
+          <diffuse>.175 .175 .175 1.0</diffuse>
+        </material>
+      </visual>
+    </link>
+    <joint name="landing_leg_1_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>landing_leg_1</child>
+    </joint>
+
+    <link name="landing_leg_2">
+      <pose>-0.35 0.35 0.146 0 0 0</pose>
+      <inertial>
+        <mass>0.00000001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.000001</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+      <collision name="landing_leg_2_strut_collision">
+        <geometry>
+          <cylinder>
+            <length>0.24</length>
+            <radius>0.015</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>1.0</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="landing_leg_2_strut_visual">
+        <geometry>
+          <cylinder>
+            <length>0.24</length>
+            <radius>0.015</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>.175 .175 .175 1.0</ambient>
+          <diffuse>.175 .175 .175 1.0</diffuse>
+        </material>
+      </visual>
+      <collision name="landing_leg_2_foot_collision">
+        <pose>0 0 -0.12 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>1.0</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="landing_leg_2_foot_visual">
+        <pose>0 0 -0.12 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>.175 .175 .175 1.0</ambient>
+          <diffuse>.175 .175 .175 1.0</diffuse>
+        </material>
+      </visual>
+    </link>
+    <joint name="landing_leg_2_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>landing_leg_2</child>
+    </joint>
+
+    <link name="landing_leg_3">
+      <pose>-0.35 -0.35 0.146 0 0 0</pose>
+      <inertial>
+        <mass>0.00000001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.000001</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+      <collision name="landing_leg_3_strut_collision">
+        <geometry>
+          <cylinder>
+            <length>0.24</length>
+            <radius>0.015</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>1.0</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="landing_leg_3_strut_visual">
+        <geometry>
+          <cylinder>
+            <length>0.24</length>
+            <radius>0.015</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>.175 .175 .175 1.0</ambient>
+          <diffuse>.175 .175 .175 1.0</diffuse>
+        </material>
+      </visual>
+      <collision name="landing_leg_3_foot_collision">
+        <pose>0 0 -0.12 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>100000</kp>
+              <kd>1.0</kd>
+              <max_vel>0.1</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode />
+          </friction>
+        </surface>
+      </collision>
+      <visual name="landing_leg_3_foot_visual">
+        <pose>0 0 -0.12 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>.175 .175 .175 1.0</ambient>
+          <diffuse>.175 .175 .175 1.0</diffuse>
+        </material>
+      </visual>
+    </link>
+    <joint name="landing_leg_3_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>landing_leg_3</child>
+    </joint>
   </model>
 </sdf>
