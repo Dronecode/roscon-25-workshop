@@ -23,7 +23,7 @@ PrecisionLand::PrecisionLand(rclcpp::Node& node) : ModeBase(node, kModeName), _n
       [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg) { targetPoseCallback(msg); });
 
   _vehicle_land_detected_sub = _node.create_subscription<px4_msgs::msg::VehicleLandDetected>(
-      "/fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
+      "fmu/out/vehicle_land_detected", rclcpp::QoS(1).best_effort(),
       [this](const px4_msgs::msg::VehicleLandDetected::SharedPtr msg) {
         vehicleLandDetectedCallback(msg);
       });
@@ -104,7 +104,12 @@ PrecisionLand::ArucoTag PrecisionLand::getTagWorld(const ArucoTag& tag)
 
 void PrecisionLand::onActivate()
 {
-  generateSearchWaypoints();
+  // Don't generate waypoints from the current position here: right after
+  // activation the local position subscription may not have received a
+  // single message yet, and reading it (via positionNed()) would throw
+  // and abort the whole node. Defer it to the first Search cycle instead,
+  // where we can wait for valid data rather than crash on it.
+  _search_waypoints_generated = false;
   _search_started = true;
   switchToState(State::Search);
 }
@@ -135,6 +140,15 @@ void PrecisionLand::updateSetpoint(float dt_s)
     }
 
     case State::Search: {
+      if (!_search_waypoints_generated) {
+        if (!_vehicle_local_position->lastValid()) {
+          // No local position data yet: wait rather than crash on it.
+          break;
+        }
+
+        generateSearchWaypoints();
+        _search_waypoints_generated = true;
+      }
       if (!std::isnan(_tag.position.x())) {
         _approach_altitude = _vehicle_local_position->positionNed().z();
         switchToState(State::Approach);
@@ -165,13 +179,18 @@ void PrecisionLand::updateSetpoint(float dt_s)
         return;
       }
 
-      // Approach using position setpoints
+      // Approach using position setpoints. Recomputed every cycle from the
+      // latest tag position, so this also tracks a slowly moving target.
       auto target_position =
           Eigen::Vector3f(_tag.position.x(), _tag.position.y(), _approach_altitude);
 
       _trajectory_setpoint->updatePosition(target_position);
 
-      if (positionReached(target_position)) {
+      // Only check horizontal convergence here, not velocity: a moving
+      // target means the drone may never fully stop, so the stricter
+      // positionReached() (used for the static Search waypoints) would
+      // never trigger and Approach would never hand off to Descend.
+      if (horizontalPositionReached(target_position)) {
         switchToState(State::Descend);
       }
 
@@ -318,8 +337,16 @@ bool PrecisionLand::positionReached(const Eigen::Vector3f& target) const
   auto velocity = _vehicle_local_position->velocityNed();
 
   const auto delta_pos = target - position;
-  // NOTE: this does NOT handle a moving target!
+  // Requires the drone to come to a near stop, so only appropriate for a
+  // stationary target (e.g. the Search waypoints).
   return (delta_pos.norm() < _param_delta_position) && (velocity.norm() < _param_delta_velocity);
+}
+
+bool PrecisionLand::horizontalPositionReached(const Eigen::Vector3f& target) const
+{
+  auto position = _vehicle_local_position->positionNed();
+  const auto delta_pos_xy = Eigen::Vector2f(target.x() - position.x(), target.y() - position.y());
+  return delta_pos_xy.norm() < _param_delta_position;
 }
 
 std::string PrecisionLand::stateName(State state)

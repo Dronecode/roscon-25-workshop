@@ -1,0 +1,13 @@
+vtol_executor:
+  ros__parameters:
+    # Altitude AMSL [m] to reach with the inbuilt Takeoff mode before
+    # transitioning to fixed-wing.
+    takeoff_altitude_amsl: 50.0
+    # Altitude AMSL [m] to hold during fixed-wing cruise.
+    cruise_altitude_amsl: 60.0
+    # Compass course [deg] to fly during cruise (0 = North, 90 = East).
+    cruise_course_deg: 0.0
+    # Equivalent airspeed setpoint [m/s] during cruise.
+    cruise_airspeed: 15.0
+    # How long [s] to cruise in fixed-wing before transitioning back and landing.
+    cruise_duration_s: 30.0
