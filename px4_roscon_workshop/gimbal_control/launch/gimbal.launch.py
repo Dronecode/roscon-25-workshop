@@ -13,6 +13,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description() -> LaunchDescription:
+    pkg_share = FindPackageShare("px4_gimbal_control").find("px4_gimbal_control")
     px4_roscon_workshop_share = FindPackageShare("px4_roscon_workshop").find(
         "px4_roscon_workshop"
     )
@@ -50,6 +51,7 @@ def generate_launch_description() -> LaunchDescription:
                 launch_arguments={
                     "px4_autopilot_path": LaunchConfiguration("px4_autopilot_path"),
                     "world": LaunchConfiguration("world"),
+                    "bridge_config_file": path.join(pkg_share, "cfg", "bridge.yaml"),
                     "extra_gz_resource_path": path.join(
                         px4_roscon_workshop_share, "models"
                     ),

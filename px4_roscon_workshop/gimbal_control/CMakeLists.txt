@@ -7,7 +7,7 @@ find_package(ament_cmake REQUIRED)
 
 add_compile_options(-Wall -Wextra -Wpedantic -Werror -Wno-unused-parameter)
 
-install(DIRECTORY launch
+install(DIRECTORY launch cfg
   DESTINATION share/${PROJECT_NAME}
 )
 
