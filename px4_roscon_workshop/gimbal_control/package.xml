@@ -11,6 +11,7 @@
 
   <depend>rclcpp</depend>
   <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
   <depend>px4_msgs</depend>
 
   <exec_depend>px4_roscon_workshop</exec_depend>

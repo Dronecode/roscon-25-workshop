@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(px4_msgs REQUIRED)
 
 add_compile_options(-Wall -Wextra -Wpedantic -Werror -Wno-unused-parameter)
@@ -20,7 +21,15 @@ ament_target_dependencies(gimbal_teleop
   px4_msgs
 )
 
-install(TARGETS gimbal_teleop
+add_executable(mouse_pointer_gimbal_control src/MousePointerGimbalControl.cpp)
+
+ament_target_dependencies(mouse_pointer_gimbal_control
+  rclcpp
+  geometry_msgs
+  sensor_msgs
+)
+
+install(TARGETS gimbal_teleop mouse_pointer_gimbal_control
   DESTINATION lib/${PROJECT_NAME}
 )
 
