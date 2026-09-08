@@ -21,15 +21,41 @@ ament_target_dependencies(gimbal_teleop
   px4_msgs
 )
 
-add_executable(mouse_pointer_gimbal_control src/MousePointerGimbalControl.cpp)
+add_library(mouse_pointer_gimbal_control_lib STATIC
+  src/mouse_pointer_gimbal_control.cpp
+)
 
-ament_target_dependencies(mouse_pointer_gimbal_control
+ament_target_dependencies(mouse_pointer_gimbal_control_lib
   rclcpp
   geometry_msgs
   sensor_msgs
 )
 
-install(TARGETS gimbal_teleop mouse_pointer_gimbal_control
+add_executable(mouse_pointer_gimbal_control_solution src/solution.cpp)
+add_executable(mouse_pointer_gimbal_control_exercise src/exercise.cpp)
+
+target_link_libraries(mouse_pointer_gimbal_control_solution
+  mouse_pointer_gimbal_control_lib
+)
+
+target_link_libraries(mouse_pointer_gimbal_control_exercise
+  mouse_pointer_gimbal_control_lib
+)
+
+ament_target_dependencies(mouse_pointer_gimbal_control_solution
+  rclcpp
+  geometry_msgs
+  sensor_msgs
+)
+
+ament_target_dependencies(mouse_pointer_gimbal_control_exercise
+  rclcpp
+  geometry_msgs
+  sensor_msgs
+)
+
+install(TARGETS gimbal_teleop mouse_pointer_gimbal_control_solution
+                mouse_pointer_gimbal_control_exercise
   DESTINATION lib/${PROJECT_NAME}
 )
 
