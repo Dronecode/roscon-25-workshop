@@ -5,7 +5,7 @@ This page will guide you through the installation of the requirements for runnin
 The three main components are:
 
 - [GZ HARMONIC](https://gazebosim.org/docs/harmonic/getstarted/)
-- [ROS 2 Jazzy](https://docs.ros.org/en/jazzy/index.html)
+- [ROS 2 Jazzy](https://docs.ros.org/en/jazzy/index.html) or [ROS 2 Humble](https://docs.ros.org/en/humble/index.html)
 - [PX4](https://github.com/PX4/PX4-Autopilot) v1.18.0 simulator
 
 In addition to them, two extra components are required for visualization and remote control:
@@ -44,6 +44,9 @@ Download QGC
 
 1. Install ROS 2 Jazzy: https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html.
 Pick `ros-jazzy-desktop`.
+
+   Alternatively, use ROS 2 Humble: https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html.
+Pick `ros-humble-desktop`.
 1. Install the ROS 2 developer tools
 
     ```bash
@@ -57,11 +60,18 @@ Pick `ros-jazzy-desktop`.
     vcs import src < ./src/roscon-25-workshop/jazzy.repos
     ```
 
+    or, if you are using ROS Humble
+
+    ```bash
+    cd ~/workspaces/px4_roscon26_ws
+    vcs import src < ./src/roscon-25-workshop/humble.repos
+    ```
+
 1. Install dependencies
 
     ```bash
     cd ~/workspaces/px4_roscon26_ws
-    source /opt/ros/jazzy/setup.bash
+    source /opt/ros/jazzy/setup.bash # source /opt/ros/hummble/setup.bash
     rosdep install -i --from-paths src --skip-keys OpenCV
     ```
 
@@ -69,7 +79,7 @@ Pick `ros-jazzy-desktop`.
 
     ```bash
     cd ~/workspaces/px4_roscon26_ws
-    source /opt/ros/jazzy/setup.bash
+    source /opt/ros/jazzy/setup.bash # source /opt/ros/hummble/setup.bash
     colcon build --symlink-install
     ```
 

@@ -2,7 +2,11 @@
 // ORIGINAL VERSION - ArucoTracker.hpp
 // ============================================================================
 #pragma once
+#if __has_include(<cv_bridge/cv_bridge.hpp>)
 #include <cv_bridge/cv_bridge.hpp>
+#else
+#include <cv_bridge/cv_bridge.h>
+#endif
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <memory>
 #include <opencv2/aruco.hpp>
