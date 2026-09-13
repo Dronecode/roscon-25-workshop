@@ -38,7 +38,7 @@ See [`cfg/params.yaml`](./cfg/params.yaml):
 2. Start the additional ROS 2 node through the [common launchfile](../px4_roscon_workshop/README.md)
 
    ```sh
-   ros2 launch px4_roscon_workshop common.launch.py
+   ros2 launch px4_roscon_workshop common.launch.py model:=standard_vtol
    ```
 
 3. Run `vtol_executor.launch.py`

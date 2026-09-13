@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<robot name="standard_vtol">
+    <link name="base_link">
+        <visual name="base_link_visual">
+            <!-- x8_wing.dae is authored Y-up; extra rotation converts it to the Z-up frame used here -->
+            <origin xyz="0.53 -1.072 -0.1" rpy="0 0 3.1415926536"/>
+            <geometry>
+                <mesh scale="0.001 0.001 0.001" filename="package://px4_roscon_workshop/meshes/x8_wing.dae" />
+            </geometry>
+        </visual>
+        <visual name="left_motor_column">
+            <origin xyz="0 0.35 0.01" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.74 0.03 0.03" />
+            </geometry>
+        </visual>
+        <visual name="right_motor_column">
+            <origin xyz="0 -0.35 0.01" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.74 0.03 0.03" />
+            </geometry>
+        </visual>
+        <visual name="m0">
+            <origin xyz="-0.35 0.35 0.045" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.02" length="0.035" />
+            </geometry>
+        </visual>
+        <visual name="m1">
+            <origin xyz="-0.35 -0.35 0.045" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.02" length="0.035" />
+            </geometry>
+        </visual>
+        <visual name="m2">
+            <origin xyz="0.35 -0.35 0.045" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.02" length="0.035" />
+            </geometry>
+        </visual>
+        <visual name="m3">
+            <origin xyz="0.35 0.35 0.045" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.02" length="0.035" />
+            </geometry>
+        </visual>
+    </link>
+    <link name="rotor_0">
+        <visual name="rotor_0_visual">
+            <!-- iris_prop_ccw.dae is authored Y-up; extra rotation converts it to the Z-up frame used here -->
+            <origin xyz="0 0 0" rpy="-1.5707963268 0 0"/>
+            <geometry>
+                <mesh filename="package://px4_roscon_workshop/meshes/iris_prop_ccw.dae" />
+            </geometry>
+        </visual>
+    </link>
+    <joint name="base_to_rotor_0" type="fixed">
+        <parent link="base_link"/>
+        <child link="rotor_0"/>
+        <origin xyz="0.35 -0.35 0.07" rpy="0 0 0"/>
+    </joint>
+    <link name="rotor_1">
+        <visual name="rotor_1_visual">
+            <origin xyz="0 0 0" rpy="-1.5707963268 0 0"/>
+            <geometry>
+                <mesh filename="package://px4_roscon_workshop/meshes/iris_prop_ccw.dae" />
+            </geometry>
+        </visual>
+    </link>
+    <joint name="base_to_rotor_1" type="fixed">
+        <parent link="base_link"/>
+        <child link="rotor_1"/>
+        <origin xyz="-0.35 0.35 0.07" rpy="0 0 0"/>
+    </joint>
+    <link name="rotor_2">
+        <visual name="rotor_2_visual">
+            <origin xyz="0 0 0" rpy="-1.5707963268 0 0"/>
+            <geometry>
+                <mesh filename="package://px4_roscon_workshop/meshes/iris_prop_ccw.dae" />
+            </geometry>
+        </visual>
+    </link>
+    <joint name="base_to_rotor_2" type="fixed">
+        <parent link="base_link"/>
+        <child link="rotor_2"/>
+        <origin xyz="0.35 0.35 0.07" rpy="0 0 0"/>
+    </joint>
+    <link name="rotor_3">
+        <visual name="rotor_3_visual">
+            <origin xyz="0 0 0" rpy="-1.5707963268 0 0"/>
+            <geometry>
+                <mesh filename="package://px4_roscon_workshop/meshes/iris_prop_ccw.dae" />
+            </geometry>
+        </visual>
+    </link>
+    <joint name="base_to_rotor_3" type="fixed">
+        <parent link="base_link"/>
+        <child link="rotor_3"/>
+        <origin xyz="-0.35 -0.35 0.07" rpy="0 0 0"/>
+    </joint>
+    <link name="rotor_puller">
+        <visual name="rotor_puller_visual">
+            <origin xyz="0 0 -0.04" rpy="-1.5707963268 1.57 0"/>
+            <geometry>
+                <mesh scale="0.8 0.8 0.8" filename="package://px4_roscon_workshop/meshes/iris_prop_ccw.dae" />
+            </geometry>
+        </visual>
+    </link>
+    <joint name="base_to_rotor_puller" type="fixed">
+        <parent link="base_link"/>
+        <child link="rotor_puller"/>
+        <origin xyz="-0.22 0 0.0" rpy="0 1.57 0"/>
+    </joint>
+    <link name="left_elevon">
+        <visual name="left_elevon_visual">
+            <origin xyz="-0.105 0.004 -0.034" rpy="0 0 3.1415926536"/>
+            <geometry>
+                <mesh scale="0.001 0.001 0.001" filename="package://px4_roscon_workshop/meshes/x8_elevon_left.dae" />
+            </geometry>
+        </visual>
+    </link>
+    <joint name="base_to_left_elevon" type="fixed">
+        <parent link="base_link"/>
+        <child link="left_elevon"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    <link name="right_elevon">
+        <visual name="right_elevon_visual">
+            <origin xyz="0.281 -1.032 -0.034" rpy="0 0 3.1415926536"/>
+            <geometry>
+                <mesh scale="0.001 0.001 0.001" filename="package://px4_roscon_workshop/meshes/x8_elevon_right.dae" />
+            </geometry>
+        </visual>
+    </link>
+    <joint name="base_to_right_elevon" type="fixed">
+        <parent link="base_link"/>
+        <child link="right_elevon"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+</robot>
