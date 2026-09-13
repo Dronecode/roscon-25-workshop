@@ -3,7 +3,7 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess, DeclareLaunchArgument, OpaqueFunction
 from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, EnvironmentVariable
 from launch_ros.descriptions import ComposableNode
 
 
@@ -52,7 +52,9 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 "px4_autopilot_path",
-                default_value="~/PX4-Autopilot",
+                default_value=EnvironmentVariable(
+                    "PX4_PATH", default_value="~/PX4-Autopilot"
+                ),
                 description="Path to PX4-Autopilot repository root (supports ~)",
             ),
             Node(

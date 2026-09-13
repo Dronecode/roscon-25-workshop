@@ -12,7 +12,7 @@ FORMATION_CONTROL_EXECUTABLE = (
     "px4_formation_control_executor_exercise",
     "px4_formation_control_executor_solution",
 )
-ACTIVE_EXECUTABLE_IDX = 2
+ACTIVE_EXECUTABLE_IDX = 0
 
 
 def generate_launch_description() -> LaunchDescription:
