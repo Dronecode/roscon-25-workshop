@@ -1,53 +1,47 @@
+#!/bin/bash
+
 SCRIPT=$(realpath "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-# Parse command line arguments
-NO_GUI=false
-NVIDIA=false
 
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --no-gui)
-            NO_GUI=true
-            shift
-            ;;
-        --nvidia)
-            NVIDIA=true
-            shift
-            ;;
-        *)
-            echo "Unknown argument: $1"
-            echo "Usage: $0 [--no-gui] [--nvidia]"
-            exit 1
-            ;;
-    esac
-done
-
-# Build docker run command
-DOCKER_CMD="docker run -it --rm"
-
-# Add GUI support unless --no-gui is specified
-if [ "$NO_GUI" = false ]; then
-    DOCKER_CMD="$DOCKER_CMD -v /tmp/.X11-unix:/tmp/.X11-unix:ro"
-    DOCKER_CMD="$DOCKER_CMD -e DISPLAY=$DISPLAY"
-
-    # Add nvidia runtime if --nvidia is specified
-    if [ "$NVIDIA" = true ]; then
-        DOCKER_CMD="$DOCKER_CMD --runtime nvidia"
-        DOCKER_CMD="$DOCKER_CMD -e NVIDIA_VISIBLE_DEVICES=all"
-        DOCKER_CMD="$DOCKER_CMD -e NVIDIA_DRIVER_CAPABILITIES=all"
-    else
-        DOCKER_CMD="$DOCKER_CMD --device /dev/dri:/dev/dri"
-    fi
+CONTAINER_NAME=px4-dev-ros2-gazebo
+running_container=$(docker ps -q --filter "name=^/${CONTAINER_NAME}$" --filter status=running)
+if [[ -n "$running_container" ]]; then
+	exec docker exec -it "$CONTAINER_NAME" bash
 fi
 
-# Add common options
-DOCKER_CMD="$DOCKER_CMD -p 18570:18570/udp"
-DOCKER_CMD="$DOCKER_CMD -p 8765:8765"
-DOCKER_CMD="$DOCKER_CMD -v ${SCRIPTPATH}/..:/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop"
-DOCKER_CMD="$DOCKER_CMD --name=px4-roscon-25"
-DOCKER_CMD="$DOCKER_CMD -w /home/ubuntu/roscon-25-workshop_ws"
-DOCKER_CMD="$DOCKER_CMD dronecode/roscon-25-workshop bash"
+if [[ $# -lt 1 ]]; then
+	echo "Usage: $0 PX4_DIR" >&2
+	exit 1
+fi
 
-# Execute the command
-eval $DOCKER_CMD
+PX4_DIR=$1
+
+WS_SRC_DIR=$SCRIPTPATH/../..
+
+set -euo pipefail
+umask 077
+: "${DISPLAY:?Open a terminal in your local graphical session}"
+IMAGE="${IMAGE:-px4io/px4-dev-ros2-gazebo:main-jazzy}"
+auth=$(mktemp)
+trap 'rm -f "$auth"' EXIT
+
+xauth nlist "$DISPLAY" |
+sed 's/^..../ffff/' |
+xauth -f "$auth" nmerge -
+if [ ! -s "$auth" ]; then
+echo "No Xauthority cookie for $DISPLAY; check the host XAUTHORITY setting." >&2
+exit 1
+fi
+
+docker run --rm -it --name "$CONTAINER_NAME" --network host \
+--mount type=bind,src=/tmp/.X11-unix,dst=/tmp/.X11-unix,readonly \
+--mount "type=bind,src=$auth,dst=/tmp/px4.xauth,readonly" \
+--mount "type=bind,src=$WS_SRC_DIR,dst=/workspace/src" \
+--mount "type=bind,src=$PX4_DIR,dst=/PX4-Autopilot" \
+-e "DISPLAY=$DISPLAY" -e XAUTHORITY=/tmp/px4.xauth \
+-e QT_QPA_PLATFORM=xcb -e LIBGL_ALWAYS_SOFTWARE=1 \
+-e ROS_DOMAIN_ID=83 \
+-e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e "GIT_CONFIG_VALUE_0=*" \
+-e PX4_PATH=/PX4-Autopilot \
+"$IMAGE"

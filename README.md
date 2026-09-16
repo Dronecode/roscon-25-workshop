@@ -45,6 +45,8 @@ For more detailed instructions and guidance, please refer to the dedicated **REA
 For detailed environment setup instructions, see the [docs/setup.md](docs/setup.md) guide.
 Please complete this step before you proceed.
 
+If you prefer to develop and run the exercises inside a docker container, then refer to [docs/setup_docker.md](docs/setup_docker.md)
+
 ### Control Pipelines
 
 There are two main ways to interact with PX4 and ROS 2:

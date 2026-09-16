@@ -39,7 +39,7 @@ Download QGC
     ```bash
     mkdir -p ~/workspaces/px4_roscon26_ws/src
     cd ~/workspaces/px4_roscon26_ws/src
-    git clone -b develop git@github.com:Dronecode/roscon-25-workshop.git
+    git clone -b develop git@github.com:Dronecode/roscon-25-workshop.git px4-roscon-workshop
     ```
 
 1. Install ROS 2 Jazzy: https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html.
@@ -57,14 +57,14 @@ Pick `ros-humble-desktop`.
 
     ```bash
     cd ~/workspaces/px4_roscon26_ws
-    vcs import src < ./src/roscon-25-workshop/jazzy.repos
+    vcs import src < ./src/px4-roscon-workshop/jazzy.repos
     ```
 
     or, if you are using ROS Humble
 
     ```bash
     cd ~/workspaces/px4_roscon26_ws
-    vcs import src < ./src/roscon-25-workshop/humble.repos
+    vcs import src < ./src/px4-roscon-workshop/humble.repos
     ```
 
 1. Install dependencies
