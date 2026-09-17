@@ -53,7 +53,12 @@ This will:
 
 - Mount the `~/PX4-Autopilot` directory into `/PX4-Autopilot`.
 - Mount the workspace src directory `~/workspaces/px4_roscon26_ws/src` into `/workspace/src`
-- Forward GUI (software OpenGL)
+- Forward GUI (software OpenGL). To use hardware acceleration and for adjustments for using WSL2, please refer to [Gazebo Container GUI](https://docs.px4.io/main/en/simulation/gazebo_container_gui).
+To instead run _headless_ run the script with the env var `HEADLESS=1`.
+
+   ```sh
+   HEADLESS=1 ./docker/docker_run.sh ~/PX4-Autopilot
+   ```
 
 To use a different docker image, use
 
