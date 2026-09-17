@@ -46,7 +46,7 @@ Download [Foxglove](https://foxglove.dev/download)
 The `./docker/docker_run.sh` script can be used to start the container with the right mounts and envs.
 
 ```bash
-./docker/docker.run ~/PX4-Autopilot
+./docker/docker_run.sh ~/PX4-Autopilot
 ```
 
 This will:
@@ -54,6 +54,12 @@ This will:
 - Mount the `~/PX4-Autopilot` directory into `/PX4-Autopilot`.
 - Mount the workspace src directory `~/workspaces/px4_roscon26_ws/src` into `/workspace/src`
 - Forward GUI (software OpenGL)
+
+To use a different docker image, use
+
+```bash
+IMAGE=<image-name> ./docker/docker_run.sh ~/PX4-Autopilot
+```
 
 Now install the workspace dependencies and build the workspace, these commands will need to be run each time the container is created and started.
 
@@ -72,3 +78,34 @@ make px4_sitl_default
 ```
 
 You can now refer to [How to start the simulation](./setup.md#how-to-start-the-simulation) to validate the setup.
+
+## Local docker build
+
+To locally build the `px4io/px4-dev-ros2-gazebo:main-jazzy` docker image instead of pulling it from Docker Hub follow these steps:
+
+```bash
+cd ~/PX4-Autopilot
+git submodule deinit --all -f
+git fetch
+git checkout feat/add_dev_ros2_gazebo_container
+bash Tools/packaging/containers/prepare_context.sh
+ROS_DISTRO=jazzy docker buildx bake -f Tools/packaging/containers/docker-bake.hcl ros2-gazebo-dev \
+  --set ros2-gazebo-dev.tags=px4-dev-ros2-gazebo:local --load
+```
+
+Now you can use the `px4-dev-ros2-gazebo:local` docker image instead of `px4io/px4-dev-ros2-gazebo:main-jazzy`.
+
+Before proceeding, don't forget to return PX4-Autopilot back to `release/1.18` branch
+
+```bash
+cd ~/PX4-Autopilot
+git clean -fxd
+git checkout release/1.18
+git submodule update --init --recursive
+```
+
+To run the container you can use:
+
+```bash
+IMAGE=px4-dev-ros2-gazebo:local ./docker/docker_run.sh ~/PX4-Autopilot
+```
