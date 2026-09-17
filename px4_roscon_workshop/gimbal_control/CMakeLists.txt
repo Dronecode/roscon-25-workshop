@@ -13,7 +13,7 @@ add_compile_options(-Wall -Wextra -Wpedantic -Werror -Wno-unused-parameter)
 
 include_directories(include)
 
-add_executable(gimbal_teleop src/GimbalTeleop.cpp)
+add_executable(gimbal_teleop src/gimbal_teleop.cpp)
 
 ament_target_dependencies(gimbal_teleop
   rclcpp

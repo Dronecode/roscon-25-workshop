@@ -132,12 +132,3 @@ def generate_launch_description() -> LaunchDescription:
             ),
         ]
     )
-
-
-# ros2 topic pub -r 5 /px4_0/fmu/in/gimbal_controls px4_msgs/msg/GimbalControls "timestamp: 0
-# timestamp_sample: 0
-# control:
-# - 0.0
-# - 0.0
-# - 0.0
-# "

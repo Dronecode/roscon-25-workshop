@@ -35,15 +35,7 @@ Launch the simulation and all three formation controllers:
 
 ```sh
 ros2 launch px4_formation_control formation.launch.py \
-	px4_autopilot_path:=~/PX4-Autopilot
-```
-
-The `px4_autopilot_path` argument must point to the PX4-Autopilot repository root. The launch file also accepts a Gazebo world name:
-
-```sh
-ros2 launch px4_formation_control formation.launch.py \
-	px4_autopilot_path:=~/PX4-Autopilot \
-	world:=default
+px4_autopilot_path:=~/PX4-Autopilot
 ```
 
 After startup, use QGroundControl to activate the required mode and arm the vehicles according to the PX4 safety rules. Arming is allowed while the formation mode is active.

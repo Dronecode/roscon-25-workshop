@@ -1,4 +1,4 @@
-#include "MousePointerGimbalControl.hpp"
+#include "mouse_pointer_gimbal_control.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 void MousePointerGimbalControlNode::controlLoop()

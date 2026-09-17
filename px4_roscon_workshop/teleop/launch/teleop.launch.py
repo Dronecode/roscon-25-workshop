@@ -14,10 +14,6 @@ def _launch_setup(context):
     px4_gz_resource_path = os.path.join(px4_autopilot_path, "Tools", "simulation", "gz")
     arucotag_model_path = os.path.join(px4_gz_resource_path, "models", "arucotag")
     return [
-        # SetEnvironmentVariable(
-        #     'GZ_SIM_RESOURCE_PATH',
-        #     ':'.join([os.path.join(px4_gz_resource_path, 'worlds'), os.path.join(px4_gz_resource_path, 'models')])
-        # ),
         ExecuteProcess(
             cmd=[
                 "gz",

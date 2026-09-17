@@ -106,7 +106,7 @@ void ArucoTrackerNode::image_callback(const sensor_msgs::msg::Image::SharedPtr& 
         // Publish target pose
         geometry_msgs::msg::PoseStamped pose_msg;
         pose_msg.header.stamp = msg->header.stamp;
-        pose_msg.header.frame_id = "camera_frame";
+        pose_msg.header.frame_id = "camera_link";
         pose_msg.pose.position.x = tvec[0];
         pose_msg.pose.position.y = tvec[1];
         pose_msg.pose.position.z = tvec[2];

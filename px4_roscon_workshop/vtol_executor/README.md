@@ -35,6 +35,11 @@ See [`cfg/params.yaml`](./cfg/params.yaml):
 ## Usage
 
 1. Start the simulation, PX4 (VTOL airframe) and QGC as described in the [setup guide](../../docs/setup.md).
+
+   ```sh
+   make px4_sitl gz_standard_vtol
+   ```
+
 2. Start the additional ROS 2 node through the [common launchfile](../px4_roscon_workshop/README.md)
 
    ```sh

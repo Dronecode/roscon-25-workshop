@@ -1,6 +1,6 @@
-#include <chrono>
+#include "mouse_pointer_gimbal_control.hpp"
 
-#include "MousePointerGimbalControl.hpp"
+#include <chrono>
 
 using namespace std::chrono_literals;
 

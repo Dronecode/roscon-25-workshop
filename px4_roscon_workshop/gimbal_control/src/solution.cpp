@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "MousePointerGimbalControl.hpp"
+#include "mouse_pointer_gimbal_control.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 namespace {
