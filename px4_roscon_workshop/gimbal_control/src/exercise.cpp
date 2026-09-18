@@ -20,11 +20,13 @@ void MousePointerGimbalControlNode::controlLoop()
     - Zero out small deflections within _param_deadzone of the center.
     - Zero the output if the pointer is stale (see _last_point_time and
       _param_pointer_timeout) or no image size has been received yet.
+    - Don't publish at all unless _publishing_enabled is true. Each click received on
+      "mouse/click" toggles _publishing_enabled (see clickCallback).
     - _param_invert_tilt: image y grows downward, so tilt is inverted by default.
   */
 
-  geometry_msgs::msg::Twist msg{};
-  _cmd_vel_pub->publish(msg);
+  // geometry_msgs::msg::Twist msg{};
+  // _cmd_vel_pub->publish(msg);
 }
 
 int main(int argc, char* argv[])

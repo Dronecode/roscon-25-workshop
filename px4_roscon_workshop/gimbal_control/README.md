@@ -25,13 +25,12 @@ We will use the second approach.
 
 ## Configuration
 
-PX4 `gimbal_controls` topic is not bridge by default over ROS 2.
+PX4 `gimbal_controls` topic is not bridged by default over ROS 2.
 Therefore the bridge configuration file needs to be edited, see [PX4 dds topic](https://docs.px4.io/main/en/middleware/uxrce_dds#dds-topics-yaml) documentation to learn how to add `gimbal_controls` to the list of PX4 outbound topics, then rebuild PX4 SITL.
 
 ## gimbal_teleop
 
-The gimbal teleop node converts standard ROS 2 `geometry_msgs::msg::Twist` messages into the PX4 specific `px4_msgs::msg::GimbalControls` and directly publishes on `"fmu/in/gimbal_controls"`.
+The gimbal teleop node converts standard ROS 2 `geometry_msgs::msg::Twist` messages into the PX4 specific `px4_msgs::msg::GimbalControls` messages and directly publishes on `"fmu/in/gimbal_controls"`.
 
-The `linear.x` component of the input topic (`"gimbal/cmd_vel"`) is interpreted as desired **pan/yaw** rate.
-The `linear.y` component is instead interpreted as desired **tilt/pitch** rate.
-
+- The `linear.x` component of the input topic (`"gimbal/cmd_vel"`) is interpreted as desired **pan/yaw** rate.
+- The `linear.y` component is instead interpreted as desired **tilt/pitch** rate.

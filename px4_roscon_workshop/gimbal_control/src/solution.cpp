@@ -20,6 +20,10 @@ double applyDeadzone(double value, double deadzone)
 
 void MousePointerGimbalControlNode::controlLoop()
 {
+  if (!_publishing_enabled) {
+    return;
+  }
+
   const rclcpp::Time current_time = now();
 
   const bool have_image_size = _image_width > 0 && _image_height > 0;
