@@ -33,6 +33,20 @@ if [[ "$HEADLESS" -eq 1 ]]; then
 		-e PX4_PATH=/PX4-Autopilot \
 		-e HEADLESS \
 		"$IMAGE"
+elif [[ -d /mnt/wslg/.X11-unix ]]; then
+	# WSL2 (WSLg) ships its own X server and doesn't use Xauthority at all
+	: "${DISPLAY:?Open a terminal in your local graphical session}"
+
+	docker run --rm -it --name "$CONTAINER_NAME" --network host \
+		--mount type=bind,src=/mnt/wslg/.X11-unix,dst=/tmp/.X11-unix,readonly \
+		--mount "type=bind,src=$WS_SRC_DIR,dst=/workspace/src" \
+		--mount "type=bind,src=$PX4_DIR,dst=/PX4-Autopilot" \
+		-e "DISPLAY=$DISPLAY" \
+		-e QT_QPA_PLATFORM=xcb -e LIBGL_ALWAYS_SOFTWARE=1 \
+		-e ROS_DOMAIN_ID=83 \
+		-e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e "GIT_CONFIG_VALUE_0=*" \
+		-e PX4_PATH=/PX4-Autopilot \
+		"$IMAGE"
 else
 	umask 077
 	: "${DISPLAY:?Open a terminal in your local graphical session}"
