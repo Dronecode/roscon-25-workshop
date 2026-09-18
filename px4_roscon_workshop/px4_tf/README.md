@@ -44,7 +44,7 @@ Please run the following commands in separate terminals.
 
 1. Start Gazebo, spawn a drone and attach a PX4 instance to it.
 From the PX4 repo, run
-   
+
    ```sh
    make px4_sitl gz_500
    ```

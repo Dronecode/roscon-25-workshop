@@ -9,25 +9,24 @@
 #include "CustomMode.hpp"
 
 class CustomModeExecutor : public px4_ros2::ModeExecutorBase {
-public:
-    CustomModeExecutor(px4_ros2::ModeBase &owned_mode,
-                       px4_ros2::ModeBase &second_mode);
+ public:
+  CustomModeExecutor(px4_ros2::ModeBase& owned_mode, px4_ros2::ModeBase& second_mode);
 
-    // See ModeExecutorBase
-    void onActivate() override;
-    void onDeactivate(DeactivateReason reason) override;
+  // See ModeExecutorBase
+  void onActivate() override;
+  void onDeactivate(DeactivateReason reason) override;
 
-private:
-    px4_ros2::ModeBase &_second_mode;
+ private:
+  px4_ros2::ModeBase& _second_mode;
 
-    // State management
-    enum class State {
-        Takeoff,           // Initial state, takeoff to a predefined altitude
-        CustomWaypoints,     // Custom waypoints mode
-        CustomYaw,               // Custom yaw mode
-        Land,              // Land state
-        WaitUntilDisarmed  // Final state, wait until the vehicle is disarmed
-    };
-    State _state;
-    void switchToState(State state, px4_ros2::Result previous_result);
+  // State management
+  enum class State {
+    Takeoff,           // Initial state, takeoff to a predefined altitude
+    CustomWaypoints,   // Custom waypoints mode
+    CustomYaw,         // Custom yaw mode
+    Land,              // Land state
+    WaitUntilDisarmed  // Final state, wait until the vehicle is disarmed
+  };
+  State _state;
+  void switchToState(State state, px4_ros2::Result previous_result);
 };

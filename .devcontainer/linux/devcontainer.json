@@ -1,27 +1,30 @@
 {
-    "name": "px4_roscon_workshop_linux",
-    "image": "dronecode/roscon-25-workshop:latest",
-    "forwardPorts": [8765],
-    "remoteEnv": {
-        "DISPLAY": "${localEnv:DISPLAY}"
-    },
-    "runArgs": [
-        "--device", "/dev/dri:/dev/dri"
-    ],
-    "mounts": [
-        {
-            "source": "/tmp/.X11-unix",
-            "target": "/tmp/.X11-unix",
-            "type": "bind"
-        }
-    ],
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
-            }
-        }
-    },
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop,type=bind",
-    "workspaceFolder": "/home/ubuntu/roscon-25-workshop_ws"
+  "name": "px4_roscon_workshop_linux",
+  "image": "dronecode/roscon-25-workshop:latest",
+  "forwardPorts": [
+    8765
+  ],
+  "remoteEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}"
+  },
+  "runArgs": [
+    "--device",
+    "/dev/dri:/dev/dri"
+  ],
+  "mounts": [
+    {
+      "source": "/tmp/.X11-unix",
+      "target": "/tmp/.X11-unix",
+      "type": "bind"
+    }
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop,type=bind",
+  "workspaceFolder": "/home/ubuntu/roscon-25-workshop_ws"
 }

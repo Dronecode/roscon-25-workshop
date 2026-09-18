@@ -35,7 +35,7 @@ apt-get install -y --no-install-recommends \
     ros-humble-gps-msgs \
     ros-humble-vision-msgs \
     libgflags-dev \
-    python3-rospkg 
+    python3-rospkg
 
 rm -rf /var/lib/apt/lists/*
 apt-get clean

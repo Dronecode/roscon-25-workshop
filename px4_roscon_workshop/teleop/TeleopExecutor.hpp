@@ -6,22 +6,22 @@
 #include "Teleop.hpp"
 
 class TeleopExecutor : public px4_ros2::ModeExecutorBase {
-public:
-    TeleopExecutor(px4_ros2::ModeBase &owned_mode);
+ public:
+  TeleopExecutor(px4_ros2::ModeBase& owned_mode);
 
-    // See ModeExecutorBase
-    void onActivate() override;
-    void onDeactivate(DeactivateReason reason) override;
+  // See ModeExecutorBase
+  void onActivate() override;
+  void onDeactivate(DeactivateReason reason) override;
 
-private:
-    // State management
-    enum class State {
-        Takeoff,           // Initial state, takeoff to a predefined altitude
-        TeleOperation,     // Custom teleoperation mode
-        RTL,               // Return to Launch state
-        Land,              // Land state
-        WaitUntilDisarmed  // Final state, wait until the vehicle is disarmed
-    };
-    State _state;
-    void switchToState(State state, px4_ros2::Result previous_result);
+ private:
+  // State management
+  enum class State {
+    Takeoff,           // Initial state, takeoff to a predefined altitude
+    TeleOperation,     // Custom teleoperation mode
+    RTL,               // Return to Launch state
+    Land,              // Land state
+    WaitUntilDisarmed  // Final state, wait until the vehicle is disarmed
+  };
+  State _state;
+  void switchToState(State state, px4_ros2::Result previous_result);
 };

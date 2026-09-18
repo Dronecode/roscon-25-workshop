@@ -1,14 +1,17 @@
 {
-    "name": "px4_roscon_workshop_nogui",
-    "image": "dronecode/roscon-25-workshop:latest",
-    "forwardPorts": [8765, 18570],
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
-            }
-        }
-    },
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop,type=bind",
-    "workspaceFolder": "/home/ubuntu/roscon-25-workshop_ws"
+  "name": "px4_roscon_workshop_nogui",
+  "image": "dronecode/roscon-25-workshop:latest",
+  "forwardPorts": [
+    8765,
+    18570
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/ubuntu/roscon-25-workshop_ws/src/roscon-25-workshop,type=bind",
+  "workspaceFolder": "/home/ubuntu/roscon-25-workshop_ws"
 }

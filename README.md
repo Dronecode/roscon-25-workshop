@@ -68,7 +68,7 @@ In this section, we explore **three practical examples** of perception and contr
 1. **ArUco Marker Detection** – Detect markers using ROS 2 and PX4. No custom flight mode is required.
 2. **Teleoperation** – Ever seen a TurtleBot flying? This demo shows how to manually control a drone using a keyboard and to use a LiDAR scan for environmental awareness.
 3. **Precision Landing** – Combine ArUco detection with a **Custom Mode** to perform precision landing.
-    - **Precision Landing with Executor** – This is a follow up exercise to incorporate Precision Land in the former Custom Modes Demo, where an Executor schedules  Waypoints and Precison Land to find and land on the ArUco Marker in the maze. 
+    - **Precision Landing with Executor** – This is a follow up exercise to incorporate Precision Land in the former Custom Modes Demo, where an Executor schedules  Waypoints and Precison Land to find and land on the ArUco Marker in the maze.
 
 For more detailed instructions and exercises, refer to the following demos:
 
