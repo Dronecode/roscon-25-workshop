@@ -15,7 +15,7 @@ MOUSE_POINTER_GIMBAL_CONTROL_EXECUTABLE = (
     "mouse_pointer_gimbal_control_exercise",
     "mouse_pointer_gimbal_control_solution",
 )
-ACTIVE_EXECUTABLE_IDX = 1  # solution
+ACTIVE_EXECUTABLE_IDX = 0  # solution
 
 
 def generate_launch_description() -> LaunchDescription:
@@ -130,14 +130,10 @@ def generate_launch_description() -> LaunchDescription:
                 name="mouse_pointer_gimbal_control",
                 output="screen",
             ),
+            Node(
+                package="foxglove_bridge",
+                executable="foxglove_bridge",
+                parameters=[{"use_sim_time": True}],
+            ),
         ]
     )
-
-
-# ros2 topic pub -r 5 /px4_0/fmu/in/gimbal_controls px4_msgs/msg/GimbalControls "timestamp: 0
-# timestamp_sample: 0
-# control:
-# - 0.0
-# - 0.0
-# - 0.0
-# "

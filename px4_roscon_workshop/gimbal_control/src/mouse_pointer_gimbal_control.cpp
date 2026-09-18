@@ -1,6 +1,6 @@
-#include <chrono>
+#include "mouse_pointer_gimbal_control.hpp"
 
-#include "MousePointerGimbalControl.hpp"
+#include <chrono>
 
 using namespace std::chrono_literals;
 
@@ -18,6 +18,10 @@ MousePointerGimbalControlNode::MousePointerGimbalControlNode()
   _point_sub = create_subscription<geometry_msgs::msg::PointStamped>(
       "mouse/position", 10,
       [this](const geometry_msgs::msg::PointStamped::SharedPtr msg) { pointCallback(msg); });
+
+  _click_sub = create_subscription<geometry_msgs::msg::PointStamped>(
+      "mouse/click", 10,
+      [this](const geometry_msgs::msg::PointStamped::SharedPtr msg) { clickCallback(msg); });
 
   _camera_info_sub = create_subscription<sensor_msgs::msg::CameraInfo>(
       "camera_info", rclcpp::SensorDataQoS(),
@@ -54,6 +58,14 @@ void MousePointerGimbalControlNode::pointCallback(
 {
   _last_point = msg;
   _last_point_time = now();
+}
+
+void MousePointerGimbalControlNode::clickCallback(
+    const geometry_msgs::msg::PointStamped::SharedPtr /*msg*/)
+{
+  _publishing_enabled = !_publishing_enabled;
+  RCLCPP_INFO(get_logger(), "gimbal/cmd_vel publishing %s",
+              _publishing_enabled ? "enabled" : "disabled");
 }
 
 void MousePointerGimbalControlNode::cameraInfoCallback(

@@ -21,7 +21,7 @@ The Custom Mode Demo registers one mode, **CustomWaypoints**, which flies a pred
    ros2 launch px4_roscon_workshop common.launch.py
    ```
 
-3. Run `custom_mode_demo.launch.py` from inside the docker container
+3. Run `custom_mode_demo.launch.py`
 
    ```sh
    ros2 launch custom_mode_demo custom_mode_demo.launch.py

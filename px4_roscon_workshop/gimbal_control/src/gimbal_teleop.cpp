@@ -1,4 +1,4 @@
-#include "GimbalTeleop.hpp"
+#include "gimbal_teleop.hpp"
 
 #include <algorithm>
 #include <chrono>

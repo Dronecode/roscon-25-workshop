@@ -12,16 +12,21 @@ class MousePointerGimbalControlNode : public rclcpp::Node {
  private:
   void loadParameters();
   void pointCallback(const geometry_msgs::msg::PointStamped::SharedPtr msg);
+  void clickCallback(const geometry_msgs::msg::PointStamped::SharedPtr msg);
   void cameraInfoCallback(const sensor_msgs::msg::CameraInfo::SharedPtr msg);
   void controlLoop();
 
   rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr _point_sub;
+  rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr _click_sub;
   rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr _camera_info_sub;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr _cmd_vel_pub;
   rclcpp::TimerBase::SharedPtr _control_timer;
 
   geometry_msgs::msg::PointStamped::SharedPtr _last_point;
   rclcpp::Time _last_point_time;
+
+  // Toggled on/off by each click received on _click_sub. Publishing is armed only while true.
+  bool _publishing_enabled{false};
 
   uint32_t _image_width{0};
   uint32_t _image_height{0};

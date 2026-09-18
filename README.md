@@ -45,21 +45,21 @@ For more detailed instructions and guidance, please refer to the dedicated **REA
 For detailed environment setup instructions, see the [docs/setup.md](docs/setup.md) guide.
 Please complete this step before you proceed.
 
-### Control Pipelines
+If you prefer to develop and run the exercises inside a docker container, then refer to [docs/setup_docker.md](docs/setup_docker.md)
 
-There are two main ways to interact with PX4 and ROS 2:
+### Control Pipelines - PX4 ROS 2 Interface
 
-**Offboard Mode** – the classic method for sending velocity or position setpoints directly to PX4.
+The PX4 ROS 2 Interface allows you to create custom flight modes and executors.
 
-**PX4 ROS 2 Interface / Custom Modes** – the newer method using the px4_ros2 library, allowing you to create custom flight modes and executors.
-
-In this section, we demonstrate a simple flight sequence: Takeoff → Waypoints → Yaw → Landing.
-The goal is to compare these two approaches, highlighting their differences and advantages.
+In this section, we demonstrate different ways for controlling multicopters, rovers and VTOL from ROS 2.
 
 For detailed instructions and exercises, refer to the following guides in this repository:
 
-- [Offboard Demo](px4_roscon_workshop/offboard_demo/README.md)
-- [Custom Mode Demo](px4_roscon_workshop/custom_mode_demo/README.md)
+- [Multicopter Custom Mode Demo](./px4_roscon_workshop/custom_mode_demo/README.md)
+- [Multicopter Custom Executor Demo](./px4_roscon_workshop/custom_executor_demo/README.md)
+- [Differential Rover teloperation](./px4_roscon_workshop/rover_teleop//README.md)
+- [VTOL control](./px4_roscon_workshop/vtol_executor/README.md)
+- [Multi vehicle control](p./x4_roscon_workshop/formation_control/README.md)
 
 ### Perception & Applications
 
@@ -72,10 +72,11 @@ In this section, we explore **three practical examples** of perception and contr
 
 For more detailed instructions and exercises, refer to the following demos:
 
-- [ArUco Marker Detection](px4_roscon_workshop/aruco_tracker/README.md)
-- [Teleoperation](px4_roscon_workshop/teleop/README.md)
-- [Precision Landing](px4_roscon_workshop/precision_land/README.md)
-- [Precision Landing with Executor](px4_roscon_workshop/precision_land_executor/README.md)
+- [ArUco Marker Detection](./px4_roscon_workshop/aruco_tracker/README.md)
+- [Teleoperation](./px4_roscon_workshop/teleop/README.md)
+- [Precision Landing](./px4_roscon_workshop/precision_land/README.md)
+- [Precision Landing with Executor](./px4_roscon_workshop/precision_land_executor/README.md)
+- [Gimbal control](./px4_roscon_workshop/gimbal_control/README.md)
 
 ### Q&A, Resources & Hardware Show-and-Tell
 
