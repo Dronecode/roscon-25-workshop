@@ -42,7 +42,7 @@ For more detailed instructions and guidance, please refer to the dedicated **REA
 
 ### Environment Setup
 
-For detailed environment and Docker setup instructions, see the [docs/README.md](docs/setup.md) guide.
+For detailed environment setup instructions, see the [docs/setup.md](docs/setup.md) guide.
 Please complete this step before you proceed.
 
 ### Control Pipelines

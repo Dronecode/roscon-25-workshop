@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../px4-ros2-interface-lib"
+		},
+		{
+			"path": "../px4_msgs"
+		},
+		{
+			"path": "../Micro-XRCE-DDS-Agent"
+		},
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"search.exclude": {
+			"**/build": true,
+			"**/install": true,
+			"**/log": true
+		},
+		"files.watcherExclude": {
+			"**/build/**": true,
+			"**/install/**": true,
+			"**/log/**": true
+		},
+		"C_Cpp.default.includePath": [
+			"${workspaceFolder}/**",
+			"${workspaceFolder:px4-ros2-interface-lib}/px4_ros2_cpp/include"
+		],
+		"C_Cpp.default.defines": [],
+		"C_Cpp.default.compilerPath": "/usr/bin/clang",
+		"C_Cpp.default.cStandard": "c17",
+		"C_Cpp.default.cppStandard": "c++17",
+		"C_Cpp.default.intelliSenseMode": "linux-clang-x64"
+	}
+}

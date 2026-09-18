@@ -7,16 +7,13 @@
 
 class TeleopExecutor : public px4_ros2::ModeExecutorBase {
 public:
-    TeleopExecutor(rclcpp::Node &node, px4_ros2::ModeBase &owned_mode);
+    TeleopExecutor(px4_ros2::ModeBase &owned_mode);
 
     // See ModeExecutorBase
     void onActivate() override;
     void onDeactivate(DeactivateReason reason) override;
 
 private:
-    // ROS2
-    rclcpp::Node &_node;
-
     // State management
     enum class State {
         Takeoff,           // Initial state, takeoff to a predefined altitude

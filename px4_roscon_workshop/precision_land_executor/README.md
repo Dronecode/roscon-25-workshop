@@ -37,11 +37,7 @@ The system:
 1. Start the simulation, PX4 and QGC as described in the [setup guide](../../docs/setup.md) with the `walls` world and the x500 with the downfacing camera:
 
    ```sh
-   python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/ --world walls
-   ```
-
-   ```sh
-   PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4014 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
+   make px4_sitl gz_x500_mono_cam_down_walls
    ```
 
 2. Ensure the vehicle is ready (GPS lock, all sensors healthy)
@@ -71,5 +67,7 @@ The current waypoints require a velocity limit, you can set it in QGC.
    ```sh
    ros2 launch precision_land_executor precision_land_executor.launch.py
    ```
+
+   use `px4_autopilot_path` launch argument to provide the PX4-Autopilot path.
 
 4. Select **CustomWaypoints** and arm the drone

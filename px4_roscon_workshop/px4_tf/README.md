@@ -36,8 +36,6 @@ When converted in ROS 2 coordinate system this corresponds to a yaw value of `90
 ## Examples
 
 The following examples assumes that the user can run a PX4 simulation using Gazebo and can bridge PX4 and ROS 2 through uXRCE-DDS.
-All the commands that follows are expected to be run from inside the workshop container assuming the GUI is available.
-Please refer to the [docker guide](../../docker/README.md) for running the commands without GUI.
 
 ### Example 1 - single drone spawning in Gazebo position (0,0,0)
 
@@ -45,25 +43,14 @@ When a single drone is simulated and the drone is spawned in the Gz world in pos
 Please run the following commands in separate terminals.
 
 1. Start Gazebo, spawn a drone and attach a PX4 instance to it.
-   1. Start Gazebo:
+From the PX4 repo, run
+   
+   ```sh
+   make px4_sitl gz_500
+   ```
 
-      ```sh
-      python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/
-      ```
-
-   2. Spawn a `x500` quadrotor model in gz position (0,0,0) facing gz x-axis (ROS 2 East):
-
-      ```sh
-      PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs
-      ```
-
-   3. Start QGC:
-
-      ```sh
-      /home/ubuntu/QGroundControl/qgroundcontrol
-      ```
-
-2. Start the MicroXRCE Agent
+3. Start QGC
+2. Start the MicroXRCEdds Agent
 
    ```sh
    MicroXRCEAgent udp4 -p 8888
@@ -93,44 +80,32 @@ Please run the following commands in separate terminals.
 
 ### Example 2 - two drones
 
-1. Start Gazebo, spawn a drone and attach a PX4 instance to it.
-   1. Start Gazebo:
+1. Start Gazebo, spawn a drone and attach a PX4 instance to it. Instance id is set to 1 (`-i 1`) to ensure unique namespace for the px4_topics
 
-      ```sh
-      python3 /home/ubuntu/PX4-gazebo-models/simulation-gazebo --model_store /home/ubuntu/PX4-gazebo-models/
-      ```
+   ```sh
+   PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 PX4_PARAM_UXRCE_DDS_SYNCT=0 ./build/px4_sitl_default/bin/px4 -i 1
+   ```
 
-   2. Spawn a `x500` quadrotor model in gz position (1,0,0) facing gz x-axis (ROS 2 East). Instance id is set to 1 (`-i 1`) to ensure unique namespace for the px4_topics
+1. Spawn a second `x500` quadrotor model in gz position (-1,0,0) facing gz x-axis (ROS 2 East). Instance id is set to 2 (`-i 2`) to ensure unique namespace for the px4_topics
 
-      ```sh
-      PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE="1,0,0,0,0,0" PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs -i 1
-      ```
+   ```sh
+   PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE="-1,0,0,0,0,0" PX4_PARAM_UXRCE_DDS_SYNCT=0 ./build/px4_sitl_default/bin/px4 -i 2
+   ```
 
-   3. Spawn a second `x500` quadrotor model in gz position (-11,0,0) facing gz x-axis (ROS 2 East). Instance id is set to 2 (`-i 2`) to ensure unique namespace for the px4_topics
-
-      ```sh
-      PX4_GZ_STANDALONE=1 PX4_SYS_AUTOSTART=4001 PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE="-1,0,0,0,0,0" PX4_PARAM_UXRCE_DDS_SYNCT=0 /home/ubuntu/px4_sitl/bin/px4 -w /home/ubuntu/px4_sitl/romfs -i 2
-      ```
-
-   4. Start QGC:
-
-      ```sh
-      /home/ubuntu/QGroundControl/qgroundcontrol
-      ```
-
-2. Start the MicroXRCE Agent
+1. Start QGC:
+1. Start the MicroXRCE Agent
 
    ```sh
    MicroXRCEAgent udp4 -p 8888
    ```
 
-3. Use `ros_gz_bridge` to bridge gz `/Clock` topic
+1. Use `ros_gz_bridge` to bridge gz `/Clock` topic
 
    ```sh
    ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock
    ```
 
-4. Start two `px4_tf_publisher` instances, one for each vehicle.
+1. Start two `px4_tf_publisher` instances, one for each vehicle.
 
    ```sh
    ros2 run px4_tf px4_tf_publisher --ros-args -p use_sim_time:=true -r __ns:=/px4_1 -p px4_tf_prefix:=px4_1
@@ -140,17 +115,17 @@ Please run the following commands in separate terminals.
    ros2 run px4_tf px4_tf_publisher --ros-args -p use_sim_time:=true -r __ns:=/px4_2 -p px4_tf_prefix:=px4_2
    ```
 
-5. Start two static tf publishers to link `px4_1odom` and `px4_2odom` to a common `map` frame
+1. Start two static tf publishers to link `px4_1odom` and `px4_2odom` to a common `map` frame
 
    ```sh
-   ros2 run tf2_ros static_transform_publisher --x 1 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id map --child-frame-id px4_2odom
+   ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id map --child-frame-id px4_1odom
    ```
 
    ```sh
    ros2 run tf2_ros static_transform_publisher --x -1 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id map --child-frame-id px4_2odom
    ```
 
-6. Use Foxglove to visualize your data, first start the foxglove bridge
+1. Use Foxglove to visualize your data, first start the foxglove bridge
 
    ```sh
    ros2 run foxglove_bridge foxglove_bridge --ros-args -p use_sim_time:=true
