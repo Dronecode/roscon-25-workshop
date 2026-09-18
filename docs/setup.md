@@ -90,7 +90,11 @@ Pick `ros-humble-desktop`.
 PX4 can directly connect to GZ using the `gz-transport` libraries.
 This means that PX4 can control any GZ model as long as the model uses the required sensor and actuation plugins.
 
-For this workshop we will use the x500 quadrotor model.
+For this workshop we will use:
+
+- the x500 quadrotor model
+- the standard vtol model
+- the special differential rover model
 
 Change folder to where PX4 was cloned and run
 

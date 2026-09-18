@@ -1,4 +1,4 @@
-# PX4 ROSCON 25
+# PX4 ROSCON WORKSHOP
 
 This package contains a launchfile to simplify the simulations startup.
 

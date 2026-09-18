@@ -27,15 +27,4 @@ The Custom Mode Demo registers one mode, **CustomWaypoints**, which flies a pred
    ros2 launch custom_mode_demo custom_mode_demo.launch.py
    ```
 
-4. The custom mode demo does not automatically switch to _CustomWaypoints_ or arm the drone.
-
-   1. On the QGC window, fist enter _CustomWaypoints_ mode:
-
-      ![change_mode](../../docs/assets/change_mode.png)
-
-   2. Then click on the `Not Ready` label and arm the vehicle:
-
-      ![arm vehicle](../../docs/assets/arm_vehicle.png)
-
-The `custom_mode_demo.launch.py` can also start the _MicroXrceAgent_ and the _gz clock bridge_. Set the launch arguments `run_uxrcedds_agent` or `run_gz_clock_bridge` to `true` to run them if you don't use  `common.launch.py`.
-
+4. Use QGC to takeoff, then activate the custom **CustomWaypoints** mode.
