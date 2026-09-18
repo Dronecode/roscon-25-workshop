@@ -7,7 +7,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, EnvironmentVariable
 
 
 
@@ -19,7 +19,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'px4_autopilot_path',
-            default_value='~/PX4-Autopilot',
+            default_value=EnvironmentVariable('PX4_PATH', default_value='~/PX4-Autopilot'),
             description='Path to PX4-Autopilot repository root (supports ~)',
         ),
         IncludeLaunchDescription(
