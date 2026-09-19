@@ -76,6 +76,11 @@ def _launch_setup(context):
             ),
         ),
         SetEnvironmentVariable("GZ_SIM_SERVER_CONFIG_PATH", px4_gz_server_config_path),
+        # Force gz-transport discovery over loopback. On machines whose default
+        # route is Wi-Fi, multicast discovery packets aren't reflected back to
+        # other local processes, so the GUI/create/PX4 clients never see the
+        # server even though it initializes fine.
+        SetEnvironmentVariable("GZ_IP", "127.0.0.1"),
     ]
 
     if has_ros_gz_sim_wrapper:
