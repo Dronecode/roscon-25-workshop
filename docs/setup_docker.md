@@ -7,7 +7,7 @@ The workshop exercises can be run in a dockerized environment with minimal compo
 First of all, [install docker](https://docs.docker.com/get-started/get-docker/), then pull the `px4io/px4-dev-ros2-gazebo` image.
 
 ```bash
-docker pull px4io/px4-dev-ros2-gazebo:main-jazzy
+docker pull px4io/px4-sitl-gazebo-ros2:latest
 ```
 
 Then clone the PX4-Autopilot repo and checkout the `release/1.18` branch.
