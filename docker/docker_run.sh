@@ -20,13 +20,13 @@ fi
 
 PX4_DIR=$1
 
-WS_SRC_DIR=$SCRIPTPATH/../../..
+WS_DIR=$SCRIPTPATH/../../..
 
 set -euo pipefail
 
 if [[ "$HEADLESS" -eq 1 ]]; then
 	docker run --rm -it --name "$CONTAINER_NAME" --network host \
-		--mount "type=bind,src=$WS_SRC_DIR,dst=/workspace" \
+		--mount "type=bind,src=$WS_DIR,dst=/workspace" \
 		--mount "type=bind,src=$PX4_DIR,dst=/PX4-Autopilot" \
 		-e ROS_DOMAIN_ID=83 \
 		-e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e "GIT_CONFIG_VALUE_0=*" \
@@ -50,7 +50,7 @@ else
 	docker run --rm -it --name "$CONTAINER_NAME" --network host \
 		--mount type=bind,src=/tmp/.X11-unix,dst=/tmp/.X11-unix,readonly \
 		--mount "type=bind,src=$auth,dst=/tmp/px4.xauth,readonly" \
-		--mount "type=bind,src=$WS_SRC_DIR,dst=/workspace/src" \
+		--mount "type=bind,src=$WS_DIR,dst=/workspace" \
 		--mount "type=bind,src=$PX4_DIR,dst=/PX4-Autopilot" \
 		-e "DISPLAY=$DISPLAY" -e XAUTHORITY=/tmp/px4.xauth \
 		-e QT_QPA_PLATFORM=xcb -e LIBGL_ALWAYS_SOFTWARE=1 \
