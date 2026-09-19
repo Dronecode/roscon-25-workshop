@@ -5,7 +5,7 @@ static const bool kEnableDebugOutput = true;
 
 SARModeExecutor::SARModeExecutor(rclcpp::Node& node, px4_ros2::ModeBase& owned_mode,
                                    px4_ros2::ModeBase& vsweep_mode, px4_ros2::ModeBase& orbital_mode)
-    : ModeExecutorBase(node, Settings{}, owned_mode), _node(node),
+    : ModeExecutorBase(Settings{}, owned_mode), _node(node),
       _vsweep_mode(vsweep_mode), _orbital_mode(orbital_mode)
 {
     _target_sub = _node.create_subscription<geometry_msgs::msg::PoseStamped>(
