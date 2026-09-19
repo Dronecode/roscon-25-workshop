@@ -76,7 +76,10 @@ def _launch_setup(context):
             ),
         ),
         SetEnvironmentVariable("GZ_SIM_SERVER_CONFIG_PATH", px4_gz_server_config_path),
-        SetEnvironmentVariable("GZ_IP", "127.0.0.1"),  # force gz-transport discovery over loopback
+        # Default gz-transport discovery to loopback (fixes multicast discovery
+        # breaking on machines whose default route is Wi-Fi), without
+        # overriding an explicit GZ_IP the user may have already set.
+        SetEnvironmentVariable("GZ_IP", environ.get("GZ_IP", "127.0.0.1")),
     ]
 
     if has_ros_gz_sim_wrapper:
