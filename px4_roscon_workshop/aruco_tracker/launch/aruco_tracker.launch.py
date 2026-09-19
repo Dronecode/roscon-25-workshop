@@ -4,7 +4,7 @@ import yaml
 import tempfile
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.substitutions import FindPackageShare
@@ -12,7 +12,10 @@ from launch_ros.descriptions import ComposableNode
 
 
 def launch_setup(context, *args, **kwargs):
-    return_array = []
+    # Default gz-transport discovery to loopback (fixes multicast discovery
+    # breaking on machines whose default route is Wi-Fi), without
+    # overriding an explicit GZ_IP the user may have already set.
+    return_array = [SetEnvironmentVariable("GZ_IP", os.environ.get("GZ_IP", "127.0.0.1"))]
 
     world_name = LaunchConfiguration("world_name").perform(context)
     model_name = LaunchConfiguration("model_name").perform(context)

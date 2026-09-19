@@ -1,7 +1,7 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -29,6 +29,10 @@ def generate_launch_description():
         [
             run_uxrcedds_agent_arg,
             run_gz_clock_bridge_arg,
+            # Default gz-transport discovery to loopback (fixes multicast discovery
+            # breaking on machines whose default route is Wi-Fi), without
+            # overriding an explicit GZ_IP the user may have already set.
+            SetEnvironmentVariable("GZ_IP", os.environ.get("GZ_IP", "127.0.0.1")),
             Node(
                 package="custom_mode_demo",
                 executable="custom_mode_demo",

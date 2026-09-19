@@ -1,6 +1,11 @@
 import os
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, DeclareLaunchArgument, OpaqueFunction
+from launch.actions import (
+    ExecuteProcess,
+    DeclareLaunchArgument,
+    OpaqueFunction,
+    SetEnvironmentVariable,
+)
 from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.substitutions import FindPackageShare
 from launch.substitutions import LaunchConfiguration, EnvironmentVariable
@@ -53,6 +58,10 @@ def generate_launch_description():
                 ),
                 description="Path to PX4-Autopilot repository root (supports ~)",
             ),
+            # Default gz-transport discovery to loopback (fixes multicast discovery
+            # breaking on machines whose default route is Wi-Fi), without
+            # overriding an explicit GZ_IP the user may have already set.
+            SetEnvironmentVariable("GZ_IP", os.environ.get("GZ_IP", "127.0.0.1")),
             Node(
                 package="ros_gz_bridge",
                 executable="parameter_bridge",
