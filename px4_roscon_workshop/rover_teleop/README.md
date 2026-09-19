@@ -22,7 +22,10 @@ ros2 launch rover_teleop rover_launch.py
 
 use the launch argument `px4_autopilot_path` to provide the path to the local PX4-Autopilot repo.
 
-When using ROS 2 Jazzy, start the gazebo GUI with `gz sim -g`.
+When using ROS 2 Jazzy, start the gazebo GUI with `GZ_IP=127.0.0.1 gz sim -g`.
+`GZ_IP=127.0.0.1` forces gz-transport discovery over loopback; without it,
+on machines whose default route is Wi-Fi, the GUI can start but stay empty
+because it never discovers the running server.
 
 Run the keyboard teleop:
 
