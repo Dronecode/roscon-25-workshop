@@ -93,11 +93,14 @@ def _launch_setup(context):
         gz_sim_launch_path = path.join(
             ros_gz_sim_pkg_path, "launch", "gz_sim.launch.py"
         )
+        gz_args = f"-r {world_name}.sdf"
+        if environ.get("HEADLESS"):
+            gz_args += " -s"
         gz_actions = [
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(gz_sim_launch_path),
                 launch_arguments={
-                    "gz_args": f"-r {world_name}.sdf",
+                    "gz_args": gz_args,
                 }.items(),
             ),
             Node(
