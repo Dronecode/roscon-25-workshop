@@ -8,7 +8,7 @@ from launch.substitutions import (
     LaunchConfiguration,
     PathJoinSubstitution,
 )
-from launch_ros.actions import Node
+from launch_ros.actions import Node, SetParameter
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -36,6 +36,7 @@ def generate_launch_description() -> LaunchDescription:
 
     return LaunchDescription(
         [
+            SetParameter(name="use_sim_time", value=True),
             DeclareLaunchArgument(
                 "px4_autopilot_path",
                 default_value=EnvironmentVariable(
@@ -120,6 +121,22 @@ def generate_launch_description() -> LaunchDescription:
                 name="rover_teleop_node",
                 output="screen",
                 namespace="px4_1",
+            ),
+            Node(
+                package="px4_tf",
+                executable="px4_tf_publisher",
+                name="px4_tf_publisher",
+                output="screen",
+                namespace="px4_0",
+                parameters=[{"px4_tf_prefix": "px4_0"}],
+            ),
+            Node(
+                package="px4_tf",
+                executable="px4_tf_publisher",
+                name="px4_tf_publisher",
+                output="screen",
+                namespace="px4_1",
+                parameters=[{"px4_tf_prefix": "px4_1"}],
             ),
         ]
     )
