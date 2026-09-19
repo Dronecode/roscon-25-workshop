@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>motor_ramp_demo</name>
+  <version>0.0.1</version>
+  <description>Ramp motor 1 up/down between 0% and 10% using direct actuator control.</description>
+
+  <maintainer email="beniamino.pozzan@gmail.com">Beniamino Pozzan</maintainer>
+  <license>CC-BY-SA-4.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>eigen3_cmake_module</buildtool_depend>
+  <buildtool_export_depend>eigen3_cmake_module</buildtool_export_depend>
+
+  <!-- Runtime and build dependencies -->
+  <depend>rclcpp</depend>
+  <depend>px4_ros2_cpp</depend>
+  <depend>eigen</depend>
+
+  <!-- Optional test tools -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
