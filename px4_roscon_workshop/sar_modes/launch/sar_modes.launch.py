@@ -117,6 +117,11 @@ def generate_launch_description():
                 "px4_ns": f"px4_{instance_id}",
                 "spawn_pos_x": str(DRONE_SPAWN_POSITIONS[instance_id - 1][0]),
                 "spawn_pos_y": str(DRONE_SPAWN_POSITIONS[instance_id - 1][1]),
+                "px4_extra_env_vars": (
+                    "PX4_PARAM_COM_RCL_EXCEPT=9,"
+                    f"PX4_PARAM_COM_RC_IN_MODE={1 if instance_id == 1 else 4},"
+                    "PX4_GZ_NO_FOLLOW=1"
+                ),
             }.items(),
         )
         for instance_id in range(1, total_drones + 1)
