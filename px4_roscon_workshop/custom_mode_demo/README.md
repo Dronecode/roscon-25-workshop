@@ -28,3 +28,9 @@ The Custom Mode Demo registers one mode, **CustomWaypoints**, which flies a pred
    ```
 
 4. Use QGC to takeoff, then activate the custom **CustomWaypoints** mode.
+
+## Exercise
+
+Replace the `px4_ros2::TrajectorySetpointType` control mechanism with the more specific `px4_ros2::MulticopterGotoSetpointType`.
+
+For hints and solution, check out [solution.cpp](./solution.cpp).
