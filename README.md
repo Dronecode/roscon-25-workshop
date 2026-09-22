@@ -34,7 +34,7 @@ For more detailed instructions and guidance, please refer to the dedicated **REA
 
 ### Presentation
 
-[Link to Presentation on Google Slides](https://docs.google.com/presentation/d/1S0erGP3pqjSlPU8--NCr8zwdNYxXy2enIBOqPs76fCQ/edit?usp=sharing)
+[Link to Presentation on Google Slides](https://docs.google.com/presentation/d/1Dkp2tvANRnrUpToBEG1AI2GcibONjgqqOaggqyTtFVc/edit?usp=sharing)
 
 ### Introduction & Drone Architecture
 
