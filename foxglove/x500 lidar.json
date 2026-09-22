@@ -1,0 +1,208 @@
+{
+  "configById": {
+    "3D!3c6twjg": {
+      "cameraState": {
+        "distance": 13.966745921867712,
+        "perspective": true,
+        "phi": 78.44988609338378,
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOffset": [
+          2.4480633765784634,
+          2.193311014511613,
+          0.000004708642934822222
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "thetaOffset": 10.426229508197533,
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "followMode": "follow-heading",
+      "followTf": "base_link",
+      "scene": {
+        "enableStats": false,
+        "transforms": {
+          "editable": false,
+          "showLabel": true,
+          "lineWidth": 0
+        }
+      },
+      "transforms": {
+        "frame:motor_3": {
+          "visible": false
+        },
+        "frame:motor_2": {
+          "visible": false
+        },
+        "frame:motor_1": {
+          "visible": false
+        },
+        "frame:motor_0": {
+          "visible": false
+        },
+        "frame:base_link_frd": {
+          "visible": false
+        },
+        "frame:odom_ned": {
+          "visible": false
+        },
+        "frame:odom": {
+          "visible": false
+        },
+        "frame:x500_lidar_2d_mono_cam_down_0/camera_link/imager": {
+          "visible": false
+        },
+        "frame:x500_mono_cam_down_0/camera_link/imager": {
+          "visible": false
+        },
+        "frame:x500_lidar_2d_0/link/lidar_2d_v2": {
+          "visible": false
+        },
+        "frame:camera_frame": {
+          "visible": false
+        },
+        "frame:link": {
+          "visible": false
+        }
+      },
+      "topics": {
+        "/robot_description": {
+          "visible": true
+        },
+        "/camera": {
+          "visible": false,
+          "cameraInfoTopic": "/camera_info",
+          "distance": 2,
+          "planarProjectionFactor": 0
+        },
+        "/target_pose": {
+          "visible": true,
+          "type": "axis"
+        },
+        "/point_cloud": {
+          "visible": true,
+          "colorField": "_auto_distance",
+          "colorMode": "colormap",
+          "colorMap": "rainbow",
+          "pointSize": 8
+        },
+        "/world/aruco/model/x500_mono_cam_down_0/link/camera_link/sensor/imager/image/compressed": {
+          "visible": true,
+          "cameraInfoTopic": "/camera_info"
+        },
+        "/image_proc": {
+          "visible": false,
+          "cameraInfoTopic": "/camera_info"
+        },
+        "/camera/compressed": {
+          "visible": true,
+          "cameraInfoTopic": "/camera_info"
+        }
+      },
+      "layers": {
+        "grid": {
+          "visible": true,
+          "drawBehind": false,
+          "frameLocked": true,
+          "label": "Grid",
+          "instanceId": "9cf0240d-2343-4c01-80d3-ffccdad28340",
+          "layerId": "foxglove.Grid",
+          "size": 10,
+          "divisions": 10,
+          "lineWidth": 1,
+          "color": "#248eff",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {},
+      "synchronize": false
+    },
+    "Plot!2kas0az": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/fmu/out/vehicle_odometry.position[0]",
+          "enabled": true,
+          "color": "#4e98e2",
+          "xValuePath": "/fmu/out/vehicle_odometry.position[1]"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": false,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "custom",
+      "sidebarDimension": 240,
+      "axisScalesMode": "lockedScales",
+      "foxglovePanelTitle": "DRONE XY trajectory (ENU)",
+      "xAxisLabel": "x [m]",
+      "yAxisLabel": "y [m]",
+      "timeRange": "all"
+    },
+    "Plot!1jjgtat": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/fmu/out/vehicle_odometry.position[2]",
+          "enabled": true,
+          "color": "#4e98e2",
+          "xValuePath": "/fmu/out/vehicle_odometry.position[0]"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": false,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "Drone estimated altitude (NED)",
+      "xAxisLabel": "t [s]",
+      "yAxisLabel": "z [m]"
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "first": "3D!3c6twjg",
+    "second": {
+      "first": "Plot!2kas0az",
+      "second": "Plot!1jjgtat",
+      "direction": "column"
+    },
+    "direction": "row"
+  }
+}

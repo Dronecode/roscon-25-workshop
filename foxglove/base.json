@@ -2,19 +2,18 @@
   "configById": {
     "3D!3c6twjg": {
       "cameraState": {
-        "perspective": true,
         "distance": 11.376001845525893,
+        "perspective": true,
         "phi": 75.49906642124344,
-        "thetaOffset": 90.92379334829621,
-        "targetOffset": [
-          4.665970937961196,
-          -0.14898348825041471,
-          4.508385905766857e-18
-        ],
         "target": [
           0,
           0,
           0
+        ],
+        "targetOffset": [
+          4.665970937961196,
+          -0.14898348825041471,
+          4.508385905766857e-18
         ],
         "targetOrientation": [
           0,
@@ -22,6 +21,7 @@
           0,
           1
         ],
+        "thetaOffset": 90.92379334829621,
         "fovy": 45,
         "near": 0.5,
         "far": 5000
@@ -138,7 +138,8 @@
         "poseEstimateYDeviation": 0.5,
         "poseEstimateThetaDeviation": 0.26179939
       },
-      "imageMode": {}
+      "imageMode": {},
+      "synchronize": false
     },
     "Plot!2kas0az": {
       "paths": [
